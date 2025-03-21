@@ -4,6 +4,9 @@ import { UserModule } from './modules/user.module';
 import { UserEntity } from './dataLayer/entities/user.entity';
 import { JournalistModule } from './modules/jounrnalist.module'; 
 import { JournalistEntity } from './dataLayer/entities/journalist.entity';
+import { ChannelEntity } from './dataLayer/entities/channel.entity';
+import { ChannelModule } from './modules/channel.module';
+
 
 @Module({
   imports: [
@@ -14,11 +17,12 @@ import { JournalistEntity } from './dataLayer/entities/journalist.entity';
       username: 'gaston',
       password: 'gaston',
       database: 'MACNews',
-      entities: [UserEntity,JournalistEntity],
+      entities: [UserEntity,JournalistEntity,ChannelEntity],
       synchronize: false, 
     }),
     UserModule,
     JournalistModule,
+    ChannelModule,
   ],
 })
 export class AppModule {}

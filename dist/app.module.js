@@ -13,6 +13,8 @@ const user_module_1 = require("./modules/user.module");
 const user_entity_1 = require("./dataLayer/entities/user.entity");
 const jounrnalist_module_1 = require("./modules/jounrnalist.module");
 const journalist_entity_1 = require("./dataLayer/entities/journalist.entity");
+const channel_entity_1 = require("./dataLayer/entities/channel.entity");
+const channel_module_1 = require("./modules/channel.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -26,11 +28,12 @@ exports.AppModule = AppModule = __decorate([
                 username: 'gaston',
                 password: 'gaston',
                 database: 'MACNews',
-                entities: [user_entity_1.UserEntity, journalist_entity_1.JournalistEntity],
+                entities: [user_entity_1.UserEntity, journalist_entity_1.JournalistEntity, channel_entity_1.ChannelEntity],
                 synchronize: false,
             }),
             user_module_1.UserModule,
             jounrnalist_module_1.JournalistModule,
+            channel_module_1.ChannelModule,
         ],
     })
 ], AppModule);
