@@ -1,11 +1,11 @@
 import { Injectable,BadRequestException,NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from '.././dataLayer/entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto'; 
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UpdateUserTypeDto } from './dto/update-user-type.dto';
-import { UserRepository } from '../dataLayer/repositories/user.repository';
+import { UserEntity } from '../../dataLayer/entities/user.entity';
+import { CreateUserDto } from '../dto/User/create-user.dto'; 
+import { UpdateUserDto } from '../dto/User/update-user.dto';
+import { UpdateUserTypeDto } from '../dto/User/update-user-type.dto';
+import { UserRepository } from '../../dataLayer/repositories/user.repository';
 
 @Injectable()
 export class UserService {
@@ -61,7 +61,7 @@ export class UserService {
   }
 
   async updateUserType(UserID: string, updateUserTypeDto: UpdateUserTypeDto): Promise<UserEntity> {
-    const user = await this.findUser(UserID); // Llamamos a findUser que ya maneja NotFoundException
+    const user = await this.findUser(UserID); 
   
     user.UserType = updateUserTypeDto.UserType;
     return await this.repository.save(user);

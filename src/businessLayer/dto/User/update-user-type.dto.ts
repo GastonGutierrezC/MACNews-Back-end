@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
-import { UserType } from '../../dataLayer/entities/user.entity';
+import { UserType } from '../../../dataLayer/entities/user.entity';
 
 export class UpdateUserTypeDto {
   @IsNotEmpty()

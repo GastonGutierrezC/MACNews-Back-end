@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
-import { UserService } from '../businessLayer/user.service'; // Referencia al servicio de la capa de negocio
-import { CreateUserDto } from '../businessLayer/dto/create-user.dto';
-import { UpdateUserDto } from '../businessLayer/dto/update-user.dto';
-import { UpdateUserTypeDto } from '../businessLayer/dto/update-user-type.dto';
+import { UserService } from '../businessLayer/servies/user.service';
+import { CreateUserDto } from '../businessLayer/dto/User/create-user.dto';
+import { UpdateUserDto } from '../businessLayer/dto/User/update-user.dto';
+import { UpdateUserTypeDto } from '../businessLayer/dto/User/update-user-type.dto';
 
 @Controller('users')
 export class UserController {
@@ -41,3 +41,5 @@ export class UserController {
   }
 
 }
+
+

@@ -10,3 +10,15 @@ CREATE TABLE IF NOT EXISTS User (
     UserImageURL VARCHAR(255) DEFAULT NULL,
     UserType ENUM('Reader', 'Journalist', 'Administrator') NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS Journalist (
+    JournalistID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    UserID CHAR(36) NOT NULL UNIQUE,
+    BirthDate DATE NOT NULL,
+    CardNumber VARCHAR(50) NOT NULL,
+    Reason TEXT NOT NULL,
+    ImageCertificateURL VARCHAR(255),
+    VerificationStatus ENUM('Checking', 'Rejected', 'Approved') NOT NULL,
+
+    CONSTRAINT FK_Journalist_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+);
