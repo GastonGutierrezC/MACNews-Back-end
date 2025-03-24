@@ -10,11 +10,14 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_module_1 = require("./modules/user.module");
-const user_entity_1 = require("./dataLayer/entities/user.entity");
+const user_entity_1 = require("./DomainLayer/Entities/user.entity");
 const jounrnalist_module_1 = require("./modules/jounrnalist.module");
-const journalist_entity_1 = require("./dataLayer/entities/journalist.entity");
-const channel_entity_1 = require("./dataLayer/entities/channel.entity");
+const journalist_entity_1 = require("./DomainLayer/Entities/journalist.entity");
+const channel_entity_1 = require("./DomainLayer/Entities/channel.entity");
 const channel_module_1 = require("./modules/channel.module");
+const news_entity_1 = require("./DomainLayer/Entities/news.entity");
+const news_module_1 = require("./modules/news.module");
+const pasword_entity_1 = require("./DomainLayer/Entities/pasword.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,12 +31,13 @@ exports.AppModule = AppModule = __decorate([
                 username: 'gaston',
                 password: 'gaston',
                 database: 'MACNews',
-                entities: [user_entity_1.UserEntity, journalist_entity_1.JournalistEntity, channel_entity_1.ChannelEntity],
+                entities: [user_entity_1.UserEntity, journalist_entity_1.JournalistEntity, channel_entity_1.ChannelEntity, news_entity_1.NewsEntity, pasword_entity_1.PasswordEntity],
                 synchronize: false,
             }),
             user_module_1.UserModule,
             jounrnalist_module_1.JournalistModule,
             channel_module_1.ChannelModule,
+            news_module_1.NewsModule,
         ],
     })
 ], AppModule);

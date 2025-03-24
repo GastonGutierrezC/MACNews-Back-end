@@ -6,10 +6,29 @@ CREATE TABLE IF NOT EXISTS User (
     UserFirstName VARCHAR(100) NOT NULL,
     UserLastName VARCHAR(100) NOT NULL,
     UserEmail VARCHAR(100) UNIQUE NOT NULL,
-    UserPassword VARCHAR(255) NOT NULL,
     UserImageURL VARCHAR(255) DEFAULT NULL,
-    UserType ENUM('Reader', 'Journalist', 'Administrator') NOT NULL
+    IsActive BOOLEAN DEFAULT TRUE, 
+    RegistrationDate DATE DEFAULT (NOW())
 );
+
+CREATE TABLE IF NOT EXISTS Passwords (
+    PasswordID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    UserID CHAR(36) NOT NULL UNIQUE,
+    PasswordUser VARCHAR(255) NOT NULL,
+    DateCreated DATE DEFAULT (NOW()),
+    DateLastChanged DATE DEFAULT (NOW()),
+    CONSTRAINT FK_Password_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Roles (
+    RolID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    UserID CHAR(36) NOT NULL UNIQUE,
+    RoleAssigned ENUM('Reader', 'Administrator') DEFAULT 'Reader',
+    DateAssigned DATE DEFAULT (NOW()),
+    LastChangeDate DATE DEFAULT (NOW()),
+    CONSTRAINT FK_Role_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+);
+
 
 CREATE TABLE IF NOT EXISTS Journalist (
     JournalistID CHAR(36) PRIMARY KEY DEFAULT (UUID()),

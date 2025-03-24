@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JournalistEntity } from '../dataLayer/entities/journalist.entity';
-import { JournalistController } from '../presentationLayer/journalist.controller';
-import { JournalistRepository } from '../dataLayer/repositories/journalist.repository'; 
-import { JournalistService } from 'src/businessLayer/servies/journalist.service';
+import { JournalistEntity } from '../DomainLayer/Entities/journalist.entity';
+import { JournalistController } from '../InterfaceAdaptersLayer/Controllers/journalist.controller';
+import { JournalistRepository } from '../InfrastructureLayer/Repositories/journalist.repository'; 
+import { JournalistService } from 'src/ApplicationLayer/UseCases/journalist.service';
 import { UserModule } from './user.module';
 
 @Module({
