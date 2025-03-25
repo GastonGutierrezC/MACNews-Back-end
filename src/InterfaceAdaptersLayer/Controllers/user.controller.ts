@@ -22,16 +22,16 @@ export class UserController {
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear un nuevo usuario' })
+  @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({
-    type: CreateUserWithPasswordDto, // Usar el DTO combinado aquí
+    type: CreateUserWithPasswordDto, 
   })
   async create(@Body() createUserWithPasswordDto: CreateUserWithPasswordDto) {
     return await this.createUser.create(createUserWithPasswordDto);
   }
 
-  @Get('findByCredentials')  // 🔹 Este endpoint DEBE estar antes que el de ID
-  @ApiOperation({ summary: 'Obtener usuario por Email y Contraseña' })
+  @Get('findByCredentials')  
+  @ApiOperation({ summary: 'Get user by Email and Password' })
   async findByCredentials(
     @Query('email') email: string,
     @Query('password') password: string,
@@ -40,27 +40,24 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener usuario por ID' })
+  @ApiOperation({ summary: 'Get user by ID' })
   async findOne(@Param('id') id: string) {
     return await this.findUserService.findUser(id);
   }
 
-
-
-
   @Patch(':id')
-  @ApiOperation({ summary: 'actualizar datos del usuario' })
+  @ApiOperation({ summary: 'update user data' })
   @ApiBody({
-    type: UpdateUserWithPasswordDto, // Usar el DTO combinado aquí
+    type: UpdateUserWithPasswordDto, 
   })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserWithPasswordDto) {
     return await this.updateUserService.update(id, updateUserDto);
   }
 
   @Patch('changeRole/:id')
-  @ApiOperation({ summary: 'actualizar datos del rol del usuario' })
+  @ApiOperation({ summary: 'update user role data' })
   @ApiBody({
-    type: UpdateRolesDto, // Usar el DTO combinado aquí
+    type: UpdateRolesDto,
   })
   async updateRole(@Param('id') id: string, @Body() updateUserDto: UpdateRolesDto) {
     return await this.updateUserRoleService.update(id, updateUserDto);

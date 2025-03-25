@@ -16,7 +16,7 @@ import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.
 import { JournalistEntity } from 'src/DomainLayer/Entities/journalist.entity';
 
 @ApiTags('Journalist')
-@Controller('Journalist')
+@Controller('journalist')
 export class JournalistController {
   constructor(
     private readonly createJournalistService:CreateJournalistService,
@@ -26,9 +26,9 @@ export class JournalistController {
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear al periodista' })
+  @ApiOperation({ summary: 'Creating the journalist' })
   @ApiBody({
-    type: CreateJournalistDto, // Usar el DTO combinado aquí
+    type: CreateJournalistDto,
   })  
   async create(@Body() createJournalistDto: CreateJournalistDto): Promise<JournalistEntity> {
     return this.createJournalistService.create(createJournalistDto);
@@ -36,9 +36,9 @@ export class JournalistController {
 
   @Patch(':id')
 
-  @ApiOperation({ summary: 'actualizar datos del periodista' })
+  @ApiOperation({ summary: 'update journalist data' })
   @ApiBody({
-    type: UpdateJournalistDto, // Usar el DTO combinado aquí
+    type: UpdateJournalistDto, 
   })  
   async update(
     @Param('id') id: string,
@@ -48,7 +48,7 @@ export class JournalistController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener el periodista por ID' })
+  @ApiOperation({ summary: 'Obtain journalist by ID' })
   async findById(@Param('id') id: string): Promise<JournalistEntity> {
     return this.findJournalistService.findById(id);
   }

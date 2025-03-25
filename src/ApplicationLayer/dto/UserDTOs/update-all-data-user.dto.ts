@@ -9,7 +9,7 @@ import { UpdatePasswordDto } from '../PasswordDTOs/update-password.dto';
 export class UpdateUserWithPasswordDto {
   @ApiProperty({
     type: UpdateUserDto,
-    description: 'Datos del usuario a actualizar',
+    description: 'User data to be update',
   })
   @ValidateNested()
   @Type(() => UpdateUserDto)
@@ -18,7 +18,7 @@ export class UpdateUserWithPasswordDto {
 
   @ApiProperty({
     type: UpdatePasswordDto,
-    description: 'Datos de la contraseña del actualizar',
+    description: 'User password data update',
   })
   @ValidateNested()
   @Type(() => UpdatePasswordDto)

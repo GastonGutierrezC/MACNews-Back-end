@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
-import { UserEntity } from './user.entity';  // Ajusta la ruta según sea necesario
+import { UserEntity } from './user.entity';  
 
 @Entity({ name: 'Passwords' })
 export class PasswordEntity {

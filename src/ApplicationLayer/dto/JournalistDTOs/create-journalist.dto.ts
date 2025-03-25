@@ -1,9 +1,6 @@
 import {
   IsString,
-  IsEmail,
   IsNotEmpty,
-  IsOptional,
-  Matches,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'; 
 
@@ -11,8 +8,8 @@ export class CreateJournalistDto {
 
 
 @ApiProperty({
- description: 'Application Form del Journalist',
- example: 'ID del Application Form',
+ description: 'Application Form of the Journalist',
+ example: 'ID  Application Form',
 })
         
 @IsNotEmpty()
@@ -20,16 +17,16 @@ export class CreateJournalistDto {
 readonly ApplicationFormID: string;
 
   @ApiProperty({
-    description: 'Specialty del Journalist',
-    example: 'Soy especialista en noticias de politica',
+    description: 'Specialty of the Journalist',
+    example: 'I am a specialist in political news',
   })
   @IsString()
   @IsNotEmpty()
   readonly Specialty: string;
 
   @ApiProperty({
-    description: 'experiencia del usuario',
-    example: 'he trabajado muchos años en un canal de television',
+    description: 'Experience of the Journalist',
+    example: 'I have worked for many years in a television channel',
   })
   @IsString()
   @IsNotEmpty()

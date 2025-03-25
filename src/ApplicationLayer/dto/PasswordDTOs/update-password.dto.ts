@@ -9,7 +9,7 @@ import {
   export class UpdatePasswordDto {
 
     @ApiProperty({
-        description: 'La contraseña del usuario',
+        description: 'The users password',
         example: 'Password@123',
       })    
     @IsString()

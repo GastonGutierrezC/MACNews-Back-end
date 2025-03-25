@@ -12,7 +12,7 @@ export class ChannelRepository {
 
   async findAll(): Promise<ChannelEntity[]> { 
     return await this.channelRepo.find({ relations: ['Journalist'] });
-  }  
+  }     
 
   async findById(ChannelID: string): Promise<ChannelEntity | undefined> {
     return await this.channelRepo.findOne({ where: { ChannelID } });

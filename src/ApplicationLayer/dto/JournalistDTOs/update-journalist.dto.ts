@@ -10,16 +10,16 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UpdateJournalistDto {
 
   @ApiProperty({
-    description: 'Specialty del Journalist',
-    example: 'Soy especialista en noticias de politica',
+    description: 'Specialty of the Journalist',
+    example: 'I am a specialist in political news',
   })
   @IsString()
   @IsOptional()
   readonly Specialty: string;
 
   @ApiProperty({
-    description: 'experiencia del usuario',
-    example: 'he trabajado muchos años en un canal de television',
+    description: 'Experience of the Journalist',
+    example: 'I have worked for many years in a television channel',
   })
   @IsString()
   @IsOptional()

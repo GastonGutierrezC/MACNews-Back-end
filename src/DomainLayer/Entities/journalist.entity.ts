@@ -1,7 +1,5 @@
 
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
-import { PasswordEntity } from './pasword.entity';
-import { RolesEntity } from './roles.entity';
 import { ApplicationFormEntity } from './applicationForm.entity';
 
 @Entity({ name: 'Journalist' })

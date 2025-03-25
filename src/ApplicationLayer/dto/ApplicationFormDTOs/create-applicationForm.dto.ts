@@ -4,8 +4,8 @@ import { IsNotEmpty, IsString, IsDateString } from 'class-validator';
 export class CreateApplicationFormDto {
 
   @ApiProperty({
-    description: 'password del usuario',
-    example: 'ID del usuario',
+    description: 'User ID',
+    example: 'User ID',
   })
     
   @IsNotEmpty()
@@ -13,7 +13,7 @@ export class CreateApplicationFormDto {
   UserID: string;
 
   @ApiProperty({
-    description: 'BirthDate del usuario',
+    description: 'BirthDate of the User',
     example: '2025-03-24',
   })  
   @IsNotEmpty()
@@ -21,7 +21,7 @@ export class CreateApplicationFormDto {
   BirthDate: string;
 
   @ApiProperty({
-    description: 'CardNumber del usuario',
+    description: 'Card Number of the User',
     example: '123456',
   })  
   @IsNotEmpty()
@@ -29,7 +29,7 @@ export class CreateApplicationFormDto {
   CardNumber: string;
 
   @ApiProperty({
-    description: 'Reason del usuario',
+    description: 'Reason for to be a reporter',
     example: 'Reason for to be a reporter',
   })  
   @IsNotEmpty()
@@ -37,7 +37,7 @@ export class CreateApplicationFormDto {
   Reason: string;
 
   @ApiProperty({
-    description: 'La URL de la imagen de certificado del usuario',
+    description: 'The URL of the users certificate image',
     example: 'http://example.com/profile.jpg',
   })
   @IsNotEmpty()

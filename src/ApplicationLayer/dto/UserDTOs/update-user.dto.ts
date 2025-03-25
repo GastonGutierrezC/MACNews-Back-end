@@ -9,7 +9,7 @@ import {
 export class UpdateUserDto {
 
   @ApiProperty({
-    description: 'El primer nombre del usuario',
+    description: 'User First Name',
     example: 'John',
   })  
   @IsOptional()
@@ -17,7 +17,7 @@ export class UpdateUserDto {
   readonly UserFirstName?: string;
 
   @ApiProperty({
-    description: 'El apellido del usuario',
+    description: 'User Last Name',
     example: 'Doe',
   })
   @IsOptional()
@@ -25,7 +25,7 @@ export class UpdateUserDto {
   readonly UserLastName?: string;
 
   @ApiProperty({
-    description: 'El correo electrónico del usuario (debe terminar con @gmail.com)',
+    description: 'The users e-mail address ',
     example: 'johndoe@gmail.com',
   })
    @IsEmail()
@@ -34,7 +34,7 @@ export class UpdateUserDto {
   readonly UserEmail?: string;
 
   @ApiProperty({
-    description: 'La URL de la imagen de perfil del usuario',
+    description: 'The URL of the users profile picture',
     example: 'http://example.com/profile.jpg',
   })  
   @IsOptional()

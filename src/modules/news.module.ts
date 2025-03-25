@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NewsEntity } from '../DomainLayer/Entities/news.entity';
-import { NewsService } from 'src/ApplicationLayer/UseCases/news.service';
 import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 import { NewsController } from 'src/InterfaceAdaptersLayer/Controllers/news.controller';
 import { ChannelModule } from './channel.module'; 
+import { CreateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/create.news';
+import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find.news';
+import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/update.news';
 
 @Module({
   imports: [
@@ -12,8 +14,8 @@ import { ChannelModule } from './channel.module';
     ChannelModule, 
   ],
   controllers: [NewsController],  
-  providers: [NewsService, NewsRepository],  
-  exports: [NewsService, NewsRepository], 
+  providers: [CreateNewsService,FindNewsService,UpdateNewsService, NewsRepository],  
+  exports: [CreateNewsService,FindNewsService,UpdateNewsService, NewsRepository], 
 })
 export class NewsModule {}
 

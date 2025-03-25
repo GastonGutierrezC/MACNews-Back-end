@@ -23,11 +23,9 @@ export class UserRepository {
     return await this.userRepo.save(newUser);
   }
 
-
-
     async update(id: string, updateData: Partial<UserEntity>): Promise<UserEntity> {
       await this.userRepo.update(id, updateData);
-      return await this.findById(id); // Retorna los datos actualizados
+      return await this.findById(id); 
     }
   
 }

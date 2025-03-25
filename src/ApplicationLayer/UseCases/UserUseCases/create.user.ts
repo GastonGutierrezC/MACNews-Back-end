@@ -1,6 +1,4 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { CreateUserDto } from '../../dto/UserDTOs/create-user.dto'; 
-import { UserEntity } from '../../../DomainLayer/Entities/user.entity';
 import { UserRepository } from '../../../InfrastructureLayer/Repositories/user.repository';
 import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/password.repository';
 import { CreatePasswordDto } from 'src/ApplicationLayer/dto/PasswordDTOs/create-password.dto';

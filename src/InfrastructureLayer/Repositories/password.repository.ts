@@ -18,7 +18,6 @@ export class PasswordRepository {
     return await this.passwordRepo.findOne({ where: { PasswordID } });
   }
   
-
   async create(user: Partial<PasswordEntity>): Promise<PasswordEntity> {
     const newUser = this.passwordRepo.create(user);
     return await this.passwordRepo.save(newUser);

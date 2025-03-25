@@ -9,7 +9,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty({
-    description: 'El primer nombre del usuario',
+    description: 'UserFirst Name',
     example: 'John',
   })
   @IsString()
@@ -17,7 +17,7 @@ export class CreateUserDto {
   readonly UserFirstName: string;
 
   @ApiProperty({
-    description: 'El apellido del usuario',
+    description: 'User Last Name',
     example: 'Doe',
   })
   @IsString()
@@ -25,7 +25,7 @@ export class CreateUserDto {
   readonly UserLastName: string;
 
   @ApiProperty({
-    description: 'El correo electrónico del usuario (debe terminar con @gmail.com)',
+    description: 'The users e-mail address ',
     example: 'johndoe@gmail.com',
   })
   @IsEmail()
@@ -34,7 +34,7 @@ export class CreateUserDto {
   readonly UserEmail: string;
 
   @ApiProperty({
-    description: 'La URL de la imagen de perfil del usuario',
+    description: 'The URL of the users profile picture',
     example: 'http://example.com/profile.jpg',
   })
   @IsOptional()

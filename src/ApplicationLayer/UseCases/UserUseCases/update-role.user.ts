@@ -21,33 +21,27 @@ export class UpdateUserRoleService {
 async update(id: string, updateRolesDto: UpdateRolesDto) {
     const { roleAssigned } = updateRolesDto;
   
-    // Buscar el usuario directamente usando el ID
     const existingUser = await this.userRepository.findById(id);
     
     if (!existingUser) {
       throw new NotFoundException(`User with ID ${id} not found.`);
     }
   
-    // Buscar todos los roles y luego encontrar el rol del usuario por UserID
     const allRoles = await this.rolesRepository.findAll();
-    const existingRole = allRoles.find(role => role.UserID === id); // Buscar el rol por el ID del usuario
+    const existingRole = allRoles.find(role => role.UserID === id);
     
     if (!existingRole) {
       throw new NotFoundException(`Role for User with ID ${id} not found.`);
     }
   
-    // Actualizar el rol del usuario
-    existingRole.RoleAssigned = roleAssigned; // Asumiendo que "roleAssigned" es una propiedad del rol
+    existingRole.RoleAssigned = roleAssigned; 
   
-    // Realizar la actualización en el repositorio
     const updatedRole = await this.rolesRepository.update(existingRole.RolID, existingRole);
   
-    // Verificar si el rol se actualizó correctamente
     const roleAfterUpdate = await this.rolesRepository.findById(existingRole.UserID); 
   
-    console.log('Updated Role:', roleAfterUpdate); // Esto ayudará a ver si el rol se actualizó
+    console.log('Updated Role:', roleAfterUpdate); 
   
-    // Devolver el usuario y el rol actualizado
     return { user: existingUser, role: roleAfterUpdate }; 
   }
   

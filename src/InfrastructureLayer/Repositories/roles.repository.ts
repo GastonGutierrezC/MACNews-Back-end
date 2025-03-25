@@ -23,11 +23,9 @@ export class RolesRepository {
     return await this.rolesRepo.save(newUser);
   }
 
-
-
   async update(id: string, updateData: Partial<RolesEntity>): Promise<RolesEntity> {
     await this.rolesRepo.update(id, updateData);
-    return await this.findById(id); // Retorna los datos actualizados
+    return await this.findById(id); 
   }
   
   

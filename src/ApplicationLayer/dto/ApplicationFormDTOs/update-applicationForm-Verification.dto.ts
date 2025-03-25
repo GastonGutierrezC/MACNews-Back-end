@@ -5,10 +5,10 @@ import { VerificationStatus } from 'src/DomainLayer/Entities/applicationForm.ent
 export class UpdateApplicationFormVerificationDto {
 
   @ApiProperty({
-    description: 'estado de la solicitud',
+    description: 'application status',
     example: 'Checking',
   })    
   @IsNotEmpty()
-  @IsEnum(VerificationStatus, { message: 'JournalistVerification must be a valid enum value' })
+  @IsEnum(VerificationStatus, { message: 'Journalist Verification must be a valid enum value' })
   VerificationStatus: VerificationStatus;
 }

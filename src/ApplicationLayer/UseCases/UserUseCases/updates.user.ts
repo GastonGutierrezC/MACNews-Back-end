@@ -30,7 +30,7 @@ export class UpdateUserService {
     let updatedPassword = null;
     if (existingPassword) {
       await this.passwordRepository.update(existingPassword.PasswordID, password);
-      updatedPassword = await this.passwordRepository.findById(existingPassword.PasswordID); // Obtén la contraseña actualizada
+      updatedPassword = await this.passwordRepository.findById(existingPassword.PasswordID);
     }
   
     return { user: updatedUser, password: updatedPassword };

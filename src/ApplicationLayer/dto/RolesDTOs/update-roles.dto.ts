@@ -6,7 +6,7 @@ import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
 export class UpdateRolesDto {
 
     @ApiProperty({
-        description: 'el rol del usuario',
+        description: 'role user',
         example: 'Reader',
       })
   @IsNotEmpty()

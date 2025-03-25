@@ -3,14 +3,13 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateApplicationFormDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/create-applicationForm.dto';
 import { UpdateApplicationFormVerificationDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/update-applicationForm-Verification.dto';
 import { UpdateApplicationFormDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/update-applicationForm.dto';
-import { CreateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/create-all-data-user.dto';
 import { CreateApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/create.applicationForm';
 import { FindApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/find.applicationForm';
 import { UpdateApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/update.applicationForm';
 import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.entity';
 
 @ApiTags('ApplicationForm')
-@Controller('ApplicationForm')
+@Controller('applicationForm')
 export class ApplicationFormController {
   constructor(
     private readonly createApplicationFormService: CreateApplicationFormService,
@@ -20,9 +19,9 @@ export class ApplicationFormController {
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear un formulario de postulacion' })
+  @ApiOperation({ summary: 'Create an application form' })
   @ApiBody({
-    type: CreateApplicationFormDto, // Usar el DTO combinado aquí
+    type: CreateApplicationFormDto, 
   })  
   async create(@Body() createJournalistDto: CreateApplicationFormDto): Promise<ApplicationFormEntity> {
     return this.createApplicationFormService.create(createJournalistDto);
@@ -30,13 +29,13 @@ export class ApplicationFormController {
 
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener el formulario por ID' })
+  @ApiOperation({ summary: 'Obtain form by ID' })
   async findById(@Param('id') id: string): Promise<ApplicationFormEntity> {
     return this.findApplicationFormService.findById(id);
   }
 
   @Get('user/:id')
-  @ApiOperation({ summary: 'Obtener el formulario por ID del usuario' })
+  @ApiOperation({ summary: 'Get form by user ID' })
   async findByUserId(@Param('id') id: string): Promise<ApplicationFormEntity> {
     return this.findApplicationFormService.findByUserId(id);
   }
@@ -44,9 +43,9 @@ export class ApplicationFormController {
 
   @Patch(':id')
 
-  @ApiOperation({ summary: 'actualizar datos del formulario' })
+  @ApiOperation({ summary: 'update form data' })
   @ApiBody({
-    type: UpdateApplicationFormDto, // Usar el DTO combinado aquí
+    type: UpdateApplicationFormDto, 
   })  
   async update(
     @Param('id') id: string,
@@ -56,9 +55,9 @@ export class ApplicationFormController {
   }
 
 
-  @ApiOperation({ summary: 'actualizar el estado  del formulario' })
+  @ApiOperation({ summary: 'update form status' })
   @ApiBody({
-    type: UpdateApplicationFormVerificationDto, // Usar el DTO combinado aquí
+    type: UpdateApplicationFormVerificationDto, 
   })  
     @Patch('verification/:id')
     async updateUserType(

@@ -7,7 +7,7 @@ import { Type } from 'class-transformer';
 export class CreateUserWithPasswordDto {
   @ApiProperty({
     type: CreateUserDto,
-    description: 'Datos del usuario a crear',
+    description: 'User data to be created',
   })
   @ValidateNested()
   @Type(() => CreateUserDto)
@@ -16,7 +16,7 @@ export class CreateUserWithPasswordDto {
 
   @ApiProperty({
     type: CreatePasswordDto,
-    description: 'Datos de la contraseña del usuario',
+    description: 'User password data',
   })
   @ValidateNested()
   @Type(() => CreatePasswordDto)

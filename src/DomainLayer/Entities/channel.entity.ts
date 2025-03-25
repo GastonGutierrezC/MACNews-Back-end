@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
-import { ApplicationFormEntity } from './applicationForm.entity';
 import { NewsEntity } from './news.entity';
 import { JournalistEntity } from './journalist.entity';
 

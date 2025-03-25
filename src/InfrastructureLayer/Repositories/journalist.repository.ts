@@ -10,9 +10,7 @@ export class JournalistRepository {
     @InjectRepository(JournalistEntity)
     private readonly journalistRepo: Repository<JournalistEntity>,
   ) {}
-
-
-
+  
     async findAll(): Promise<JournalistEntity[]> { 
       return await this.journalistRepo.find({ relations: ['ApplicationForm'] });
     }
