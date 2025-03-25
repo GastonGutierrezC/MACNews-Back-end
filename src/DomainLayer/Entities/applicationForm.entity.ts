@@ -7,10 +7,10 @@ export enum VerificationStatus {
     Rejected = 'Rejected',
   }
 
-@Entity('Journalist')
-export class JournalistEntity {
+@Entity('ApplicationForm')
+export class ApplicationFormEntity {
   @PrimaryGeneratedColumn('uuid')
-  JournalistID: string;
+  ApplicationFormID: string;
 
   @OneToOne(() => UserEntity)  
   @JoinColumn({ name: 'UserID' }) 
@@ -31,6 +31,9 @@ export class JournalistEntity {
   @Column({ type: 'enum', enum: VerificationStatus, default: VerificationStatus.Checking })
   
   VerificationStatus:VerificationStatus;
+
+  @Column({ type: 'date', default: () => 'NOW()' })
+  ApplicationDate: string; 
 }
 
 

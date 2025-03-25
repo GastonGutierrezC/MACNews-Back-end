@@ -1,8 +1,7 @@
 
-
-
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { PasswordEntity } from './pasword.entity';
+import { RolesEntity } from './roles.entity';
 
 @Entity({ name: 'User' })
 export class UserEntity {
@@ -24,13 +23,14 @@ export class UserEntity {
   @Column({ type: 'boolean', default: true })
   IsActive: boolean;  
 
-  @Column({ type: 'timestamp', default: () => 'NOW()' })
+  @Column({ type: 'date', default: () => 'NOW()' })
   RegistrationDate: string; 
-
-  // Relación de uno a uno con la entidad Password
-
 
   @OneToOne(() => PasswordEntity, (password) => password.user)
   @JoinColumn({ name: 'UserID' })
   password: PasswordEntity;
+
+  @OneToOne(() => RolesEntity, (roles) => roles.user)
+  @JoinColumn({ name: 'UserID' })
+  roles: RolesEntity;
 }

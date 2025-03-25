@@ -9,23 +9,30 @@ import { FindUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/find
 import { UpdateUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/updates.user';
 import { PasswordEntity } from 'src/DomainLayer/Entities/pasword.entity';
 import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/password.repository';
+import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
+import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
+import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCases/update-role.user';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity,RolesEntity])],
   providers: [
      UserRepository,
      PasswordRepository,
+     RolesRepository,
      CreateUserService,
      FindUserService,
-     UpdateUserService
+     UpdateUserService,
+     UpdateUserRoleService
     ], 
   controllers: [UserController],
   exports: [
     UserRepository,
     PasswordRepository,
+    RolesRepository,
     CreateUserService,
     FindUserService,
-    UpdateUserService
+    UpdateUserService,
+    UpdateUserRoleService
   ],   
 })
 export class UserModule {}

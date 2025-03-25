@@ -26,7 +26,7 @@ export class ChannelRepository {
     await this.channelRepo.update(ChannelID, updateData);
   }
 
-  async findByJournalistId(JournalistID: string): Promise<ChannelEntity | null> {
-    return await this.channelRepo.findOneBy({ Journalist: { JournalistID } });
+  async findByJournalistId(ApplicationFormID: string): Promise<ChannelEntity | null> {
+    return await this.channelRepo.findOneBy({ Journalist: { ApplicationFormID } });
   }
 }

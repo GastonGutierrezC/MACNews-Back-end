@@ -3,13 +3,13 @@ import { ChannelEntity } from 'src/DomainLayer/Entities/channel.entity';
 import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
 import { CreateChannelDto } from '../dto/ChannelDTOs/create-channel.dto';
 import { UpdateChannelDto } from '../dto/ChannelDTOs/update-channel.dto';
-import { JournalistRepository } from 'src/InfrastructureLayer/Repositories/journalist.repository';
+import { ApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/applicationForm.repository';
 
 @Injectable()
 export class ChannelService {
   constructor(
     private readonly channelRepository: ChannelRepository,
-    private readonly journalistRepository: JournalistRepository,
+    private readonly journalistRepository: ApplicationFormRepository,
   ) {}
 
   async create(createChannelDto: CreateChannelDto): Promise<ChannelEntity> {

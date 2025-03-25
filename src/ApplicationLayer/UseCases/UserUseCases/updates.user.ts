@@ -1,27 +1,43 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from '../../dto/UserDTOs/create-user.dto'; 
-import { UserEntity } from '../../../DomainLayer/Entities/user.entity';
+
 import { UserRepository } from '../../../InfrastructureLayer/Repositories/user.repository';
-import { UpdateUserDto } from 'src/ApplicationLayer/dto/UserDTOs/update-user.dto';
+import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/password.repository';
+
+import { UpdateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/update-all-data-user.dto';
 
 @Injectable()
 export class UpdateUserService {  
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly passwordRepository: PasswordRepository, 
   ) {}
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
-
-    const user = await this.userRepository.findById(id);
-    if (!user) {
+  async update(id: string, updateUserWithPasswordDto: UpdateUserWithPasswordDto) {
+    const { password, user } = updateUserWithPasswordDto;
+  
+    const allUsers = await this.userRepository.findAll();
+    const existingUser = allUsers.find(u => u.UserID === id);
+  
+    if (!existingUser) {
       throw new NotFoundException(`User with ID ${id} not found.`);
     }
-
-    await this.userRepository.update(id, updateUserDto);
-
-    return this.userRepository.findById(id); 
+  
+    const updatedUser = await this.userRepository.update(id, user);
+  
+    const allPasswords = await this.passwordRepository.findAll();
+    const existingPassword = allPasswords.find(p => p.UserID === id);
+  
+    let updatedPassword = null;
+    if (existingPassword) {
+      await this.passwordRepository.update(existingPassword.PasswordID, password);
+      updatedPassword = await this.passwordRepository.findById(existingPassword.PasswordID); // Obtén la contraseña actualizada
+    }
+  
+    return { user: updatedUser, password: updatedPassword };
   }
-
+  
+  
+  
 
 
   
