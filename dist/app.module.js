@@ -19,6 +19,8 @@ const news_module_1 = require("./modules/news.module");
 const pasword_entity_1 = require("./DomainLayer/Entities/pasword.entity");
 const roles_entity_1 = require("./DomainLayer/Entities/roles.entity");
 const applicationForm_module_1 = require("./modules/applicationForm.module");
+const journalist_entity_1 = require("./DomainLayer/Entities/journalist.entity");
+const journalist_module_1 = require("./modules/journalist.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,13 +34,14 @@ exports.AppModule = AppModule = __decorate([
                 username: 'gaston',
                 password: 'gaston',
                 database: 'MACNews',
-                entities: [user_entity_1.UserEntity, applicationForm_entity_1.ApplicationFormEntity, channel_entity_1.ChannelEntity, news_entity_1.NewsEntity, pasword_entity_1.PasswordEntity, roles_entity_1.RolesEntity],
+                entities: [journalist_entity_1.JournalistEntity, user_entity_1.UserEntity, applicationForm_entity_1.ApplicationFormEntity, channel_entity_1.ChannelEntity, news_entity_1.NewsEntity, pasword_entity_1.PasswordEntity, roles_entity_1.RolesEntity],
                 synchronize: false,
             }),
             user_module_1.UserModule,
             applicationForm_module_1.ApplicationFormModule,
             channel_module_1.ChannelModule,
             news_module_1.NewsModule,
+            journalist_module_1.JournalistModule,
         ],
     })
 ], AppModule);

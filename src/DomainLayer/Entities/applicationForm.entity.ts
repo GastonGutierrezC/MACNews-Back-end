@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from './user.entity'; 
+import { JournalistEntity } from './journalist.entity';
 
 export enum VerificationStatus {
     Checking = 'Checking',
@@ -34,6 +35,10 @@ export class ApplicationFormEntity {
 
   @Column({ type: 'date', default: () => 'NOW()' })
   ApplicationDate: string; 
+
+  @OneToOne(() => JournalistEntity, (journalist) => journalist.ApplicationForm)
+  @JoinColumn({ name: 'ApplicationFormID' })
+  journalist: JournalistEntity;    
 }
 
 

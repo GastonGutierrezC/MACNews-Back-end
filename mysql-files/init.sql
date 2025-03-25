@@ -47,14 +47,12 @@ CREATE TABLE IF NOT EXISTS ApplicationForm (
 
 CREATE TABLE IF NOT EXISTS Journalist (
     JournalistID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    UserID CHAR(36) NOT NULL UNIQUE,
-    BirthDate DATE NOT NULL,
-    CardNumber VARCHAR(50) NOT NULL,
-    Reason TEXT NOT NULL,
-    ImageCertificateURL VARCHAR(255),
-    VerificationStatus ENUM('Checking', 'Rejected', 'Approved') NOT NULL,
-
-    CONSTRAINT FK_Journalist_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+    ApplicationFormID CHAR(36) NOT NULL UNIQUE,
+    Specialty TEXT NOT NULL,
+    JournalisticExperience TEXT NOT NULL,
+    IsActive BOOLEAN DEFAULT TRUE, 
+    DateCreated DATE DEFAULT (NOW()),
+    CONSTRAINT FK_Journalist_ApplicationForm FOREIGN KEY (ApplicationFormID) REFERENCES ApplicationForm(ApplicationFormID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Channel (
