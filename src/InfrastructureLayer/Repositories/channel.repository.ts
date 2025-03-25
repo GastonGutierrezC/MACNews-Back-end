@@ -10,12 +10,14 @@ export class ChannelRepository {
     private readonly channelRepo: Repository<ChannelEntity>,
   ) {}
 
-  async findById(ChannelID: string): Promise<ChannelEntity | null> {
-    return await this.channelRepo.findOne({
-      where: { ChannelID },
-      relations: ['Journalist', 'Journalist.User'], 
-    });
+  async findAll(): Promise<ChannelEntity[]> { 
+    return await this.channelRepo.find({ relations: ['Journalist'] });
+  }  
+
+  async findById(ChannelID: string): Promise<ChannelEntity | undefined> {
+    return await this.channelRepo.findOne({ where: { ChannelID } });
   }
+  
 
   async create(channel: Partial<ChannelEntity>): Promise<ChannelEntity> {
     const newChannel = this.channelRepo.create(channel);
@@ -26,7 +28,4 @@ export class ChannelRepository {
     await this.channelRepo.update(ChannelID, updateData);
   }
 
-  async findByJournalistId(ApplicationFormID: string): Promise<ChannelEntity | null> {
-    return await this.channelRepo.findOneBy({ Journalist: { ApplicationFormID } });
-  }
 }

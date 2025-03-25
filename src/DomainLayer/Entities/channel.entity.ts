@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ApplicationFormEntity } from './applicationForm.entity';
 import { NewsEntity } from './news.entity';
+import { JournalistEntity } from './journalist.entity';
 
 export enum ChannelCategory {
     Politics = 'Politics',
@@ -20,9 +21,9 @@ export class ChannelEntity {
   @PrimaryGeneratedColumn('uuid')
   ChannelID: string;
 
-  @OneToOne(() => ApplicationFormEntity, { onDelete: 'CASCADE' })
+  @OneToOne(() => JournalistEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'JournalistID' })
-  Journalist: ApplicationFormEntity;
+  Journalist: JournalistEntity;
 
   @Column({ type: 'varchar', length: 255 })
   ChannelName: string;
