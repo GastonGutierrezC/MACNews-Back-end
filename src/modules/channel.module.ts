@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChannelEntity } from '../DomainLayer/Entities/channel.entity';
 import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
 import { ChannelController } from 'src/InterfaceAdaptersLayer/Controllers/ channel.controller';
-import { ApplicationFormModule } from './applicationForm.module';
 import { CreateChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCases/create.channel';
 import { FindChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCases/find.channel';
 import { UpdateChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCases/update.channel';

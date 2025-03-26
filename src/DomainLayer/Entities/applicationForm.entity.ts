@@ -36,9 +36,7 @@ export class ApplicationFormEntity {
   @Column({ type: 'date', default: () => 'NOW()' })
   ApplicationDate: string; 
 
-  @OneToOne(() => JournalistEntity, (journalist) => journalist.ApplicationForm)
-  @JoinColumn({ name: 'ApplicationFormID' })
-  journalist: JournalistEntity;    
+  
 }
 
 

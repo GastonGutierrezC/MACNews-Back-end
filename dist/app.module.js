@@ -21,6 +21,10 @@ const roles_entity_1 = require("./DomainLayer/Entities/roles.entity");
 const applicationForm_module_1 = require("./modules/applicationForm.module");
 const journalist_entity_1 = require("./DomainLayer/Entities/journalist.entity");
 const journalist_module_1 = require("./modules/journalist.module");
+const followChannel_entity_1 = require("./DomainLayer/Entities/followChannel.entity");
+const followChannel_module_1 = require("./modules/followChannel.module");
+const commentPost_entity_1 = require("./DomainLayer/Entities/commentPost.entity");
+const commentPost_module_1 = require("./modules/commentPost.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -34,7 +38,7 @@ exports.AppModule = AppModule = __decorate([
                 username: 'gaston',
                 password: 'gaston',
                 database: 'MACNews',
-                entities: [journalist_entity_1.JournalistEntity, user_entity_1.UserEntity, applicationForm_entity_1.ApplicationFormEntity, channel_entity_1.ChannelEntity, news_entity_1.NewsEntity, pasword_entity_1.PasswordEntity, roles_entity_1.RolesEntity],
+                entities: [commentPost_entity_1.CommentPostEntity, followChannel_entity_1.FollowChannelEntity, journalist_entity_1.JournalistEntity, user_entity_1.UserEntity, applicationForm_entity_1.ApplicationFormEntity, channel_entity_1.ChannelEntity, news_entity_1.NewsEntity, pasword_entity_1.PasswordEntity, roles_entity_1.RolesEntity],
                 synchronize: false,
             }),
             user_module_1.UserModule,
@@ -42,6 +46,8 @@ exports.AppModule = AppModule = __decorate([
             channel_module_1.ChannelModule,
             news_module_1.NewsModule,
             journalist_module_1.JournalistModule,
+            followChannel_module_1.FollowChannelModule,
+            commentPost_module_1.CommentPostModule,
         ],
     })
 ], AppModule);

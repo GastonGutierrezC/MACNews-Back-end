@@ -12,6 +12,10 @@ import { RolesEntity } from './DomainLayer/Entities/roles.entity';
 import { ApplicationFormModule } from './modules/applicationForm.module';
 import { JournalistEntity } from './DomainLayer/Entities/journalist.entity';
 import { JournalistModule } from './modules/journalist.module';
+import { FollowChannelEntity } from './DomainLayer/Entities/followChannel.entity';
+import { FollowChannelModule } from './modules/followChannel.module';
+import { CommentPostEntity } from './DomainLayer/Entities/commentPost.entity';
+import { CommentPostModule } from './modules/commentPost.module';
 
 //Journalist
 
@@ -24,7 +28,7 @@ import { JournalistModule } from './modules/journalist.module';
       username: 'gaston',
       password: 'gaston',
       database: 'MACNews',
-      entities: [JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
+      entities: [CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
       synchronize: false, 
     }),
     UserModule,
@@ -32,6 +36,8 @@ import { JournalistModule } from './modules/journalist.module';
     ChannelModule,
     NewsModule,
     JournalistModule,
+    FollowChannelModule,
+    CommentPostModule,
   ],
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { NewsEntity } from './news.entity';
 import { JournalistEntity } from './journalist.entity';
+import { FollowChannelEntity } from './followChannel.entity';
 
 export enum ChannelCategory {
     Politics = 'Politics',
@@ -38,4 +39,7 @@ export class ChannelEntity {
 
   @OneToMany(() => NewsEntity, (news) => news.Channel)
   News: NewsEntity[];
+
+  @OneToMany(() => FollowChannelEntity, (follow) => follow.Channel)
+  followers: FollowChannelEntity[];
 }

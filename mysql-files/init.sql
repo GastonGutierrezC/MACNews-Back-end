@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Roles (
 
 CREATE TABLE IF NOT EXISTS ApplicationForm (
    ApplicationFormID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    UserID CHAR(36) NOT NULL UNIQUE,
+    UserID CHAR(36) NOT NULL ,
     BirthDate DATE NOT NULL,
     CardNumber VARCHAR(50) NOT NULL,
     Reason TEXT NOT NULL,
@@ -47,12 +47,12 @@ CREATE TABLE IF NOT EXISTS ApplicationForm (
 
 CREATE TABLE IF NOT EXISTS Journalist (
     JournalistID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    ApplicationFormID CHAR(36) NOT NULL UNIQUE,
+    UserID CHAR(36) NOT NULL UNIQUE,
     Specialty TEXT NOT NULL,
     JournalisticExperience TEXT NOT NULL,
     IsActive BOOLEAN DEFAULT TRUE, 
     DateCreated DATE DEFAULT (NOW()),
-    CONSTRAINT FK_Journalist_ApplicationForm FOREIGN KEY (ApplicationFormID) REFERENCES ApplicationForm(ApplicationFormID) ON DELETE CASCADE
+    CONSTRAINT FK_Journalist_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Channel (
@@ -77,4 +77,28 @@ CREATE TABLE IF NOT EXISTS News (
     NumberOfViews INT DEFAULT 0,
 
     CONSTRAINT FK_News_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS FollowChannel (
+    FollowChannelID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    UserID CHAR(36) NOT NULL,
+    ChannelID CHAR(36) NOT NULL,
+    IsFollow BOOLEAN DEFAULT TRUE,
+    FollowDate DATE DEFAULT (NOW()),
+
+    CONSTRAINT FK_FollowChannel_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    CONSTRAINT FK_FollowChannel_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS CommentPost (
+    CommentPostID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    UserID CHAR(36) NOT NULL,
+    ChannelID CHAR(36) NOT NULL,
+    CommentParent CHAR(36) DEFAULT NULL,
+    TextComment TEXT NOT NULL,
+    DateComment DATE DEFAULT (NOW()),
+    CONSTRAINT FK_CommentPost_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    CONSTRAINT FK_CommentPost_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE,
+    CONSTRAINT FK_CommentPost_Parent FOREIGN KEY (CommentParent) REFERENCES CommentPost(CommentPostID) ON DELETE CASCADE
 );

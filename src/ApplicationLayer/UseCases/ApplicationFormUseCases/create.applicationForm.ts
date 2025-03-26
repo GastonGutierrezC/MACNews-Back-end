@@ -18,13 +18,6 @@ export class CreateApplicationFormService {
       throw new NotFoundException('User not found.');
     }
 
-    const allApplicationForms = await this.applicationFormRepository.findAll();
-    const existingForm = allApplicationForms.find(form => form.User?.UserID === createApplicationFormDto.UserID);
-    
-    if (existingForm) {
-      throw new BadRequestException('User already has an application form.');
-    }
-
     const applicationForm = await this.applicationFormRepository.create({
       ...createApplicationFormDto,
       User: user,
