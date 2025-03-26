@@ -19,6 +19,7 @@ import { FindJournalistService } from 'src/ApplicationLayer/UseCases/JournalistU
   imports: [
     TypeOrmModule.forFeature([JournalistEntity]), 
     ApplicationFormModule,  
+    UserModule,
 ],
   controllers: [JournalistController],
   providers: [CreateJournalistService,UpdateJournalistService,FindJournalistService, JournalistRepository],

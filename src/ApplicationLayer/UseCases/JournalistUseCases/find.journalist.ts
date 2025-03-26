@@ -13,7 +13,7 @@ export class FindJournalistService {
   async findById( JournalistID: string): Promise<JournalistEntity> {
     const journalist = await this.journalistRepository.findById(JournalistID);
     if (!journalist) {
-      throw new NotFoundException(`applicationForm with ID ${JournalistID} not found.`);
+      throw new NotFoundException(`Journalist with ID ${JournalistID} not found.`);
     }
     return journalist;
   }

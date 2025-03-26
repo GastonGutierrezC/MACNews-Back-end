@@ -12,7 +12,7 @@ export class JournalistRepository {
   ) {}
   
     async findAll(): Promise<JournalistEntity[]> { 
-      return await this.journalistRepo.find({ relations: ['ApplicationForm'] });
+      return await this.journalistRepo.find({ relations: ['User'] });
     }
 
   async findById(JournalistID: string): Promise<JournalistEntity | null> {

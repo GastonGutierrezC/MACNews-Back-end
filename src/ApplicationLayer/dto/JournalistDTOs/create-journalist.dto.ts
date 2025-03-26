@@ -8,13 +8,13 @@ export class CreateJournalistDto {
 
 
 @ApiProperty({
- description: 'Application Form of the Journalist',
- example: 'ID  Application Form',
+ description: 'ID User',
+ example: 'ID  User',
 })
         
 @IsNotEmpty()
 @IsString() 
-readonly ApplicationFormID: string;
+readonly UserID: string;
 
   @ApiProperty({
     description: 'Specialty of the Journalist',
