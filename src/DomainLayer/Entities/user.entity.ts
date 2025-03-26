@@ -1,7 +1,8 @@
 
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { PasswordEntity } from './pasword.entity';
 import { RolesEntity } from './roles.entity';
+import { FollowChannelEntity } from './followChannel.entity';
 
 @Entity({ name: 'User' })
 export class UserEntity {
@@ -33,4 +34,7 @@ export class UserEntity {
   @OneToOne(() => RolesEntity, (roles) => roles.user)
   @JoinColumn({ name: 'UserID' })
   roles: RolesEntity;
+
+  @OneToMany(() => FollowChannelEntity, (follow) => follow.User)
+  followedChannels: FollowChannelEntity[];
 }
