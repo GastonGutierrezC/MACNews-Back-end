@@ -7,6 +7,7 @@ import { ChannelModule } from './channel.module';
 import { CreateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/create.news';
 import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find.news';
 import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/update.news';
+import { NewsReviewIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/NewsReview.IntelligentAgent';
 
 @Module({
   imports: [
@@ -14,8 +15,19 @@ import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/up
     ChannelModule, 
   ],
   controllers: [NewsController],  
-  providers: [CreateNewsService,FindNewsService,UpdateNewsService, NewsRepository],  
-  exports: [CreateNewsService,FindNewsService,UpdateNewsService, NewsRepository], 
+  providers: [
+    CreateNewsService,
+    FindNewsService,
+    UpdateNewsService,
+    NewsRepository,
+    NewsReviewIntelligentAgent,
+  ],  
+  exports: [
+    CreateNewsService,
+    FindNewsService,
+    UpdateNewsService,
+    NewsRepository,
+  ], 
 })
 export class NewsModule {}
 
