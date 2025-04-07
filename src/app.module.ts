@@ -16,6 +16,8 @@ import { FollowChannelEntity } from './DomainLayer/Entities/followChannel.entity
 import { FollowChannelModule } from './modules/followChannel.module';
 import { CommentPostEntity } from './DomainLayer/Entities/commentPost.entity';
 import { CommentPostModule } from './modules/commentPost.module';
+import { SearchHistoryEntity } from './DomainLayer/Entities/SearchHistory.entity';
+import { SearchHistoryModule } from './modules/searchHistory.module';
 
 //Journalist
 
@@ -28,7 +30,7 @@ import { CommentPostModule } from './modules/commentPost.module';
       username: 'gaston',
       password: 'gaston',
       database: 'MACNews',
-      entities: [CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
+      entities: [SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
       synchronize: false, 
     }),
     UserModule,
@@ -38,6 +40,7 @@ import { CommentPostModule } from './modules/commentPost.module';
     JournalistModule,
     FollowChannelModule,
     CommentPostModule,
+    SearchHistoryModule,
   ],
 })
 export class AppModule {}

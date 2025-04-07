@@ -3,6 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany
 import { PasswordEntity } from './pasword.entity';
 import { RolesEntity } from './roles.entity';
 import { FollowChannelEntity } from './followChannel.entity';
+import { SearchHistoryEntity } from './SearchHistory.entity';
 
 @Entity({ name: 'User' })
 export class UserEntity {
@@ -37,4 +38,8 @@ export class UserEntity {
 
   @OneToMany(() => FollowChannelEntity, (follow) => follow.User)
   followedChannels: FollowChannelEntity[];
+
+
+  @OneToMany(() => SearchHistoryEntity, (search) => search.User) 
+  searchHistory: SearchHistoryEntity[];
 }
