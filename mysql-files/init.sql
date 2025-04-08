@@ -74,7 +74,8 @@ CREATE TABLE IF NOT EXISTS News (
     PublicationDate DATE NOT NULL,
     NewsStatus ENUM('Checking', 'Approved', 'Rejected') NOT NULL,
     NewsImageURL VARCHAR(255) DEFAULT NULL,
-    NumberOfViews INT DEFAULT 0,
+    Categories ENUM('Politics', 'Economy', 'Sports', 'Entertainment', 'Technology', 'Health', 'Science', 'International', 'Society', 'Security') NOT NULL,
+
 
     CONSTRAINT FK_News_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE
 );
@@ -111,4 +112,13 @@ CREATE TABLE IF NOT EXISTS SearchHistory (
     CONSTRAINT FK_SearchHistory_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Visits (
+    VisitsID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    NewsID CHAR(36) NOT NULL,
+    UserID CHAR(36) NOT NULL,
+    DateVisit DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT FK_Visits_News FOREIGN KEY (NewsID) REFERENCES News(NewsID) ON DELETE CASCADE,
+    CONSTRAINT FK_Visits_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+);
 

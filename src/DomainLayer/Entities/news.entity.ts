@@ -7,6 +7,19 @@ export enum NewsStatus {
   Rejected = 'Rejected',
 }
 
+export enum NewsCategory {
+  Politics = 'Politics',
+  Economy = 'Economy',
+  Sports = 'Sports',
+  Entertainment = 'Entertainment',
+  Technology = 'Technology',
+  Health = 'Health',
+  Science = 'Science',
+  International = 'International',
+  Society = 'Society',
+  Security = 'Security'
+}
+
 @Entity('News')
 export class NewsEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -35,6 +48,7 @@ export class NewsEntity {
   @Column({ type: 'varchar', nullable: true })
   NewsImageURL: string;
 
-  @Column({ type: 'int', default: 0 })
-  NumberOfViews: number;
+  @Column({ type: 'enum', enum: NewsCategory })
+  Categories: NewsCategory;
+
 }
