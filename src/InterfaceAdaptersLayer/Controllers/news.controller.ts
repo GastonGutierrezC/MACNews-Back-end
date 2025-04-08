@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Param, Patch, Delete, Get, NotFoundException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { CreateNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/create-news.dto';
+import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto';
 import { UpdateStatusNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/update-news-status.dto';
 import { CreateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/create.news';
 import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find.news';
@@ -54,5 +55,11 @@ export class NewsController {
   @ApiOperation({ summary: 'Get the news by channel ID' })
   async getByChannel(@Param('channel') channelId: string): Promise<NewsEntity[]> {
     return this.findNewsService.getByChannelId(channelId);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Get all news summarized (ID, Title, Category)' })
+  async getAllSummarized(): Promise<NewsSummaryDto[]> {
+    return this.findNewsService.getAllSummarized();
   }
 }

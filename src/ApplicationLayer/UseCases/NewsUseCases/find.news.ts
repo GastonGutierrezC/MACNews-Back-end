@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto';
 import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
 import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 
@@ -36,5 +37,14 @@ export class FindNewsService {
       throw new NotFoundException(`No news found for channel ID "${ChannelID}"`);
     }
     return filteredNews;
+  }
+
+  async getAllSummarized(): Promise<NewsSummaryDto[]> {
+    const news = await this.newsRepository.findAll();
+    return news.map(n => ({
+      NewsID: n.NewsId,
+      Title: n.Title,
+      Category: n.Categories,
+    }));
   }
 }
