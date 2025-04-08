@@ -18,8 +18,9 @@ import { CommentPostEntity } from './DomainLayer/Entities/commentPost.entity';
 import { CommentPostModule } from './modules/commentPost.module';
 import { SearchHistoryEntity } from './DomainLayer/Entities/SearchHistory.entity';
 import { SearchHistoryModule } from './modules/searchHistory.module';
+import { VisitsEntity } from './DomainLayer/Entities/visits.entity';
+import { VisitsModule } from './modules/visits.module';
 
-//Journalist
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { SearchHistoryModule } from './modules/searchHistory.module';
       username: 'gaston',
       password: 'gaston',
       database: 'MACNews',
-      entities: [SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
+      entities: [VisitsEntity,SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
       synchronize: false, 
     }),
     UserModule,
@@ -41,6 +42,7 @@ import { SearchHistoryModule } from './modules/searchHistory.module';
     FollowChannelModule,
     CommentPostModule,
     SearchHistoryModule,
+    VisitsModule,
   ],
 })
 export class AppModule {}

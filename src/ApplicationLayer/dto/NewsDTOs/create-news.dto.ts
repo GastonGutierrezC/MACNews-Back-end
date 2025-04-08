@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsEnum, IsOptional, IsDateString, IsInt } from 'class-validator';
-import { NewsStatus } from 'src/DomainLayer/Entities/news.entity';
+import { NewsCategory, NewsStatus } from 'src/DomainLayer/Entities/news.entity';
 
 
 export class CreateNewsDto {
@@ -44,5 +44,13 @@ export class CreateNewsDto {
   @IsNotEmpty()
   @IsString()
   NewsImageURL: string;
+
+  @ApiProperty({
+    description: 'News categories',
+    example: 'Politics',
+  })  
+  @IsEnum(NewsCategory)
+  @IsNotEmpty()
+  Categories: NewsCategory;
 
 }
