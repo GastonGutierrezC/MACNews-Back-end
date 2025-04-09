@@ -2,7 +2,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { CreateNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/create-news.dto';
-import { AgentResponse } from './DTO.IntelligentAgent/agent-response.dto';
+import { AgentResponse } from './DTO.IntelligentAgent/NewsReview/agent-response.dto';
 
 
 @Injectable()

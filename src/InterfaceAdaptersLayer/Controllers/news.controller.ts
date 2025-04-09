@@ -5,6 +5,7 @@ import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto'
 import { UpdateStatusNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/update-news-status.dto';
 import { CreateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/create.news';
 import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find.news';
+import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/findRecomendations.news';
 import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/update.news';
 import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
 
@@ -15,6 +16,7 @@ export class NewsController {
     private readonly createNewsService: CreateNewsService,
     private readonly findNewsService: FindNewsService,
     private readonly updateNewsService: UpdateNewsService,
+    private readonly findRecommendationsNewsService: FindRecommendationsNewsService,
   
   ) {}
 
@@ -61,5 +63,13 @@ export class NewsController {
   @ApiOperation({ summary: 'Get all news summarized (ID, Title, Category)' })
   async getAllSummarized(): Promise<NewsSummaryDto[]> {
     return this.findNewsService.getAllSummarized();
+  }
+
+  @Get('recommendations/:userId')
+  @ApiOperation({ summary: 'Get personalized news recommendations for a user' })
+  async getPersonalizedRecommendations(
+    @Param('userId') userId: string,
+  ): Promise<NewsSummaryDto[]> {
+    return this.findRecommendationsNewsService.getPersonalizedNews(userId);
   }
 }
