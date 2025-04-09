@@ -8,6 +8,8 @@ import { CreateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/cr
 import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find.news';
 import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/update.news';
 import { NewsReviewIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/NewsReview.IntelligentAgent';
+import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/findRecomendations.news';
+import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 
 @Module({
   imports: [
@@ -16,17 +18,21 @@ import { NewsReviewIntelligentAgent } from 'src/InfrastructureLayer/IntelligentA
   ],
   controllers: [NewsController],  
   providers: [
+    FindRecommendationsNewsService,
     CreateNewsService,
     FindNewsService,
     UpdateNewsService,
     NewsRepository,
+    PersonalizedRecommendationsAgent,
     NewsReviewIntelligentAgent,
   ],  
   exports: [
+    FindRecommendationsNewsService,
     CreateNewsService,
     FindNewsService,
     UpdateNewsService,
     NewsRepository,
+    PersonalizedRecommendationsAgent,
   ], 
 })
 export class NewsModule {}
