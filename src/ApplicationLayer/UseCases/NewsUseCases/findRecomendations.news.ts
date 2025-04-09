@@ -13,21 +13,14 @@ export class FindRecommendationsNewsService {
   async getPersonalizedNews(userId: string): Promise<NewsSummaryDto[]> {
     const recommendationResponse = await this.personalizedAgent.getRecommendations(userId);
 
-    // Extraemos los NewsId sugeridos
     const suggestedNewsIds = recommendationResponse.sugerencias.map(s => s.NewsId);
-
-    // Buscamos todas las noticias existentes
     const allNews = await this.newsRepository.findAll();
-
-    // Filtramos las que coincidan con los IDs sugeridos por el agente
     const filteredNews = allNews.filter(n => suggestedNewsIds.includes(n.NewsId));
 
-    // Si no hay coincidencias, retornamos una lista vacía (opcional: lanzar NotFound)
     if (filteredNews.length === 0) {
       return [];
     }
 
-    // Convertimos a formato resumido
     return filteredNews.map(n => ({
       NewsID: n.NewsId,
       Title: n.Title,
