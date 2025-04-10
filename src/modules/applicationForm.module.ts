@@ -7,6 +7,7 @@ import { ApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/
 import { CreateApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/create.applicationForm';
 import { FindApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/find.applicationForm';
 import { UpdateApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/update.applicationForm';
+import { JournalistApplicationsIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/jurnalistApplications.IntelligentAgent';
 
 @Module({
   imports: [
@@ -15,8 +16,8 @@ import { UpdateApplicationFormService } from 'src/ApplicationLayer/UseCases/Appl
     
 ],
   controllers: [ApplicationFormController],
-  providers: [CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService, ApplicationFormRepository],
-  exports: [CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService,ApplicationFormRepository
+  providers: [JournalistApplicationsIntelligentAgent,CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService, ApplicationFormRepository],
+  exports: [JournalistApplicationsIntelligentAgent,CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService,ApplicationFormRepository
   ], 
 })
 export class ApplicationFormModule {}
