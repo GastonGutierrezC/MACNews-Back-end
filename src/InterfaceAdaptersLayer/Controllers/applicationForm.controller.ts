@@ -7,6 +7,7 @@ import { CreateApplicationFormService } from 'src/ApplicationLayer/UseCases/Appl
 import { FindApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/find.applicationForm';
 import { UpdateApplicationFormService } from 'src/ApplicationLayer/UseCases/ApplicationFormUseCases/update.applicationForm';
 import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.entity';
+import { ApplicationAgentResponse } from 'src/InfrastructureLayer/IntelligentAgentManagement/DTO.IntelligentAgent/JurnalistApplications/agent-response.dto';
 
 @ApiTags('ApplicationForm')
 @Controller('applicationForm')
@@ -26,6 +27,14 @@ export class ApplicationFormController {
   async create(@Body() createJournalistDto: CreateApplicationFormDto): Promise<ApplicationFormEntity> {
     return this.createApplicationFormService.create(createJournalistDto);
   }
+
+  @Post('evaluate-with-agent')
+  @ApiOperation({ summary: 'Evaluate application form with intelligent agent' })
+  @ApiBody({ type: CreateApplicationFormDto })
+  async evaluateWithAgent(@Body() dto: CreateApplicationFormDto): Promise<ApplicationAgentResponse> {
+    return this.createApplicationFormService.evaluateWithAgent(dto);
+  }
+
 
 
   @Get(':id')
