@@ -16,28 +16,29 @@ export class CreateJournalistService {
   ) {}
 
   async create(createJournalistDto: CreateJournalistDto): Promise<JournalistEntity> {
-
     const user = await this.userRepository.findById(createJournalistDto.UserID);
     if (!user) {
-        throw new NotFoundException(`User with ID ${createJournalistDto.UserID} not found.`);
+      throw new NotFoundException(`User with ID ${createJournalistDto.UserID} not found.`);
     }
 
     const allApplicationForms = await this.applicationFormRepository.findAll();
-    const applicationForm = allApplicationForms.find(form => form.User.UserID === createJournalistDto.UserID);
-    
-    if (!applicationForm) {
-        throw new NotFoundException('Application form not found.');
+    const userForms = allApplicationForms.filter(form => form.User.UserID === createJournalistDto.UserID);
+
+    if (userForms.length === 0) {
+      throw new NotFoundException('No application forms found for this user.');
     }
 
-    if (applicationForm.VerificationStatus !== 'Approved') {
-        throw new BadRequestException('Application form must be approved to create a journalist.');
-      }
+    const hasApprovedForm = userForms.some(form => form.VerificationStatus === 'Approved');
 
-    const allJournalist = await this.journalistRepository.findAll();
-    const existingJournalist = allJournalist.find(journalist => journalist.User?.UserID === createJournalistDto.UserID);
-    
+    if (!hasApprovedForm) {
+      throw new BadRequestException('User must have at least one approved application form to become a journalist.');
+    }
+
+    const allJournalists = await this.journalistRepository.findAll();
+    const existingJournalist = allJournalists.find(journalist => journalist.User?.UserID === createJournalistDto.UserID);
+
     if (existingJournalist) {
-      throw new BadRequestException('User ia a Journalist.');
+      throw new BadRequestException('User is already a journalist.');
     }
 
     const journalist = await this.journalistRepository.create({

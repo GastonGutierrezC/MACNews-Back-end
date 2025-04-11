@@ -7,6 +7,8 @@ import { CommentPostRepository } from 'src/InfrastructureLayer/Repositories/comm
 import { CommentPostController } from 'src/InterfaceAdaptersLayer/Controllers/commentPost.controller';
 import { ChannelModule } from './channel.module';
 import { FindCommentPostService } from 'src/ApplicationLayer/UseCases/CommentPostUseCases/find.commentPost';
+import { FindChannelMetricsService } from 'src/ApplicationLayer/UseCases/CommentPostUseCases/findMetricts.commentPost';
+import { InterestAnalysisAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/CommentPostMetrics.intelligentAgent';
 
 @Module({
   imports: [
@@ -16,8 +18,8 @@ import { FindCommentPostService } from 'src/ApplicationLayer/UseCases/CommentPos
     
 ],
   controllers: [CommentPostController],
-  providers: [CreateCommentPostService,FindCommentPostService, CommentPostRepository],
-  exports: [CreateCommentPostService,FindCommentPostService,CommentPostRepository
+  providers: [InterestAnalysisAgent,FindChannelMetricsService,CreateCommentPostService,FindCommentPostService, CommentPostRepository],
+  exports: [InterestAnalysisAgent,FindChannelMetricsService,CreateCommentPostService,FindCommentPostService,CommentPostRepository
   ], 
 })
 export class CommentPostModule {}
