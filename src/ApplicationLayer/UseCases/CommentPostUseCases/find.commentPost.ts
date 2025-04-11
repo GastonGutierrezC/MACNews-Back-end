@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CommentWithSubcommentsDto } from 'src/ApplicationLayer/dto/CommentPostDTOs/comment-with-subcomments.dto';
 import { CommentPostEntity } from 'src/DomainLayer/Entities/commentPost.entity';
 import { CommentPostRepository } from 'src/InfrastructureLayer/Repositories/commentPost.repository';
 
@@ -17,29 +18,54 @@ export class FindCommentPostService {
     return commentPost;
   }
 
-  async findByIdChannel(ChannelID: string): Promise<CommentPostEntity[]> {
-    const allCommentPosts = await this.commentPostRepository.findAll();
-    const channelComments = allCommentPosts.filter(
+  async findByIdChannel(ChannelID: string): Promise<any> {
+    const allComments = await this.commentPostRepository.findAll();
+  
+    const channelComments = allComments.filter(
       (comment) => comment.Channel?.ChannelID === ChannelID,
     );
-
+  
     if (channelComments.length === 0) {
       throw new NotFoundException(`No comments found for channel with ID ${ChannelID}.`);
     }
-
-    const commentsWithSubcomments = channelComments.map((comment) => {
-      return {
-        ...comment,
-        Subcomments: this.getSubcomments(comment.CommentPostID),
+  
+    const rootComments = channelComments.filter(c => !c.ParentComment);
+    const subComments = channelComments.filter(c => !!c.ParentComment);
+  
+    const subMap = subComments.reduce((acc, comment) => {
+      const parentId = comment.ParentComment.CommentPostID;
+      if (!acc[parentId]) acc[parentId] = [];
+      acc[parentId].push({
+        CommentPostID: comment.CommentPostID,
+        TextComment: comment.TextComment,
+        DateComment: comment.DateComment,
+      });
+      return acc;
+    }, {} as Record<string, any[]>);
+  
+    const commentsWithSub = rootComments.map((comment) => {
+      const baseComment = {
+        CommentPostID: comment.CommentPostID,
+        TextComment: comment.TextComment,
+        DateComment: comment.DateComment,
       };
+  
+      const subcomments = subMap[comment.CommentPostID];
+      if (subcomments && subcomments.length > 0) {
+        return {
+          ...baseComment,
+          Subcomments: subcomments,
+        };
+      }
+  
+      return baseComment;
     });
-
-    return commentsWithSubcomments;
+  
+    return {
+      ChannelID,
+      Comments: commentsWithSub,
+    };
   }
-
-  private async getSubcomments(parentCommentId: string): Promise<CommentPostEntity[]> {
-    return (await this.commentPostRepository.findAll()).filter(
-      (comment) => comment.ParentComment?.CommentPostID === parentCommentId,
-    );
-  }
+  
+  
 }
