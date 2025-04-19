@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param, Patch, Query } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user.dto';
 import { CreatePasswordDto } from 'src/ApplicationLayer/dto/PasswordDTOs/create-password.dto';
 import { CreateUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/create.user';
@@ -10,6 +10,7 @@ import { CreateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/cre
 import { UpdateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/update-all-data-user.dto';
 import { UpdateRolesDto } from 'src/ApplicationLayer/dto/RolesDTOs/update-roles.dto';
 import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCases/update-role.user';
+import { CreateUserResponseDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user-response.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -21,12 +22,17 @@ export class UserController {
     private readonly updateUserRoleService: UpdateUserRoleService,
   ) {}
 
+
+
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
-  @ApiBody({
-    type: CreateUserWithPasswordDto, 
+  @ApiBody({ type: CreateUserWithPasswordDto })
+  @ApiResponse({
+    status: 201,
+    description: 'User successfully created',
+    type: CreateUserResponseDto,
   })
-  async create(@Body() createUserWithPasswordDto: CreateUserWithPasswordDto) {
+  async create(@Body() createUserWithPasswordDto: CreateUserWithPasswordDto): Promise<CreateUserResponseDto> {
     return await this.createUser.create(createUserWithPasswordDto);
   }
 

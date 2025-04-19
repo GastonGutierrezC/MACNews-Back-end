@@ -7,17 +7,23 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-    // Configuración de Swagger
+  app.enableCors({
+    origin: 'http://localhost:3001',
+    methods: 'GET,POST,PATCH,DELETE',
+  });
+  
+  
+
+
     const config = new DocumentBuilder()
     .setTitle('MacNews API')
     .setDescription('Documentación de la API de MacNews')
     .setVersion('1.0')
-    .addTag('macnews') // Puedes agregar más etiquetas si lo deseas
+    .addTag('macnews') 
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document); // 'api' es la ruta donde estará disponible la documentación de Swagger
-
+  SwaggerModule.setup('api', app, document); 
   
   app.useGlobalPipes(new ValidationPipe({
     transform: true, 
@@ -25,8 +31,10 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
   }));
 
-  await app.listen(process.env.PORT ?? 3001);
+  await app.listen(process.env.PORT ?? 3002);
 }
 bootstrap();
+
+
 
 

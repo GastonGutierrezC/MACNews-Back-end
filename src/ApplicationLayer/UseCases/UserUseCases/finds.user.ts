@@ -29,12 +29,13 @@ export class FindUserService {
     const passwordUser = password ? password.PasswordUser : null;
 
     return {
+        UserID: user.UserID,
         UserFirstName: user.UserFirstName,
         UserLastName: user.UserLastName,
         UserEmail: user.UserEmail,
         UserImageURL: user.UserImageURL,
         PasswordUser: passwordUser,
-        RoleAssigned: roleAssigned
+     
     };
 }
 
@@ -58,12 +59,12 @@ async findUserByEmailAndPassword(email: string, password: string): Promise<FindU
   const roleAssigned = role ? role.RoleAssigned : null;
 
   return {
+      UserID: user.UserID,
       UserFirstName: user.UserFirstName,
       UserLastName: user.UserLastName,
       UserEmail: user.UserEmail,
       UserImageURL: user.UserImageURL,
       PasswordUser: userPassword.PasswordUser,
-      RoleAssigned: roleAssigned
   };
 }
 
