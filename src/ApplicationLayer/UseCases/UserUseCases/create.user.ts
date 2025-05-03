@@ -7,20 +7,21 @@ import { PasswordEntity } from 'src/DomainLayer/Entities/pasword.entity';
 import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
 import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
 
+import { CreateUserResponseDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user-response.dto';
+
 @Injectable()
-export class CreateUserService {  
+export class CreateUserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly passwordRepository: PasswordRepository, 
+    private readonly passwordRepository: PasswordRepository,
     private readonly rolesReposotory: RolesRepository,
   ) {}
 
-
-  async create(createUserWithPasswordDto: CreateUserWithPasswordDto) {
+  async create(createUserWithPasswordDto: CreateUserWithPasswordDto): Promise<CreateUserResponseDto> {
     const { user, password } = createUserWithPasswordDto;
     const { UserEmail } = user;
 
-    const existingUser = await this.userRepository.findAll(); 
+    const existingUser = await this.userRepository.findAll();
     const userExists = existingUser.find(existing => existing.UserEmail === UserEmail);
 
     if (userExists) {
@@ -35,11 +36,17 @@ export class CreateUserService {
     };
     const createdPassword: PasswordEntity = await this.passwordRepository.create(passwordData);
 
-    const rolesData = {
-      UserID: createdUser.UserID,
-    }
-    const createdRole: RolesEntity = await this.rolesReposotory.create(rolesData);
+    await this.rolesReposotory.create({ UserID: createdUser.UserID });
 
-    return { user: createdUser, password: createdPassword , role:createdRole};
+    const response: CreateUserResponseDto = {
+      UserID: createdUser.UserID,
+      UserFirstName: createdUser.UserFirstName,
+      UserLastName: createdUser.UserLastName,
+      UserEmail: createdUser.UserEmail,
+      UserImageURL: createdUser.UserImageURL,
+      PasswordUser: createdPassword.PasswordUser,
+    };
+
+    return response;
   }
 }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VisitsEntity } from 'src/DomainLayer/Entities/visits.entity';
 import { VisitsRepository } from 'src/InfrastructureLayer/Repositories/visits.repository';
@@ -12,7 +12,9 @@ import { FindVisitsService } from 'src/ApplicationLayer/UseCases/VisitsUseCases/
   imports: [
     TypeOrmModule.forFeature([VisitsEntity]),
     UserModule,
-    NewsModule,
+    
+    forwardRef(() => NewsModule),
+
   ],
   controllers: [VisitsController],
   providers: [CreateVisitsService,FindVisitsService, VisitsRepository],

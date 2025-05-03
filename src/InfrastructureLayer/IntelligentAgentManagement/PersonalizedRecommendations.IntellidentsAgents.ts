@@ -4,7 +4,7 @@ import { RecommendationAgentResponse } from './DTO.IntelligentAgent/Personalized
 
 @Injectable()
 export class PersonalizedRecommendationsAgent {
-  private readonly agentUrl = 'http://localhost:5678/webhook/41f25aa9-6c64-4697-ac94-b9ac048b0b44';
+  private readonly agentUrl = 'https://enjoyed-busy-scorpion.ngrok-free.app/webhook/41f25aa9-6c64-4697-ac94-b9ac048b0b44';
 
   async getRecommendations(userId: string): Promise<RecommendationAgentResponse> {
     try {

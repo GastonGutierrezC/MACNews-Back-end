@@ -1,9 +1,7 @@
-
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { CreateNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/create-news.dto';
 import { AgentResponse } from './DTO.IntelligentAgent/NewsReview/agent-response.dto';
-
 
 @Injectable()
 export class NewsReviewIntelligentAgent {
@@ -13,6 +11,7 @@ export class NewsReviewIntelligentAgent {
     try {
       const response = await axios.post<AgentResponse>(this.agentUrl, newsDto, {
         headers: { 'Content-Type': 'application/json' },
+        timeout: 60000,
       });
 
       return response.data;

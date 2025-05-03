@@ -6,6 +6,10 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.enableCors({
+        origin: '*',
+        methods: 'GET,POST,PATCH,DELETE',
+    });
     const config = new swagger_1.DocumentBuilder()
         .setTitle('MacNews API')
         .setDescription('Documentación de la API de MacNews')
@@ -19,7 +23,7 @@ async function bootstrap() {
         whitelist: true,
         forbidNonWhitelisted: true,
     }));
-    await app.listen(process.env.PORT ?? 3001);
+    await app.listen(process.env.PORT ?? 3002);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

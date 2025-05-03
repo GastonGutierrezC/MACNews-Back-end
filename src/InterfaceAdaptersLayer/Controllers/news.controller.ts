@@ -1,7 +1,9 @@
-import { Controller, Post, Body, Param, Patch, Delete, Get, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, Param, Patch, Delete, Get, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { CreateNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/create-news.dto';
 import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto';
+import { NewsTopDto } from 'src/ApplicationLayer/dto/NewsDTOs/findTopNews.dto';
+import { NewsCardDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-card.dto';
 import { UpdateStatusNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/update-news-status.dto';
 import { CreateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/create.news';
 import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find.news';
@@ -38,6 +40,12 @@ export class NewsController {
     return this.updateNewsService.update(NewsId, updateNewsDto);
   }
 
+  @Get('card')
+  @ApiOperation({ summary: 'Get all news formatted for card view' })
+  async getAllNewsCards(): Promise<NewsCardDto[]> {
+    return this.findNewsService.getAllAsCards();
+  }
+
 
   @Get(':id')
   @ApiOperation({ summary: 'Get the news by ID' })
@@ -61,7 +69,7 @@ export class NewsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all news summarized (ID, Title, Category)' })
-  async getAllSummarized(): Promise<NewsSummaryDto[]> {
+  async getAllSummarized(): Promise<NewsTopDto[]> {
     return this.findNewsService.getAllSummarized();
   }
 
@@ -69,7 +77,15 @@ export class NewsController {
   @ApiOperation({ summary: 'Get personalized news recommendations for a user' })
   async getPersonalizedRecommendations(
     @Param('userId') userId: string,
-  ): Promise<NewsSummaryDto[]> {
-    return this.findRecommendationsNewsService.getPersonalizedNews(userId);
+  ): Promise<NewsCardDto[]> {
+    try {
+      return await this.findRecommendationsNewsService.getPersonalizedNews(userId);
+    } catch (error) {
+      console.error('❌ Error al obtener recomendaciones personalizadas:', error.message);
+      throw new HttpException(
+        'El servicio de recomendaciones no está disponible en este momento. Por favor, intenta más tarde.',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
   }
 }
