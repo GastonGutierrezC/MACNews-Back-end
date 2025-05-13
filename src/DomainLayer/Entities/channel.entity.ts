@@ -3,17 +3,17 @@ import { NewsEntity } from './news.entity';
 import { JournalistEntity } from './journalist.entity';
 import { FollowChannelEntity } from './followChannel.entity';
 
-export enum ChannelCategory {
-    Politics = 'Politics',
-    Economy = 'Economy',
-    Sports = 'Sports',
+export enum ChannelSpecialties {
+    Investigative = 'Investigative',
+    Interview = 'Interview',
+    Opinion = 'Opinion',
+    Interpretive = 'Interpretive',
+    Data = 'Data',
+    Social = 'Social',
+    Political = 'Political',
+    Scientific = 'Scientific',
     Entertainment = 'Entertainment',
-    Technology = 'Technology',
-    Health = 'Health',
-    Science = 'Science',
-    International = 'International',
-    Society = 'Society',
-    Security = 'Security'
+    Business = 'Business'
 }
 
 @Entity('Channel')
@@ -31,8 +31,8 @@ export class ChannelEntity {
   @Column({ type: 'text' })
   DescriptionChannel: string;
 
-  @Column({ type: 'enum', enum: ChannelCategory })
-  Categories: ChannelCategory;
+  @Column({ type: 'enum', enum: ChannelSpecialties })
+  Specialties: ChannelSpecialties;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   ChannelImageURL: string;

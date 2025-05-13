@@ -29,9 +29,8 @@ const SearchHistory_entity_1 = require("./DomainLayer/Entities/SearchHistory.ent
 const searchHistory_module_1 = require("./modules/searchHistory.module");
 const visits_entity_1 = require("./DomainLayer/Entities/visits.entity");
 const visits_module_1 = require("./modules/visits.module");
-let AppModule = class AppModule {
+let AppModule = exports.AppModule = class AppModule {
 };
-exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [

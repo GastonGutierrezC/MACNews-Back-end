@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEnum, IsOptional, IsUrl } from 'class-validator';
-import { ChannelCategory } from 'src/DomainLayer/Entities/channel.entity';
+import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
 
 export class UpdateChannelDto {
 
@@ -22,11 +22,11 @@ export class UpdateChannelDto {
 
   @ApiProperty({
     description: 'Channel categories',
-    example: 'Politics',
+    example: 'Investigative',
   })  
-  @IsEnum(ChannelCategory)
+  @IsEnum(ChannelSpecialties)
   @IsOptional()
-  Categories?: ChannelCategory;
+  Categories?: ChannelSpecialties;
 
   @ApiProperty({
     description: 'channel image',

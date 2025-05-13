@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Patch, Delete, Get, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Param, Patch, Delete, Get, NotFoundException, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { CreateNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/create-news.dto';
 import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto';
@@ -10,6 +10,8 @@ import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find
 import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/findRecomendations.news';
 import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/update.news';
 import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
+import { Query } from '@nestjs/common';
+import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
 
 @ApiTags('News')
 @Controller('news')
@@ -41,11 +43,23 @@ export class NewsController {
   }
 
   @Get('card')
-  @ApiOperation({ summary: 'Get all news formatted for card view' })
-  async getAllNewsCards(): Promise<NewsCardDto[]> {
-    return this.findNewsService.getAllAsCards();
+  @ApiOperation({ summary: 'Get all news formatted for card view with pagination' })
+  async getAllNewsCards(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ): Promise<NewsCardDto[]> {
+    return this.findNewsService.getAllAsCards(page, limit);
   }
-
+  
+  @Get('searchIntelligent')
+  @ApiOperation({ summary: 'Smart search using Elasticsearch (phrase + most fields)' })
+  async smartSearch(@Query('text') texto: string): Promise<NewsCardDto[]> {
+    if (!texto || texto.trim().length === 0) {
+      throw new BadRequestException('El texto de búsqueda no puede estar vacío.');
+    }
+  
+    return this.findNewsService.searchIntelligent(texto);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get the news by ID' })
@@ -88,4 +102,8 @@ export class NewsController {
       );
     }
   }
+
+
+  
+
 }

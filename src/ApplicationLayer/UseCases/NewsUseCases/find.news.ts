@@ -5,12 +5,16 @@ import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
 import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 import { FindVisitsService } from '../VisitsUseCases/find.visits';
 import { NewsTopDto } from 'src/ApplicationLayer/dto/NewsDTOs/findTopNews.dto';
+import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
+import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
 
 @Injectable()
 export class FindNewsService {
   constructor(
     private readonly newsRepository: NewsRepository,
     private readonly findVisitsService: FindVisitsService,
+    private readonly elasticsearchService: ElasticsearchService, // ← Agregado
+
   ) {}
 
 
@@ -23,11 +27,12 @@ export class FindNewsService {
 
     return news;
   }
-  async getAllAsCards(): Promise<NewsCardDto[]> {
-    const newsList = await this.newsRepository.findAll();
+
+  async getAllAsCards(page: number, limit: number): Promise<NewsCardDto[]> {
+    const allNews = await this.newsRepository.findAll();
   
-    const newsCards: NewsCardDto[] = await Promise.all(
-      newsList.map(async (n) => {
+    const newsWithVisits: NewsCardDto[] = await Promise.all(
+      allNews.map(async (n) => {
         const visitData = await this.findVisitsService.getVisitCountByNews(n.NewsId);
         return {
           NewsId: n.NewsId,
@@ -38,15 +43,23 @@ export class FindNewsService {
           Channel: {
             ChannelID: n.Channel.ChannelID,
             ChannelName: n.Channel.ChannelName,
-            ChannelImageURL: n.Channel.ChannelImageURL
+            ChannelImageURL: n.Channel.ChannelImageURL,
           },
-          VisitCount: visitData.visitCount, 
+          VisitCount: visitData.visitCount,
         };
       }),
     );
   
-    return newsCards;
+  
+    const sortedNews = newsWithVisits.sort((a, b) => b.VisitCount - a.VisitCount);
+  
+    const startIndex = (page - 1) * limit;
+    const paginatedNews = sortedNews.slice(startIndex, startIndex + limit);
+  
+    return paginatedNews;
   }
+  
+
   
 
 
@@ -91,6 +104,52 @@ export class FindNewsService {
       Title: item.news.Title,
       NewsImageURL: item.news.NewsImageURL
     }));
+  }
+
+  async searchIntelligent(texto: string): Promise<NewsCardDto[]> {
+    try {
+      const [phraseResults, mostFieldsResults] = await Promise.all([
+        this.elasticsearchService.phrasePrefixSearch('news', texto),
+        this.elasticsearchService.mostFieldsSearch('news', texto),
+      ]);
+  
+      const allHits = [
+        ...phraseResults.hits.hits,
+        ...mostFieldsResults.hits.hits,
+      ];
+  
+
+      const uniqueResultsMap = new Map<string, NewsDocumentDto>();
+  
+      for (const hit of allHits) {
+        if (!uniqueResultsMap.has(hit._id)) {
+          uniqueResultsMap.set(hit._id, hit._source);
+        }
+      }
+
+      const results: NewsCardDto[] = await Promise.all(
+        Array.from(uniqueResultsMap.entries()).map(async ([id, source]) => {
+          const visitData = await this.findVisitsService.getVisitCountByNews(id);
+          return {
+            NewsId: id,
+            Title: source.Title,
+            PublicationDate: source.PublicationDate,
+            NewsImageURL: source.NewsImageURL,
+            Categories: source.Categories,
+            Channel: {
+              ChannelID: source.Channel.ChannelID,
+              ChannelName: source.Channel.ChannelName,
+              ChannelImageURL: source.Channel.ChannelImageURL,
+            },
+            VisitCount: visitData.visitCount,
+          };
+        })
+      );
+  
+      return results;
+    } catch (error) {
+      throw new BadRequestException('Error en buscador inteligente');
+    }
   }
   
 }

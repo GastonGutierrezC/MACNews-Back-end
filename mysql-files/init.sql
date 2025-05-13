@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS Channel (
     JournalistID CHAR(36) NOT NULL,
     ChannelName VARCHAR(255) NOT NULL,
     DescriptionChannel TEXT NOT NULL,
-    Categories ENUM('Politics', 'Economy', 'Sports', 'Entertainment', 'Technology', 'Health', 'Science', 'International', 'Society', 'Security') NOT NULL,
+    Specialties ENUM('Investigative', 'Interview', 'Opinion', 'Interpretive', 'Data', 'Social', 'Political', 'Scientific', 'Entertainment', 'Business') NOT NULL,
     ChannelImageURL VARCHAR(255) DEFAULT NULL,
 
     CONSTRAINT FK_Channel_Journalist FOREIGN KEY (JournalistID) REFERENCES Journalist(JournalistID) ON DELETE CASCADE
@@ -70,13 +70,12 @@ CREATE TABLE IF NOT EXISTS News (
     NewsId CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     ChannelID CHAR(36) NOT NULL,
     Title VARCHAR(255) NOT NULL,
+    ShortDescription VARCHAR(255) NOT NULL,
     Content TEXT NOT NULL,
     PublicationDate DATE NOT NULL,
     NewsStatus ENUM('Checking', 'Approved', 'Rejected') NOT NULL,
     NewsImageURL VARCHAR(255) DEFAULT NULL,
     Categories ENUM('Politics', 'Economy', 'Sports', 'Entertainment', 'Technology', 'Health', 'Science', 'International', 'Society', 'Security') NOT NULL,
-
-
     CONSTRAINT FK_News_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE
 );
 
