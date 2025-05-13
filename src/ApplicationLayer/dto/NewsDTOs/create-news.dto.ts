@@ -22,6 +22,14 @@ export class CreateNewsDto {
   Title: string;
 
   @ApiProperty({
+    description: 'ShortDescription news',
+    example: 'ShortDescription news',
+  })  
+  @IsNotEmpty()
+  @IsString()
+  ShortDescription: string;
+
+  @ApiProperty({
     description: 'Content news',
     example: 'Content news',
   })  

@@ -11,6 +11,7 @@ import { NewsReviewIntelligentAgent } from 'src/InfrastructureLayer/IntelligentA
 import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/findRecomendations.news';
 import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 import { VisitsModule } from './visits.module'; // <-- Asegurate de que este módulo exporta FindVisitsService
+import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { VisitsModule } from './visits.module'; // <-- Asegurate de que este mó
   ],
   controllers: [NewsController],  
   providers: [
+    ElasticsearchService,
     FindRecommendationsNewsService,
     CreateNewsService,
     FindNewsService,

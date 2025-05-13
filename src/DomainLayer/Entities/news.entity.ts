@@ -32,6 +32,9 @@ export class NewsEntity {
   @Column()
   Title: string;
 
+  @Column()
+  ShortDescription: string;
+
   @Column('text')
   Content: string;
 
