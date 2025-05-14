@@ -9,9 +9,10 @@ import { CreateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/cr
 import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find.news';
 import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/findRecomendations.news';
 import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/update.news';
-import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
+import { NewsCategory, NewsEntity } from 'src/DomainLayer/Entities/news.entity';
 import { Query } from '@nestjs/common';
 import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
+import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
 
 @ApiTags('News')
 @Controller('news')
@@ -51,6 +52,29 @@ export class NewsController {
     return this.findNewsService.getAllAsCards(page, limit);
   }
   
+  @Get('category/:category')
+  @ApiOperation({ summary: 'Get news filtered by category' })
+  async getByCategory(
+    @Param('category') category: NewsCategory,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ): Promise<NewsCardDto[]> {
+    const news = await this.findNewsService.getByCategory(category, page, limit);
+    return news || [];
+  
+  }
+
+  @Get('specialty/:specialty')
+  @ApiOperation({ summary: 'Get news filtered by channel specialty' })
+  async getBySpecialty(
+    @Param('specialty') specialty: ChannelSpecialties,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ): Promise<NewsCardDto[]> {
+    const news = await this.findNewsService.getBySpecialty(specialty, page, limit);
+    return news || [];
+  }
+
   @Get('searchIntelligent')
   @ApiOperation({ summary: 'Smart search using Elasticsearch (phrase + most fields)' })
   async smartSearch(@Query('text') texto: string): Promise<NewsCardDto[]> {

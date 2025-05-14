@@ -12,26 +12,27 @@ export class CreateSearchHistoryService {
   ) {}
 
 
-  async create(createSearchHistoryDto: CreateSearchHistoryDto): Promise<SearchHistoryEntity> {
+  async create(createSearchHistoryDto: CreateSearchHistoryDto): Promise<boolean> {
     const user = await this.userRepository.findById(createSearchHistoryDto.UserID);
     if (!user) {
       throw new NotFoundException('User not found.');
     }
-
+  
     const allSearchHistory = await this.searchHistoryRepository.findAll();
     const userSearchHistory = allSearchHistory.filter(
       (search) => search.User.UserID === createSearchHistoryDto.UserID,
     );
-
+  
     if (userSearchHistory.length >= 10) {
       await this.searchHistoryRepository.deleteOldestSearch(createSearchHistoryDto.UserID);
     }
-
-    const newSearchHistory = await this.searchHistoryRepository.create({
+  
+    await this.searchHistoryRepository.create({
       ...createSearchHistoryDto,
       User: user,
     });
-
-    return newSearchHistory;
+  
+    return true;  // Se regresa true si el guardado fue exitoso
   }
+  
 }

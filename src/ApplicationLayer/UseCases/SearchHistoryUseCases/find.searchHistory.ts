@@ -9,20 +9,14 @@ export class FindSearchHistoryService {
     private readonly searchHistoryRepository: SearchHistoryRepository,
   ) {}
 
-
-
   async findByUserId(userId: string): Promise<FindSearchHistoryDto[]> {
     const searchHistories = await this.searchHistoryRepository.findAll(); 
     const userSearchHistory = searchHistories.filter(
       (history) => history.User.UserID === userId,
     );
-
-    if (!userSearchHistory || userSearchHistory.length === 0) {
-      throw new NotFoundException('No search history found for this user');
-    }
-
     return userSearchHistory.map((history) => ({
       SearchWord: history.SearchWord,
     }));
   }
+  
 }
