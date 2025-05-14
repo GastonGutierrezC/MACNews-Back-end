@@ -20,6 +20,8 @@ import { SearchHistoryEntity } from './DomainLayer/Entities/SearchHistory.entity
 import { SearchHistoryModule } from './modules/searchHistory.module';
 import { VisitsEntity } from './DomainLayer/Entities/visits.entity';
 import { VisitsModule } from './modules/visits.module';
+import { UserRecommendationsEntity } from './DomainLayer/Entities/userRecommendations.entity';
+import { RecommendationModule } from './modules/recommendation.module';
 
 
 @Module({
@@ -31,7 +33,7 @@ import { VisitsModule } from './modules/visits.module';
       username: 'gaston',
       password: 'gaston',
       database: 'MACNews',
-      entities: [VisitsEntity,SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
+      entities: [UserRecommendationsEntity,VisitsEntity,SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
       synchronize: false, 
     }),
     UserModule,
@@ -43,6 +45,7 @@ import { VisitsModule } from './modules/visits.module';
     CommentPostModule,
     SearchHistoryModule,
     VisitsModule,
+    RecommendationModule,
   ],
 })
 export class AppModule {}

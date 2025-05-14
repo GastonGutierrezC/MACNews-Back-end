@@ -1,37 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
-import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 import { FindVisitsService } from '../VisitsUseCases/find.visits';
 import { NewsCardDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-card.dto';
+import { FindUserRecommendationService } from '../UserRecommendationsCases/find.recommendations';
 
 @Injectable()
 export class FindRecommendationsNewsService {
   constructor(
-    private readonly personalizedAgent: PersonalizedRecommendationsAgent,
+    private readonly findUserRecommendationService: FindUserRecommendationService,
     private readonly newsRepository: NewsRepository,
     private readonly findVisitsService: FindVisitsService,
   ) {}
 
   async getPersonalizedNews(userId: string): Promise<NewsCardDto[]> {
-    let recommendationResponse = null;
+    const recommendation = await this.findUserRecommendationService.getByUserId(userId);
 
-    
-    while (!recommendationResponse || !recommendationResponse.sugerencias || recommendationResponse.sugerencias.length === 0) {
-      try {
-        recommendationResponse = await this.personalizedAgent.getRecommendations(userId);
-        
-        if (!recommendationResponse?.sugerencias?.length) {
-          
-          await new Promise(res => setTimeout(res, 3000));
-        }
-
-      } catch (error) {
-        console.error('⚠️ Error al obtener recomendaciones del agente. Reintentando...', error.message);
-        await new Promise(res => setTimeout(res, 3000)); 
-      }
-    }
-
-    const suggestedNewsIds = recommendationResponse.sugerencias.map(s => s.NewsId);
+    const suggestedNewsIds = recommendation.NewsArticleIDs;
     const newsCards: NewsCardDto[] = [];
 
     for (const newsId of suggestedNewsIds) {

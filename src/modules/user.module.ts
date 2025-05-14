@@ -12,9 +12,11 @@ import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/passwor
 import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
 import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
 import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCases/update-role.user';
+import { RecommendationModule } from './recommendation.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity,RolesEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity,RolesEntity]),
+  RecommendationModule],
   providers: [
      UserRepository,
      PasswordRepository,

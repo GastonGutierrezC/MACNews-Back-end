@@ -8,6 +8,8 @@ import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
 import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
 
 import { CreateUserResponseDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user-response.dto';
+import { CreateUserRecommendationService } from '../UserRecommendationsCases/create.recommendations';
+import { CreateUserRecommendationDto } from 'src/ApplicationLayer/dto/UserRecommendationsDTOs/CreateUserRecommendationDto';
 
 @Injectable()
 export class CreateUserService {
@@ -15,6 +17,8 @@ export class CreateUserService {
     private readonly userRepository: UserRepository,
     private readonly passwordRepository: PasswordRepository,
     private readonly rolesReposotory: RolesRepository,
+    private readonly createRecommendationService: CreateUserRecommendationService, // 👈 nuevo servicio inyectado
+
   ) {}
 
   async create(createUserWithPasswordDto: CreateUserWithPasswordDto): Promise<CreateUserResponseDto> {
@@ -38,6 +42,11 @@ export class CreateUserService {
 
     await this.rolesReposotory.create({ UserID: createdUser.UserID });
 
+    const recommendationData: CreateUserRecommendationDto = {
+      UserID: createdUser.UserID,
+    };
+    await this.createRecommendationService.create(recommendationData);
+    
     const response: CreateUserResponseDto = {
       UserID: createdUser.UserID,
       UserFirstName: createdUser.UserFirstName,

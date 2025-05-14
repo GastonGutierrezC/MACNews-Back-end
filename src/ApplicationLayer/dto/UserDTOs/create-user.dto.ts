@@ -40,6 +40,4 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   readonly UserImageURL: string;
-
-
 }
