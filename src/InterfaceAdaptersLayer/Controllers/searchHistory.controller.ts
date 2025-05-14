@@ -20,7 +20,7 @@ export class SearchHistoryController {
   @ApiBody({
     type: CreateSearchHistoryDto, 
   })
-  async create(@Body() createSearchHistoryDto: CreateSearchHistoryDto): Promise<SearchHistoryEntity> {
+  async create(@Body() createSearchHistoryDto: CreateSearchHistoryDto): Promise<boolean> {
     return this.createSearchHistoryService.create(createSearchHistoryDto);
   }
 

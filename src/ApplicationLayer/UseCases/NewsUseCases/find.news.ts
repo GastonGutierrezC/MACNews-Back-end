@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto';
 import { NewsCardDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-card.dto';
-import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
+import { NewsCategory, NewsEntity } from 'src/DomainLayer/Entities/news.entity';
 import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 import { FindVisitsService } from '../VisitsUseCases/find.visits';
 import { NewsTopDto } from 'src/ApplicationLayer/dto/NewsDTOs/findTopNews.dto';
 import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
 import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
+import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
 
 @Injectable()
 export class FindNewsService {
@@ -151,5 +152,88 @@ export class FindNewsService {
       throw new BadRequestException('Error en buscador inteligente');
     }
   }
+
+  async getByCategory(category: NewsCategory, page: number, limit: number): Promise<NewsCardDto[]> {
+    // Obtiene todas las noticias
+    const allNews = await this.newsRepository.findAll();
+  
+    // Filtra las noticias por la categoría proporcionada
+    const filteredNews = allNews.filter(n => n.Categories === category);
+  
+    if (filteredNews.length === 0) {
+      throw new NotFoundException(`No news found for category "${category}"`);
+    }
+  
+    // Mapea las noticias filtradas a NewsCardDto y agrega la información de visitas
+    const newsWithVisits: NewsCardDto[] = await Promise.all(
+      filteredNews.map(async (n) => {
+        const visitData = await this.findVisitsService.getVisitCountByNews(n.NewsId);
+        return {
+          NewsId: n.NewsId,
+          Title: n.Title,
+          PublicationDate: n.PublicationDate,
+          NewsImageURL: n.NewsImageURL,
+          Categories: n.Categories,
+          Channel: {
+            ChannelID: n.Channel.ChannelID,
+            ChannelName: n.Channel.Specialties,
+            ChannelImageURL: n.Channel.ChannelImageURL,
+          },
+          VisitCount: visitData.visitCount,
+        };
+      }),
+    );
+  
+    // Ordena las noticias por el número de visitas (de mayor a menor)
+    const sortedNews = newsWithVisits.sort((a, b) => b.VisitCount - a.VisitCount);
+  
+    // Paginación
+    const startIndex = (page - 1) * limit;
+    const paginatedNews = sortedNews.slice(startIndex, startIndex + limit);
+  
+    return paginatedNews;
+  }
+  
+  async getBySpecialty(specialty: ChannelSpecialties, page: number, limit: number): Promise<NewsCardDto[]> {
+    // Obtiene todas las noticias
+    const allNews = await this.newsRepository.findAll();
+  
+    // Filtra las noticias por la especialidad del canal
+    const filteredNews = allNews.filter(n => n.Channel.Specialties === specialty);
+  
+    if (filteredNews.length === 0) {
+      throw new NotFoundException(`No news found for specialty "${specialty}"`);
+    }
+  
+    // Mapea las noticias filtradas a NewsCardDto y agrega la información de visitas
+    const newsWithVisits: NewsCardDto[] = await Promise.all(
+      filteredNews.map(async (n) => {
+        const visitData = await this.findVisitsService.getVisitCountByNews(n.NewsId);
+        return {
+          NewsId: n.NewsId,
+          Title: n.Title,
+          PublicationDate: n.PublicationDate,
+          NewsImageURL: n.NewsImageURL,
+          Categories: n.Categories,
+          Channel: {
+            ChannelID: n.Channel.ChannelID,
+            ChannelName: n.Channel.ChannelName,
+            ChannelImageURL: n.Channel.ChannelImageURL,
+          },
+          VisitCount: visitData.visitCount,
+        };
+      }),
+    );
+  
+    // Ordena las noticias por el número de visitas (de mayor a menor)
+    const sortedNews = newsWithVisits.sort((a, b) => b.VisitCount - a.VisitCount);
+  
+    // Paginación
+    const startIndex = (page - 1) * limit;
+    const paginatedNews = sortedNews.slice(startIndex, startIndex + limit);
+  
+    return paginatedNews;
+  }
+  
   
 }
