@@ -18,8 +18,26 @@ import { InterestAnalysisAgent } from 'src/InfrastructureLayer/IntelligentAgentM
     
 ],
   controllers: [CommentPostController],
-  providers: [InterestAnalysisAgent,FindChannelMetricsService,CreateCommentPostService,FindCommentPostService, CommentPostRepository],
-  exports: [InterestAnalysisAgent,FindChannelMetricsService,CreateCommentPostService,FindCommentPostService,CommentPostRepository
+  providers: [
+    {
+      provide: 'ICommentPostRepository',
+      useClass: CommentPostRepository,
+    },
+    {
+      provide: 'IInterestAnalysisAgent',
+      useClass: InterestAnalysisAgent,
+    },
+    FindChannelMetricsService,CreateCommentPostService,FindCommentPostService],
+  exports: [
+    {
+      provide: 'ICommentPostRepository',
+      useClass: CommentPostRepository,
+    },    
+    {
+      provide: 'IInterestAnalysisAgent',
+      useClass: InterestAnalysisAgent,
+    },
+    FindChannelMetricsService,CreateCommentPostService,FindCommentPostService
   ], 
 })
 export class CommentPostModule {}

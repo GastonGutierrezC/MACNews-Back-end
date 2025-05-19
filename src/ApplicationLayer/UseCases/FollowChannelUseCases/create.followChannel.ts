@@ -1,17 +1,20 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
-import { FollowChannelRepository } from 'src/InfrastructureLayer/Repositories/followChannel.repository';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { CreateFollowChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/create-followChannel.dto';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
-import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+import { IFollowChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/followChannel.repository.interface';
+import { IChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/channel.repository.interface';
 
 @Injectable()
 export class CreateFollowChannelService {
   constructor(
-    private readonly followChannelRepository: FollowChannelRepository,
-    private readonly userRepository: UserRepository,
-    private readonly channelRepository: ChannelRepository,
 
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('IFollowChannelRepository')
+    private readonly followChannelRepository: IFollowChannelRepository,
+    @Inject('IChannelRepository')
+    private readonly channelRepository: IChannelRepository, 
   ) {}
 
   async create(createFollowChannelDto: CreateFollowChannelDto): Promise<FollowChannelEntity> {
@@ -42,5 +45,4 @@ export class CreateFollowChannelService {
     return followChannel;
   }
   
-
 }

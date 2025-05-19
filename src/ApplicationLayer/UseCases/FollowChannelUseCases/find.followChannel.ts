@@ -1,12 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
-import { FollowChannelRepository } from 'src/InfrastructureLayer/Repositories/followChannel.repository';
+import { IFollowChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/followChannel.repository.interface';
 
 
 @Injectable()
 export class FindFollowChannelService {
   constructor(
-    private readonly followChannelRepository: FollowChannelRepository,
+
+    @Inject('IFollowChannelRepository')
+    private readonly followChannelRepository: IFollowChannelRepository,
+    
   ) {}
 
   async getById(FollowChannelID: string): Promise<FollowChannelEntity> {

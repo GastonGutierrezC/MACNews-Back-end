@@ -16,8 +16,26 @@ import { JournalistApplicationsIntelligentAgent } from 'src/InfrastructureLayer/
     
 ],
   controllers: [ApplicationFormController],
-  providers: [JournalistApplicationsIntelligentAgent,CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService, ApplicationFormRepository],
-  exports: [JournalistApplicationsIntelligentAgent,CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService,ApplicationFormRepository
+  providers: [
+    {
+      provide: 'IApplicationFormRepository',
+      useClass: ApplicationFormRepository,
+    }, 
+    {
+      provide: 'IJournalistApplicationsIntelligentAgent',
+      useClass: JournalistApplicationsIntelligentAgent,
+    },    
+    CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService],
+  exports: [
+    {
+      provide: 'IApplicationFormRepository',
+      useClass: ApplicationFormRepository,
+    },  
+    {
+      provide: 'IJournalistApplicationsIntelligentAgent',
+      useClass: JournalistApplicationsIntelligentAgent,
+    },    
+    CreateApplicationFormService,FindApplicationFormService,UpdateApplicationFormService
   ], 
 })
 export class ApplicationFormModule {}

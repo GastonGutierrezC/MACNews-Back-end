@@ -16,16 +16,29 @@ import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/Intell
   ],
   controllers: [SearchHistoryController],
   providers: [
-    PersonalizedRecommendationsAgent,
+    {
+      provide: 'ISearchHistoryRepository',
+      useClass: SearchHistoryRepository,
+    },
+    {
+      provide: 'IPersonalizedRecommendationsAgent',
+      useClass: PersonalizedRecommendationsAgent,
+    },
     CreateSearchHistoryService,
     FindSearchHistoryService,
-    SearchHistoryRepository,
+
   ],
   exports: [
-    PersonalizedRecommendationsAgent,
+    {
+      provide: 'ISearchHistoryRepository',
+      useClass: SearchHistoryRepository,
+    },
+    {
+      provide: 'IPersonalizedRecommendationsAgent',
+      useClass: PersonalizedRecommendationsAgent,
+    },
     CreateSearchHistoryService,
     FindSearchHistoryService,
-    SearchHistoryRepository,
   ],
 })
 export class SearchHistoryModule {}

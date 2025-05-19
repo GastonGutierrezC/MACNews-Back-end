@@ -1,12 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
-import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 import { UpdateStatusNewsDto } from '../../dto/NewsDTOs/update-news-status.dto';
+import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
 
 @Injectable()
 export class UpdateNewsService {
   constructor(
-    private readonly newsRepository: NewsRepository,
+
+    @Inject('INewsRepository')
+    private readonly newsRepository: INewsRepository,
   ) {}
 
 

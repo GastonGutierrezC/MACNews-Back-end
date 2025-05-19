@@ -9,7 +9,6 @@ import { FindNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/find
 import { UpdateNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/update.news';
 import { NewsReviewIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/NewsReview.IntelligentAgent';
 import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/NewsUseCases/findRecomendations.news';
-import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 import { VisitsModule } from './visits.module'; // <-- Asegurate de que este módulo exporta FindVisitsService
 import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
 import { RecommendationModule } from './recommendation.module';
@@ -23,22 +22,44 @@ import { RecommendationModule } from './recommendation.module';
   ],
   controllers: [NewsController],  
   providers: [
-    ElasticsearchService,
+    {
+      provide: 'INewsRepository',
+      useClass: NewsRepository,
+    },
+    {
+      provide: 'INewsReviewIntelligentAgent',
+      useClass: NewsReviewIntelligentAgent,
+    },
+    {
+      provide: 'IElasticsearchService',
+      useClass: ElasticsearchService,
+    },
+
     FindRecommendationsNewsService,
     CreateNewsService,
     FindNewsService,
     UpdateNewsService,
-    NewsRepository,
-    PersonalizedRecommendationsAgent,
-    NewsReviewIntelligentAgent,
+
   ],  
   exports: [
+    {
+      provide: 'INewsRepository',
+      useClass: NewsRepository,
+    },
+    {
+      provide: 'INewsReviewIntelligentAgent',
+      useClass: NewsReviewIntelligentAgent,
+    },
+    {
+      provide: 'IElasticsearchService',
+      useClass: ElasticsearchService,
+    },
     FindRecommendationsNewsService,
     CreateNewsService,
     FindNewsService,
     UpdateNewsService,
-    NewsRepository,
-    PersonalizedRecommendationsAgent,
+
+
   ], 
 })
 export class NewsModule {}

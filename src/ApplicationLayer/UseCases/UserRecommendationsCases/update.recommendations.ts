@@ -1,11 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserRecommendationsRepository } from 'src/InfrastructureLayer/Repositories/userRecommendations.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateUserRecommendationDto } from 'src/ApplicationLayer/dto/UserRecommendationsDTOs/UpdateUserRecommendationDto';
+import { IUserRecommendationsRepository } from 'src/InfrastructureLayer/Repositories/Interface/userRecommendations.repository.interface';
 
 @Injectable()
 export class UpdateUserRecommendationService {
   constructor(
-    private readonly recommendationRepo: UserRecommendationsRepository,
+    @Inject('IUserRecommendationsRepository')
+    private readonly recommendationRepo: IUserRecommendationsRepository,
+    
   ) {}
 
   async update(data: UpdateUserRecommendationDto): Promise<UpdateUserRecommendationDto> {

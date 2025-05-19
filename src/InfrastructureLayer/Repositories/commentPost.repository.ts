@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentPostEntity } from 'src/DomainLayer/Entities/commentPost.entity';
+import { ICommentPostRepository } from './Interface/commentPost.repository.interface';
 
 @Injectable()
-export class CommentPostRepository {
+export class CommentPostRepository implements ICommentPostRepository{
   constructor(
     @InjectRepository(CommentPostEntity)
     private readonly commentPostRepo: Repository<CommentPostEntity>,

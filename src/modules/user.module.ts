@@ -18,9 +18,18 @@ import { RecommendationModule } from './recommendation.module';
   imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity,RolesEntity]),
   RecommendationModule],
   providers: [
-     UserRepository,
-     PasswordRepository,
-     RolesRepository,
+    {
+      provide: 'IUserRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IRolesRepository',
+      useClass: RolesRepository,
+    },
+    {
+      provide: 'IPasswordRepository',
+      useClass: PasswordRepository,
+    },
      CreateUserService,
      FindUserService,
      UpdateUserService,
@@ -28,9 +37,18 @@ import { RecommendationModule } from './recommendation.module';
     ], 
   controllers: [UserController],
   exports: [
-    UserRepository,
-    PasswordRepository,
-    RolesRepository,
+    {
+      provide: 'IUserRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IRolesRepository',
+      useClass: RolesRepository,
+    },
+    {
+      provide: 'IPasswordRepository',
+      useClass: PasswordRepository,
+    },
     CreateUserService,
     FindUserService,
     UpdateUserService,

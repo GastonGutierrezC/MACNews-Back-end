@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserRecommendationDto } from 'src/ApplicationLayer/dto/UserRecommendationsDTOs/CreateUserRecommendationDto';
 import { GetUserRecommendationsDto } from 'src/ApplicationLayer/dto/UserRecommendationsDTOs/GetUserRecommendationsDto';
-import { UserRecommendationsEntity } from 'src/DomainLayer/Entities/userRecommendations.entity';
-import { UserRecommendationsRepository } from 'src/InfrastructureLayer/Repositories/userRecommendations.repository';
+import { IUserRecommendationsRepository } from 'src/InfrastructureLayer/Repositories/Interface/userRecommendations.repository.interface';
 
 
 @Injectable()
 export class CreateUserRecommendationService {
   constructor(
-    private readonly recommendationRepo: UserRecommendationsRepository,
+    @Inject('IUserRecommendationsRepository')
+    private readonly recommendationRepo: IUserRecommendationsRepository,
+
   ) {}
 
   async create(data: CreateUserRecommendationDto): Promise<GetUserRecommendationsDto> {

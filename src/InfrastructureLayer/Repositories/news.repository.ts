@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NewsEntity } from '../../DomainLayer/Entities/news.entity';
+import { INewsRepository } from './Interface/news.repository.interface';
 
 @Injectable()
-export class NewsRepository {
+export class NewsRepository implements INewsRepository{
   constructor(
     @InjectRepository(NewsEntity)
     private readonly newsRepo: Repository<NewsEntity>,

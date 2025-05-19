@@ -1,17 +1,19 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { CreateJournalistDto } from 'src/ApplicationLayer/dto/JournalistDTOs/create-journalist.dto';
 import { JournalistEntity } from 'src/DomainLayer/Entities/journalist.entity';
-import { ApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/applicationForm.repository';
-import { JournalistRepository } from 'src/InfrastructureLayer/Repositories/journalist.repository';
-import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
-
+import { IApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/Interface/applicationForm.repository.interface';
+import { IJournalistRepository } from 'src/InfrastructureLayer/Repositories/Interface/journalist.repository.interface';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
 
 @Injectable()
 export class CreateJournalistService {
   constructor(
-    private readonly applicationFormRepository: ApplicationFormRepository,
-    private readonly journalistRepository : JournalistRepository,
-    private readonly userRepository : UserRepository,
+    @Inject('IApplicationFormRepository')
+    private readonly applicationFormRepository: IApplicationFormRepository,
+    @Inject('IJournalistRepository')
+    private readonly journalistRepository: IJournalistRepository,  
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
 
   ) {}
 

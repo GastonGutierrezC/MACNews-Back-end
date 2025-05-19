@@ -1,20 +1,22 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { NewsCardDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-card.dto';
 import { NewsCategory, NewsEntity } from 'src/DomainLayer/Entities/news.entity';
-import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 import { FindVisitsService } from '../VisitsUseCases/find.visits';
 import { NewsTopDto } from 'src/ApplicationLayer/dto/NewsDTOs/findTopNews.dto';
-import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
 import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
 import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
+import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
+import { IElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/Interfaces/elasticsearchService.elasticsearch.interface';
 
 @Injectable()
 export class FindNewsService {
   constructor(
-    private readonly newsRepository: NewsRepository,
+
+    @Inject('INewsRepository')
+    private readonly newsRepository: INewsRepository,
     private readonly findVisitsService: FindVisitsService,
-    private readonly elasticsearchService: ElasticsearchService, // ← Agregado
+    @Inject('IElasticsearchService')
+    private readonly elasticsearchService: IElasticsearchService, // ← Agregado
 
   ) {}
 

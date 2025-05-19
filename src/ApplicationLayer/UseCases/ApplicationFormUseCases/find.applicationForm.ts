@@ -1,12 +1,13 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.entity';
-import { ApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/applicationForm.repository';
+import { IApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/Interface/applicationForm.repository.interface';
 
 
 @Injectable()
 export class FindApplicationFormService {
   constructor(
-    private readonly applicationFormRepository: ApplicationFormRepository,
+    @Inject('IApplicationFormRepository')
+    private readonly applicationFormRepository: IApplicationFormRepository,
   ) {}
 
   async findById( applicationFormID: string): Promise<ApplicationFormEntity> {

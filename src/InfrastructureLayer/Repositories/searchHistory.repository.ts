@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SearchHistoryEntity } from 'src/DomainLayer/Entities/SearchHistory.entity';
 import { Repository } from 'typeorm';
+import { ISearchHistoryRepository } from './Interface/searchHistory.repository.interface';
 
 @Injectable()
-export class SearchHistoryRepository {
+export class SearchHistoryRepository implements ISearchHistoryRepository{
   constructor(
     @InjectRepository(SearchHistoryEntity)
     private readonly searchHistoryRepo: Repository<SearchHistoryEntity>,

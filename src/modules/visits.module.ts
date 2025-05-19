@@ -17,7 +17,18 @@ import { FindVisitsService } from 'src/ApplicationLayer/UseCases/VisitsUseCases/
 
   ],
   controllers: [VisitsController],
-  providers: [CreateVisitsService,FindVisitsService, VisitsRepository],
-  exports: [CreateVisitsService,FindVisitsService, VisitsRepository],
+  providers: [
+    {
+      provide: 'IVisitRepository',
+      useClass: VisitsRepository,
+    },
+    CreateVisitsService,FindVisitsService],
+  exports: [
+    {
+      provide: 'IVisitRepository',
+      useClass: VisitsRepository,
+    },
+    
+    CreateVisitsService,FindVisitsService],
 })
 export class VisitsModule {}

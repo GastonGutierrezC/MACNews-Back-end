@@ -1,11 +1,12 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { ChannelEntity } from 'src/DomainLayer/Entities/channel.entity';
-import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
+import { IChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/channel.repository.interface';
 
 @Injectable()
 export class FindChannelService {
   constructor(
-    private readonly channelRepository: ChannelRepository,
+    @Inject('IChannelRepository')
+    private readonly channelRepository: IChannelRepository, 
   ) {}
 
 

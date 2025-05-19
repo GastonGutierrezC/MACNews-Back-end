@@ -2,9 +2,10 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { ApplicationAgentResponse } from './DTO.IntelligentAgent/JurnalistApplications/agent-response.dto';
 import { CreateApplicationFormDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/create-applicationForm.dto';
+import { IJournalistApplicationsIntelligentAgent } from './Interfaces/journalistApplications.intelligentAgent.interface';
 
 @Injectable()
-export class JournalistApplicationsIntelligentAgent {
+export class JournalistApplicationsIntelligentAgent implements IJournalistApplicationsIntelligentAgent{
   private readonly agentUrl = 'https://singular-deadly-ape.ngrok-free.app/webhook/b0f4a077-634c-40ae-b736-dddb2c1d004';
 
   async sendApplicationToAgent(payload: CreateApplicationFormDto): Promise<ApplicationAgentResponse> {
@@ -23,7 +24,6 @@ export class JournalistApplicationsIntelligentAgent {
           HttpStatus.GATEWAY_TIMEOUT,
         );
       }
-
 
       console.error('❌ Error al comunicarse con el agente de aplicaciones:', error.message);
       throw new HttpException(

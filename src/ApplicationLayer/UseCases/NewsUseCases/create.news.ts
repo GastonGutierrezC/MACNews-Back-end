@@ -2,23 +2,28 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Inject,
 } from '@nestjs/common';
 import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
-import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 import { CreateNewsDto } from '../../dto/NewsDTOs/create-news.dto';
-import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
-import { NewsReviewIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/NewsReview.IntelligentAgent';
-import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
 import { NewsDocumentDto } from '../../dto/NewsDTOs/news-document.dto';
+import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
+import { IChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/channel.repository.interface';
+import { INewsReviewIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/Interfaces/newsReview.intelligentAgent.interface';
+import { IElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/Interfaces/elasticsearchService.elasticsearch.interface';
 
 
 @Injectable()
 export class CreateNewsService {
   constructor(
-    private readonly newsRepository: NewsRepository,
-    private readonly channelRepository: ChannelRepository,
-    private readonly newsReviewAgent: NewsReviewIntelligentAgent,
-    private readonly elasticsearchService: ElasticsearchService,
+    @Inject('INewsRepository')
+    private readonly newsRepository: INewsRepository,
+    @Inject('IChannelRepository')
+    private readonly channelRepository: IChannelRepository,
+    @Inject('INewsReviewIntelligentAgent')
+    private readonly newsReviewAgent: INewsReviewIntelligentAgent,
+    @Inject('IElasticsearchService')
+    private readonly elasticsearchService: IElasticsearchService,
   ) {}
 
   async create(createNewsDto: CreateNewsDto): Promise<NewsEntity> {
@@ -27,14 +32,14 @@ export class CreateNewsService {
       throw new NotFoundException(`Channel with ID ${createNewsDto.ChannelID} not found`);
     }
 
-   // const aiReview = await this.newsReviewAgent.sendNewsForReview(createNewsDto);
+    const aiReview = await this.newsReviewAgent.sendNewsForReview(createNewsDto);
 
-   //  if ('violations' in aiReview && !aiReview.compliance) {
-   //   throw new BadRequestException({
-   //     message: 'La noticia no cumple con los principios éticos.',
-   //     violations: aiReview.violations,
-   //   });
-   // }
+     if ('violations' in aiReview && !aiReview.compliance) {
+      throw new BadRequestException({
+        message: 'La noticia no cumple con los principios éticos.',
+        violations: aiReview.violations,
+      });
+    }
 
    const newsDocument: NewsDocumentDto = {
     Title: createNewsDto.Title,

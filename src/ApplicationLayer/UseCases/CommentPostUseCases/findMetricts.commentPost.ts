@@ -1,13 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InterestAnalysisAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/CommentPostMetrics.intelligentAgent';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { AgentResponse } from 'src/InfrastructureLayer/IntelligentAgentManagement/DTO.IntelligentAgent/NewsReview/agent-response.dto';
-import { CommentPostRepository } from 'src/InfrastructureLayer/Repositories/commentPost.repository';
+import { IInterestAnalysisAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/Interfaces/CommentPostMetrics.intelligentAgent.interface';
+import { ICommentPostRepository } from 'src/InfrastructureLayer/Repositories/Interface/commentPost.repository.interface';
 
 @Injectable()
 export class FindChannelMetricsService {
   constructor(
-    private readonly commentPostRepository: CommentPostRepository,
-    private readonly interestAnalysisAgent: InterestAnalysisAgent,
+    @Inject('ICommentPostRepository')
+    private readonly commentPostRepository: ICommentPostRepository,
+    @Inject('IInterestAnalysisAgent')
+    private readonly interestAnalysisAgent: IInterestAnalysisAgent,
   ) {}
 
   async execute(ChannelID: string): Promise<AgentResponse> {

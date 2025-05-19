@@ -1,13 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CommentWithSubcommentsDto } from 'src/ApplicationLayer/dto/CommentPostDTOs/comment-with-subcomments.dto';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CommentPostEntity } from 'src/DomainLayer/Entities/commentPost.entity';
-import { CommentPostRepository } from 'src/InfrastructureLayer/Repositories/commentPost.repository';
+import { ICommentPostRepository } from 'src/InfrastructureLayer/Repositories/Interface/commentPost.repository.interface';
 
 
 @Injectable()
 export class FindCommentPostService {
   constructor(
-    private readonly commentPostRepository: CommentPostRepository,
+    @Inject('ICommentPostRepository')
+    private readonly commentPostRepository: ICommentPostRepository,
+  
   ) {}
 
   async findById(CommentPostID: string): Promise<CommentPostEntity> {

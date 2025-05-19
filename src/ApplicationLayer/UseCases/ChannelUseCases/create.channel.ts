@@ -1,14 +1,19 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { ChannelEntity } from 'src/DomainLayer/Entities/channel.entity';
-import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
 import { CreateChannelDto } from 'src/ApplicationLayer/dto/ChannelDTOs/create-channel.dto';
-import { JournalistRepository } from 'src/InfrastructureLayer/Repositories/journalist.repository';
+import { IJournalistRepository } from 'src/InfrastructureLayer/Repositories/Interface/journalist.repository.interface';
+import { IChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/channel.repository.interface';
 
 @Injectable()
 export class CreateChannelService {
   constructor(
-    private readonly channelRepository: ChannelRepository,
-    private readonly journalistRepository: JournalistRepository,
+
+    @Inject('IJournalistRepository')
+    private readonly journalistRepository: IJournalistRepository,  
+    
+    @Inject('IChannelRepository')
+    private readonly channelRepository: IChannelRepository,  
+    
   ) {}
 
   async create(createChannelDto: CreateChannelDto): Promise<ChannelEntity> {

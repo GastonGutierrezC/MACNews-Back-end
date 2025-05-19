@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PasswordEntity } from 'src/DomainLayer/Entities/pasword.entity';
 import { JournalistEntity } from 'src/DomainLayer/Entities/journalist.entity';
+import { IJournalistRepository } from './Interface/journalist.repository.interface';
 
 @Injectable()
-export class JournalistRepository {
+export class JournalistRepository implements IJournalistRepository{
   constructor(
     @InjectRepository(JournalistEntity)
     private readonly journalistRepo: Repository<JournalistEntity>,

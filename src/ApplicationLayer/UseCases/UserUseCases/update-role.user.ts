@@ -1,21 +1,16 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from '../../dto/UserDTOs/create-user.dto'; 
-import { UserEntity } from '../../../DomainLayer/Entities/user.entity';
-import { UserRepository } from '../../../InfrastructureLayer/Repositories/user.repository';
-import { UpdateUserDto } from 'src/ApplicationLayer/dto/UserDTOs/update-user.dto';
-import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/password.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
-import { CreateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/create-all-data-user.dto';
-import { PasswordEntity } from 'src/DomainLayer/Entities/pasword.entity';
-import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
-import { UpdateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/update-all-data-user.dto';
 import { UpdateRolesDto } from 'src/ApplicationLayer/dto/RolesDTOs/update-roles.dto';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+import { IRolesRepository } from 'src/InfrastructureLayer/Repositories/Interface/roles.repository.interface';
 
 @Injectable()
 export class UpdateUserRoleService {  
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly rolesRepository: RolesRepository, 
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('IRolesRepository')
+    private readonly rolesRepository: IRolesRepository,
 ) {}
 
 async update(id: string, updateRolesDto: UpdateRolesDto) {
@@ -47,3 +42,5 @@ async update(id: string, updateRolesDto: UpdateRolesDto) {
   
   
 }
+
+

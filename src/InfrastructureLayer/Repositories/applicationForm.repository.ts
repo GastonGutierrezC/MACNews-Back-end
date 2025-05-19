@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApplicationFormEntity } from '../../DomainLayer/Entities/applicationForm.entity';
+import { IApplicationFormRepository } from './Interface/applicationForm.repository.interface';
 
 @Injectable()
-export class ApplicationFormRepository {
+export class ApplicationFormRepository implements IApplicationFormRepository {
   constructor(
     @InjectRepository(ApplicationFormEntity)
     private readonly applicationFormRepo: Repository<ApplicationFormEntity>,

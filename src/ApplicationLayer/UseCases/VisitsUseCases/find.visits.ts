@@ -1,17 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { VisitsRepository } from 'src/InfrastructureLayer/Repositories/visits.repository';
-import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
-import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { VisitCountByNewsDto } from 'src/ApplicationLayer/dto/ VisitsDTOs/visit-count-by-news.dto';
 import { VisitedNewsByUserDto } from 'src/ApplicationLayer/dto/ VisitsDTOs/visited-news-by-user.dto';
-
+import { IVisitRepository } from 'src/InfrastructureLayer/Repositories/Interface/visits.repository.interface';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
 
 @Injectable()
 export class FindVisitsService {
   constructor(
-    private readonly visitsRepository: VisitsRepository,
-    private readonly userRepository: UserRepository,
-    private readonly newsRepository: NewsRepository,
+    @Inject('IVisitRepository')
+    private readonly visitsRepository: IVisitRepository,
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('INewsRepository')
+    private readonly newsRepository: INewsRepository,    
   ) {}
 
   async getVisitedNewsByUser(userId: string): Promise<VisitedNewsByUserDto[]> {

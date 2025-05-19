@@ -1,17 +1,22 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { CreateCommentPostDto } from 'src/ApplicationLayer/dto/CommentPostDTOs/create-commentPost.dto';
 import { CommentPostEntity } from 'src/DomainLayer/Entities/commentPost.entity';
-import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
-import { CommentPostRepository } from 'src/InfrastructureLayer/Repositories/commentPost.repository';
-import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
+import { IChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/channel.repository.interface';
+import { ICommentPostRepository } from 'src/InfrastructureLayer/Repositories/Interface/commentPost.repository.interface';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
 
 
 @Injectable()
 export class CreateCommentPostService {
   constructor(
-    private readonly commentPostRepository: CommentPostRepository,
-    private readonly userRepository: UserRepository,
-    private readonly channelRepository: ChannelRepository,
+
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('ICommentPostRepository')
+    private readonly commentPostRepository: ICommentPostRepository,
+    @Inject('IChannelRepository')
+    private readonly channelRepository: IChannelRepository, 
+
   ) {}
 
   async create(createCommentPostDto: CreateCommentPostDto): Promise<CommentPostEntity> {

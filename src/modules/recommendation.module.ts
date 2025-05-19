@@ -22,7 +22,11 @@ import { UserRecommendationsController } from 'src/InterfaceAdaptersLayer/Contro
 @Module({
   imports: [TypeOrmModule.forFeature([UserRecommendationsEntity])],
   providers: [
-    UserRecommendationsRepository,
+
+    {
+      provide: 'IUserRecommendationsRepository',
+      useClass: UserRecommendationsRepository,
+    },
     CreateUserRecommendationService,
     FindUserRecommendationService,
     UpdateUserRecommendationService,
@@ -31,7 +35,10 @@ import { UserRecommendationsController } from 'src/InterfaceAdaptersLayer/Contro
     ], 
   controllers: [UserRecommendationsController],
   exports: [
-    UserRecommendationsRepository,
+    {
+      provide: 'IUserRecommendationsRepository',
+      useClass: UserRecommendationsRepository,
+    },
     CreateUserRecommendationService,
     FindUserRecommendationService,
     UpdateUserRecommendationService,

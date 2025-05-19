@@ -17,7 +17,17 @@ import { FindFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowCh
     UserModule,
   ],
   controllers: [FollowChannelController],
-  providers: [CreateFollowChannelService,FindFollowChannelService,UpdateFollowChannelService, FollowChannelRepository],
-  exports: [CreateFollowChannelService,FindFollowChannelService,UpdateFollowChannelService, FollowChannelRepository],
+  providers: [
+    {
+      provide: 'IFollowChannelRepository',
+      useClass: FollowChannelRepository,
+    },
+    CreateFollowChannelService,FindFollowChannelService,UpdateFollowChannelService],
+  exports: [
+    {
+      provide: 'IFollowChannelRepository',
+      useClass: FollowChannelRepository,
+    },
+    CreateFollowChannelService,FindFollowChannelService,UpdateFollowChannelService],
 })
 export class FollowChannelModule {}

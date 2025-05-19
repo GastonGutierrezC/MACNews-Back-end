@@ -22,8 +22,20 @@ import { FindJournalistService } from 'src/ApplicationLayer/UseCases/JournalistU
     UserModule,
 ],
   controllers: [JournalistController],
-  providers: [CreateJournalistService,UpdateJournalistService,FindJournalistService, JournalistRepository],
-  exports: [CreateJournalistService,UpdateJournalistService,FindJournalistService,JournalistRepository
+  providers: [
+    {
+      provide: 'IJournalistRepository',
+      useClass: JournalistRepository,
+    },
+    
+    CreateJournalistService,UpdateJournalistService,FindJournalistService],
+  exports: [
+    {
+      provide: 'IJournalistRepository',
+      useClass: JournalistRepository,
+    },
+    
+    CreateJournalistService,UpdateJournalistService,FindJournalistService
   ], 
 })
 export class JournalistModule {}

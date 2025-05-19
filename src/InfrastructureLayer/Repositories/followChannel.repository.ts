@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
+import { IFollowChannelRepository } from './Interface/followChannel.repository.interface';
 
 @Injectable()
-export class FollowChannelRepository {
+export class FollowChannelRepository implements IFollowChannelRepository{
   constructor(
     @InjectRepository(FollowChannelEntity)
     private readonly followChannelRepo: Repository<FollowChannelEntity>,

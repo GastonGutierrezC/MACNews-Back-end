@@ -1,13 +1,15 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { UpdateFollowChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/update-followChannel.dto';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
-import { FollowChannelRepository } from 'src/InfrastructureLayer/Repositories/followChannel.repository';
+import { IFollowChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/followChannel.repository.interface';
 
 
 @Injectable()
 export class UpdateFollowChannelService {
   constructor(
-    private readonly followChannelRepository: FollowChannelRepository,
+    @Inject('IFollowChannelRepository')
+    private readonly followChannelRepository: IFollowChannelRepository,
+      
   ) {}
 
   async update(FollowChannelID: string, updateFollowChannelDto: UpdateFollowChannelDto): Promise<FollowChannelEntity> {

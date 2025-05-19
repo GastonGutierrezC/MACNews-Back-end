@@ -15,7 +15,17 @@ import { JournalistModule } from './journalist.module';
     JournalistModule, 
   ],
   controllers: [ChannelController],
-  providers: [UpdateChannelService,CreateChannelService,FindChannelService, ChannelRepository],
-  exports: [UpdateChannelService,CreateChannelService,FindChannelService, ChannelRepository],
+  providers: [
+    {
+      provide: 'IChannelRepository',
+      useClass: ChannelRepository,
+    },    
+    UpdateChannelService,CreateChannelService,FindChannelService],
+  exports: [
+    {
+      provide: 'IChannelRepository',
+      useClass: ChannelRepository,
+    }, 
+    UpdateChannelService,CreateChannelService,FindChannelService],
 })
 export class ChannelModule {}

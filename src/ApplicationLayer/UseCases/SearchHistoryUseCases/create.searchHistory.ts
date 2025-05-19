@@ -1,16 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSearchHistoryDto } from 'src/ApplicationLayer/dto/SearchHistoryDTOs/create-searchHistory.dto';
-import { SearchHistoryEntity } from 'src/DomainLayer/Entities/SearchHistory.entity';
-import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
-import { SearchHistoryRepository } from 'src/InfrastructureLayer/Repositories/searchHistory.repository';
-import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
+import { IPersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/Interfaces/personalizedRecommendations.intelligentAgent.interface';
+import { ISearchHistoryRepository } from 'src/InfrastructureLayer/Repositories/Interface/searchHistory.repository.interface';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+
 
 @Injectable()
 export class CreateSearchHistoryService {
   constructor(
-    private readonly searchHistoryRepository: SearchHistoryRepository,
-    private readonly userRepository: UserRepository,
-    private readonly personalizedAgent: PersonalizedRecommendationsAgent, 
+    @Inject('ISearchHistoryRepository')
+    private readonly searchHistoryRepository: ISearchHistoryRepository,
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('IPersonalizedRecommendationsAgent')
+    private readonly personalizedAgent: IPersonalizedRecommendationsAgent, 
   ) {}
 
 

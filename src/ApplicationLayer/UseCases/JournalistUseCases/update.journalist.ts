@@ -1,16 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateJournalistDto } from 'src/ApplicationLayer/dto/JournalistDTOs/update-journalist.dto';
 import { JournalistEntity } from 'src/DomainLayer/Entities/journalist.entity';
-import { JournalistRepository } from 'src/InfrastructureLayer/Repositories/journalist.repository';
-
+import { IJournalistRepository } from 'src/InfrastructureLayer/Repositories/Interface/journalist.repository.interface';
 
 @Injectable()
 export class UpdateJournalistService {
   constructor(
-    private readonly journalistRepository : JournalistRepository,
+    @Inject('IJournalistRepository')
+    private readonly journalistRepository: IJournalistRepository,  
   ) {}
-
-
 
   async update(journalistID: string, updateJournalistDto: UpdateJournalistDto): Promise<JournalistEntity> {
     const journalist = await this.journalistRepository.findById(journalistID);
