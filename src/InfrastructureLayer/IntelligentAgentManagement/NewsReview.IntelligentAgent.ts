@@ -2,9 +2,10 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { CreateNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/create-news.dto';
 import { AgentResponse } from './DTO.IntelligentAgent/NewsReview/agent-response.dto';
+import { INewsReviewIntelligentAgent } from './Interfaces/newsReview.intelligentAgent.interface';
 
 @Injectable()
-export class NewsReviewIntelligentAgent {
+export class NewsReviewIntelligentAgent implements INewsReviewIntelligentAgent {
   private readonly agentUrl = 'http://localhost:5678/webhook/a5c159fc-8c26-4a69-8912-98f29a1b1913';
 
   async sendNewsForReview(newsDto: CreateNewsDto): Promise<AgentResponse> {

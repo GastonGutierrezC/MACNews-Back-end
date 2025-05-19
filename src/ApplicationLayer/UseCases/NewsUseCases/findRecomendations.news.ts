@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
+import { Inject, Injectable } from '@nestjs/common';
 import { FindVisitsService } from '../VisitsUseCases/find.visits';
 import { NewsCardDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-card.dto';
 import { FindUserRecommendationService } from '../UserRecommendationsCases/find.recommendations';
+import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
 
 @Injectable()
 export class FindRecommendationsNewsService {
   constructor(
     private readonly findUserRecommendationService: FindUserRecommendationService,
-    private readonly newsRepository: NewsRepository,
+    @Inject('INewsRepository')
+    private readonly newsRepository: INewsRepository,
     private readonly findVisitsService: FindVisitsService,
   ) {}
 

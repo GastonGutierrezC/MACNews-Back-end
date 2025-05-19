@@ -1,12 +1,14 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { ChannelEntity } from 'src/DomainLayer/Entities/channel.entity';
-import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
 import { UpdateChannelDto } from 'src/ApplicationLayer/dto/ChannelDTOs/update-channel.dto';
+import { IChannelRepository } from 'src/InfrastructureLayer/Repositories/Interface/channel.repository.interface';
 
 @Injectable()
 export class UpdateChannelService {
   constructor(
-    private readonly channelRepository: ChannelRepository,
+    @Inject('IChannelRepository')
+    private readonly channelRepository: IChannelRepository, 
+
   ) {}
 
   async update(ChannelID: string, updateChannelDto: UpdateChannelDto): Promise<ChannelEntity> {

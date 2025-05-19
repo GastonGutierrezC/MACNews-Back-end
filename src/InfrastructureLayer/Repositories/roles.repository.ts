@@ -2,15 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
+import { IRolesRepository } from './Interface/roles.repository.interface';
 
 @Injectable()
-export class RolesRepository {
+export class RolesRepository implements IRolesRepository {
   constructor(
     @InjectRepository(RolesEntity)
     private readonly rolesRepo: Repository<RolesEntity>,
   ) {}
 
-  async findAll(): Promise<RolesEntity[]> { 
+  async findAll(): Promise<RolesEntity[]>{ 
     return await this.rolesRepo.find();
   }
 

@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { ElasticSearchResponseDto } from 'src/ApplicationLayer/dto/NewsDTOs/elastic-search-response.dto';
 import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
+import { IElasticsearchService } from './Interfaces/elasticsearchService.elasticsearch.interface';
 
 @Injectable()
-export class ElasticsearchService {
+export class ElasticsearchService implements IElasticsearchService{
   private readonly baseUrl: string;
 
   constructor() {

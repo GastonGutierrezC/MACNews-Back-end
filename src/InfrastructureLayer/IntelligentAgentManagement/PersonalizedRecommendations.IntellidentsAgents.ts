@@ -1,9 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { RecommendationAgentResponse } from './DTO.IntelligentAgent/PersonalizedRecommendations/agent-response.dto';
+import { IPersonalizedRecommendationsAgent } from './Interfaces/personalizedRecommendations.intelligentAgent.interface';
 
 @Injectable()
-export class PersonalizedRecommendationsAgent {
+export class PersonalizedRecommendationsAgent implements IPersonalizedRecommendationsAgent{
   private readonly agentUrl =
     'https://singular-deadly-ape.ngrok-free.app/webhook/41f25aa9-6c64-4697-ac94-b9ac048b0b44';
 

@@ -1,17 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserEntity } from '../../../DomainLayer/Entities/user.entity';
-import { UserRepository } from '../../../InfrastructureLayer/Repositories/user.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { FindUserDto } from 'src/ApplicationLayer/dto/UserDTOs/get-user.dto';
-import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
-import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/password.repository';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+import { IRolesRepository } from 'src/InfrastructureLayer/Repositories/Interface/roles.repository.interface';
+import { IPasswordRepository } from 'src/InfrastructureLayer/Repositories/Interface/password.repository.interface';
 
 @Injectable()
 export class FindUserService {  
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly rolesRepository: RolesRepository,
-    private readonly passwordRepository: PasswordRepository, 
-    
+
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('IRolesRepository')
+    private readonly rolesRepository: IRolesRepository,
+    @Inject('IPasswordRepository')
+    private readonly passwordRepository: IPasswordRepository,    
   ) {}
 
   async findUser(UserID: string): Promise<FindUserDto> {

@@ -1,18 +1,22 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { CreateApplicationFormDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/create-applicationForm.dto';
 import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.entity';
 import { ApplicationAgentResponse } from 'src/InfrastructureLayer/IntelligentAgentManagement/DTO.IntelligentAgent/JurnalistApplications/agent-response.dto';
-import { JournalistApplicationsIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/jurnalistApplications.IntelligentAgent';
-import { ApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/applicationForm.repository';
-import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
+import { IJournalistApplicationsIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/Interfaces/journalistApplications.intelligentAgent.interface';
+import { IApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/Interface/applicationForm.repository.interface';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+
 
 
 @Injectable()
 export class CreateApplicationFormService {
   constructor(
-    private readonly applicationFormRepository: ApplicationFormRepository,
-    private readonly userRepository: UserRepository, 
-    private readonly intelligentAgent: JournalistApplicationsIntelligentAgent,
+    @Inject('IApplicationFormRepository')
+    private readonly applicationFormRepository: IApplicationFormRepository,
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('IJournalistApplicationsIntelligentAgent')
+    private readonly intelligentAgent: IJournalistApplicationsIntelligentAgent,
   ) {}
 
   async create(createApplicationFormDto: CreateApplicationFormDto): Promise<ApplicationFormEntity> {

@@ -1,15 +1,16 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-
-import { UserRepository } from '../../../InfrastructureLayer/Repositories/user.repository';
-import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/password.repository';
-
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { UpdateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/update-all-data-user.dto';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+import { IPasswordRepository } from 'src/InfrastructureLayer/Repositories/Interface/password.repository.interface';
 
 @Injectable()
 export class UpdateUserService {  
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly passwordRepository: PasswordRepository, 
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('IPasswordRepository')
+    private readonly passwordRepository: IPasswordRepository, 
+
   ) {}
 
   async update(id: string, updateUserWithPasswordDto: UpdateUserWithPasswordDto) {

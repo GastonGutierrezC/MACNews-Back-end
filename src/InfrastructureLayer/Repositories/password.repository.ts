@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PasswordEntity } from 'src/DomainLayer/Entities/pasword.entity';
+import { IPasswordRepository } from './Interface/password.repository.interface';
 
 @Injectable()
-export class PasswordRepository {
+export class PasswordRepository implements IPasswordRepository {
   constructor(
     @InjectRepository(PasswordEntity)
     private readonly passwordRepo: Repository<PasswordEntity>,

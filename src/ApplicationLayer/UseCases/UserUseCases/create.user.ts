@@ -1,22 +1,22 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { UserRepository } from '../../../InfrastructureLayer/Repositories/user.repository';
-import { PasswordRepository } from 'src/InfrastructureLayer/Repositories/password.repository';
-import { CreatePasswordDto } from 'src/ApplicationLayer/dto/PasswordDTOs/create-password.dto';
+import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { CreateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/create-all-data-user.dto';
 import { PasswordEntity } from 'src/DomainLayer/Entities/pasword.entity';
-import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
-import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
-
 import { CreateUserResponseDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user-response.dto';
 import { CreateUserRecommendationService } from '../UserRecommendationsCases/create.recommendations';
 import { CreateUserRecommendationDto } from 'src/ApplicationLayer/dto/UserRecommendationsDTOs/CreateUserRecommendationDto';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+import { IRolesRepository } from 'src/InfrastructureLayer/Repositories/Interface/roles.repository.interface';
+import { IPasswordRepository } from 'src/InfrastructureLayer/Repositories/Interface/password.repository.interface';
 
 @Injectable()
 export class CreateUserService {
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly passwordRepository: PasswordRepository,
-    private readonly rolesReposotory: RolesRepository,
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('IPasswordRepository')
+    private readonly passwordRepository: IPasswordRepository,
+    @Inject('IRolesRepository')
+    private readonly rolesReposotory: IRolesRepository,
     private readonly createRecommendationService: CreateUserRecommendationService, // 👈 nuevo servicio inyectado
 
   ) {}

@@ -1,16 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { VisitsEntity } from 'src/DomainLayer/Entities/visits.entity';
-import { VisitsRepository } from 'src/InfrastructureLayer/Repositories/visits.repository';
-import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
-import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
 import { CreateVisitsDto } from 'src/ApplicationLayer/dto/ VisitsDTOs/create-visits.dto';
+import { IVisitRepository } from 'src/InfrastructureLayer/Repositories/Interface/visits.repository.interface';
+import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
+import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
 
 @Injectable()
 export class CreateVisitsService {
   constructor(
-    private readonly visitsRepository: VisitsRepository,
-    private readonly userRepository: UserRepository,
-    private readonly newsRepository: NewsRepository,
+    @Inject('IVisitRepository')
+    private readonly visitsRepository: IVisitRepository,
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
+    @Inject('INewsRepository')
+    private readonly newsRepository: INewsRepository,
   ) {}
 
   async create(createVisitsDto: CreateVisitsDto): Promise<VisitsEntity> {

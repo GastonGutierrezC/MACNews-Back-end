@@ -1,12 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { FindSearchHistoryDto } from 'src/ApplicationLayer/dto/SearchHistoryDTOs/find-searchHistory.dto';
-import { SearchHistoryEntity } from 'src/DomainLayer/Entities/SearchHistory.entity';
-import { SearchHistoryRepository } from 'src/InfrastructureLayer/Repositories/searchHistory.repository';
+import { ISearchHistoryRepository } from 'src/InfrastructureLayer/Repositories/Interface/searchHistory.repository.interface';
 
 @Injectable()
 export class FindSearchHistoryService {
   constructor(
-    private readonly searchHistoryRepository: SearchHistoryRepository,
+    @Inject('ISearchHistoryRepository')
+    private readonly searchHistoryRepository: ISearchHistoryRepository,
+
   ) {}
 
   async findByUserId(userId: string): Promise<FindSearchHistoryDto[]> {

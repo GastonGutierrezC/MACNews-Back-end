@@ -1,17 +1,17 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { UpdateApplicationFormVerificationDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/update-applicationForm-Verification.dto';
 import { UpdateApplicationFormDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/update-applicationForm.dto';
 import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.entity';
-import { ApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/applicationForm.repository';
+import { IApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/Interface/applicationForm.repository.interface';
 
 
 @Injectable()
 export class UpdateApplicationFormService {
   constructor(
-    private readonly applicationFormRepository: ApplicationFormRepository,
+    @Inject('IApplicationFormRepository')
+    private readonly applicationFormRepository: IApplicationFormRepository,
+    
   ) {}
-
-
 
   async update(applicationFormID: string, updateApplicationFormDto: UpdateApplicationFormDto): Promise<ApplicationFormEntity> {
     const applicationForm = await this.applicationFormRepository.findById(applicationFormID);
