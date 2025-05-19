@@ -12,6 +12,15 @@ CREATE TABLE IF NOT EXISTS User (
     RegistrationDate DATE DEFAULT (NOW())
 );
 
+CREATE TABLE IF NOT EXISTS UserRecommendations (
+    RecommendationID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    UserID CHAR(36) NOT NULL,
+    NewsArticleIDs JSON NOT NULL,
+    GeneratedAt DATETIME DEFAULT (NOW()), 
+    IsActive BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS Passwords (
     PasswordID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     UserID CHAR(36) NOT NULL UNIQUE,
@@ -62,7 +71,6 @@ CREATE TABLE IF NOT EXISTS Channel (
     DescriptionChannel TEXT NOT NULL,
     Specialties ENUM('Investigative', 'Interview', 'Opinion', 'Interpretive', 'Data', 'Social', 'Political', 'Scientific', 'Entertainment', 'Business') NOT NULL,
     ChannelImageURL VARCHAR(255) DEFAULT NULL,
-
     CONSTRAINT FK_Channel_Journalist FOREIGN KEY (JournalistID) REFERENCES Journalist(JournalistID) ON DELETE CASCADE
 );
 

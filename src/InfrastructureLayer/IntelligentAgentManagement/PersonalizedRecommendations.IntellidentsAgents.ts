@@ -4,7 +4,8 @@ import { RecommendationAgentResponse } from './DTO.IntelligentAgent/Personalized
 
 @Injectable()
 export class PersonalizedRecommendationsAgent {
-  private readonly agentUrl = 'https://enjoyed-busy-scorpion.ngrok-free.app/webhook/41f25aa9-6c64-4697-ac94-b9ac048b0b44';
+  private readonly agentUrl =
+    'https://singular-deadly-ape.ngrok-free.app/webhook/41f25aa9-6c64-4697-ac94-b9ac048b0b44';
 
   async getRecommendations(userId: string): Promise<RecommendationAgentResponse> {
     try {
@@ -15,11 +16,10 @@ export class PersonalizedRecommendationsAgent {
 
       if (
         !response.data ||
-        !response.data.sugerencias ||
-        !Array.isArray(response.data.sugerencias)
+        !Array.isArray(response.data.NewsArticleIDs)
       ) {
         console.warn('⚠️ Formato inesperado recibido del agente. Retornando lista vacía.');
-        return { sugerencias: [] };
+        return { NewsArticleIDs: [] };
       }
 
       return response.data;

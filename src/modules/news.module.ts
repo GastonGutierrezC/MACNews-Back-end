@@ -12,11 +12,13 @@ import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/Ne
 import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 import { VisitsModule } from './visits.module'; // <-- Asegurate de que este módulo exporta FindVisitsService
 import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
+import { RecommendationModule } from './recommendation.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([NewsEntity]),  
     ChannelModule, 
+    RecommendationModule,
     forwardRef(() => VisitsModule), // ✅ también aquí
   ],
   controllers: [NewsController],  

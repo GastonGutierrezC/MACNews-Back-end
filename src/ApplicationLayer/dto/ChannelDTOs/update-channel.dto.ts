@@ -26,7 +26,7 @@ export class UpdateChannelDto {
   })  
   @IsEnum(ChannelSpecialties)
   @IsOptional()
-  Categories?: ChannelSpecialties;
+  Specialties?: ChannelSpecialties;
 
   @ApiProperty({
     description: 'channel image',

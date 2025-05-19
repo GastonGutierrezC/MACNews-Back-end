@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSearchHistoryDto } from 'src/ApplicationLayer/dto/SearchHistoryDTOs/create-searchHistory.dto';
 import { SearchHistoryEntity } from 'src/DomainLayer/Entities/SearchHistory.entity';
+import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 import { SearchHistoryRepository } from 'src/InfrastructureLayer/Repositories/searchHistory.repository';
 import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
 
@@ -9,6 +10,7 @@ export class CreateSearchHistoryService {
   constructor(
     private readonly searchHistoryRepository: SearchHistoryRepository,
     private readonly userRepository: UserRepository,
+    private readonly personalizedAgent: PersonalizedRecommendationsAgent, 
   ) {}
 
 
@@ -31,8 +33,19 @@ export class CreateSearchHistoryService {
       ...createSearchHistoryDto,
       User: user,
     });
+
+    (async () => {
+      try {
+        await this.personalizedAgent.getRecommendations(createSearchHistoryDto.UserID);
+      } catch (error) {
+        console.warn(
+          `⚠️ No se pudo ejecutar el agente de recomendaciones para el usuario ${createSearchHistoryDto.UserID}:`,
+          error.message,
+        );
+      }
+    })();
   
-    return true;  // Se regresa true si el guardado fue exitoso
+    return true;
   }
   
 }

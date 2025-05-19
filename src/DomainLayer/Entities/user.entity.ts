@@ -4,6 +4,7 @@ import { PasswordEntity } from './pasword.entity';
 import { RolesEntity } from './roles.entity';
 import { FollowChannelEntity } from './followChannel.entity';
 import { SearchHistoryEntity } from './SearchHistory.entity';
+import { UserRecommendationsEntity } from './userRecommendations.entity';
 
 @Entity({ name: 'User' })
 export class UserEntity {
@@ -42,4 +43,7 @@ export class UserEntity {
 
   @OneToMany(() => SearchHistoryEntity, (search) => search.User) 
   searchHistory: SearchHistoryEntity[];
+
+  @OneToMany(() => UserRecommendationsEntity, (recommendation) => recommendation.user)
+recommendations: UserRecommendationsEntity[];
 }

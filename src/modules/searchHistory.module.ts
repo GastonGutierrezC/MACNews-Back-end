@@ -7,6 +7,7 @@ import { SearchHistoryRepository } from 'src/InfrastructureLayer/Repositories/se
 import { CreateSearchHistoryService } from 'src/ApplicationLayer/UseCases/SearchHistoryUseCases/create.searchHistory';
 import { FindSearchHistoryService } from 'src/ApplicationLayer/UseCases/SearchHistoryUseCases/find.searchHistory';
 import { SearchHistoryEntity } from 'src/DomainLayer/Entities/SearchHistory.entity';
+import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 
 @Module({
   imports: [
@@ -15,11 +16,13 @@ import { SearchHistoryEntity } from 'src/DomainLayer/Entities/SearchHistory.enti
   ],
   controllers: [SearchHistoryController],
   providers: [
+    PersonalizedRecommendationsAgent,
     CreateSearchHistoryService,
     FindSearchHistoryService,
     SearchHistoryRepository,
   ],
   exports: [
+    PersonalizedRecommendationsAgent,
     CreateSearchHistoryService,
     FindSearchHistoryService,
     SearchHistoryRepository,
