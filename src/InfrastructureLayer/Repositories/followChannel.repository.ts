@@ -12,7 +12,7 @@ export class FollowChannelRepository implements IFollowChannelRepository{
   ) {}
 
   async findAll(): Promise<FollowChannelEntity[]> { 
-    return await this.followChannelRepo.find({ relations: ['User', 'Channel'] });
+    return await this.followChannelRepo.find({ relations: ['User', 'Channel','Channel.Journalist', 'Channel.Journalist.User'] });
   }     
 
   async findById(FollowChannelID: string): Promise<FollowChannelEntity | undefined> {

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/create.followChannel';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
@@ -13,7 +13,7 @@ import { FindFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowCh
 @Module({
   imports: [
     TypeOrmModule.forFeature([FollowChannelEntity]),
-    ChannelModule, 
+    forwardRef(() => ChannelModule),
     UserModule,
   ],
   controllers: [FollowChannelController],

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChannelEntity } from '../DomainLayer/Entities/channel.entity';
 import { ChannelRepository } from 'src/InfrastructureLayer/Repositories/channel.repository';
@@ -7,12 +7,17 @@ import { CreateChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCa
 import { FindChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCases/find.channel';
 import { UpdateChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCases/update.channel';
 import { JournalistModule } from './journalist.module';
+import { FollowChannelModule } from './followChannel.module';
+import { NewsModule } from './news.module';
 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ChannelEntity]),
     JournalistModule, 
+  
+    forwardRef(() => FollowChannelModule),
+    forwardRef(() => NewsModule),
   ],
   controllers: [ChannelController],
   providers: [

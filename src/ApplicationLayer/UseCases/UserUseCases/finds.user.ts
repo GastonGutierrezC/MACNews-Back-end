@@ -37,6 +37,7 @@ export class FindUserService {
         UserEmail: user.UserEmail,
         UserImageURL: user.UserImageURL,
         PasswordUser: passwordUser,
+        RoleAssigned: roleAssigned
      
     };
 }
@@ -67,6 +68,7 @@ async findUserByEmailAndPassword(email: string, password: string): Promise<FindU
       UserEmail: user.UserEmail,
       UserImageURL: user.UserImageURL,
       PasswordUser: userPassword.PasswordUser,
+      RoleAssigned: roleAssigned
   };
 }
 

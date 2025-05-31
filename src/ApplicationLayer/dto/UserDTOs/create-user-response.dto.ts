@@ -7,5 +7,6 @@ export class CreateUserResponseDto {
     UserEmail: string;
     UserImageURL: string;
     PasswordUser: string;
+    RoleAssigned: string;
   }
   

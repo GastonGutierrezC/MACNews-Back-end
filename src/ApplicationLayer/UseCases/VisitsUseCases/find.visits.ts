@@ -4,6 +4,7 @@ import { VisitedNewsByUserDto } from 'src/ApplicationLayer/dto/ VisitsDTOs/visit
 import { IVisitRepository } from 'src/InfrastructureLayer/Repositories/Interface/visits.repository.interface';
 import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
 import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
+import { NewsCategory } from 'src/DomainLayer/Entities/news.entity';
 
 @Injectable()
 export class FindVisitsService {
@@ -25,11 +26,19 @@ export class FindVisitsService {
     const visits = await this.visitsRepository.findAll();
     const userVisits = visits.filter((visit) => visit.User?.UserID === userId && visit.News);
   
+    if (userVisits.length === 0) {
+      return [{
+        Title: 'not news',
+        Category:'not news',
+      }];
+    }
+  
     return userVisits.map((visit) => ({
       Title: visit.News.Title,
       Category: visit.News.Categories,
     }));
   }
+  
   
 
   async getVisitCountByNews(newsId: string): Promise<VisitCountByNewsDto> {

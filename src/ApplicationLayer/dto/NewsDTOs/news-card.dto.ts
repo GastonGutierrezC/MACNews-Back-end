@@ -11,6 +11,7 @@ export class NewsCardDto {
       ChannelImageURL: string;
     };
     VisitCount: number; 
+    CreatorFullName: string;
 
   }
   

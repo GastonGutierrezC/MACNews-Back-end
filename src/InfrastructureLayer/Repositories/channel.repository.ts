@@ -12,11 +12,13 @@ export class ChannelRepository implements IChannelRepository {
   ) {}
 
   async findAll(): Promise<ChannelEntity[]> { 
-    return await this.channelRepo.find({ relations: ['Journalist'] });
-  }     
+    return await this.channelRepo.find({
+      relations: ['Journalist', 'Journalist.User'],
+    });
+  }       
 
   async findById(ChannelID: string): Promise<ChannelEntity | undefined> {
-    return await this.channelRepo.findOne({ where: { ChannelID } });
+    return await this.channelRepo.findOne({ where: { ChannelID },relations: ['Journalist', 'Journalist.User'], });
   }
   
 

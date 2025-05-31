@@ -40,7 +40,7 @@ export class CreateUserService {
     };
     const createdPassword: PasswordEntity = await this.passwordRepository.create(passwordData);
 
-    await this.rolesReposotory.create({ UserID: createdUser.UserID });
+    const createRole = await this.rolesReposotory.create({ UserID: createdUser.UserID });
 
     const recommendationData: CreateUserRecommendationDto = {
       UserID: createdUser.UserID,
@@ -54,6 +54,7 @@ export class CreateUserService {
       UserEmail: createdUser.UserEmail,
       UserImageURL: createdUser.UserImageURL,
       PasswordUser: createdPassword.PasswordUser,
+      RoleAssigned: createRole.RoleAssigned,
     };
 
     return response;
