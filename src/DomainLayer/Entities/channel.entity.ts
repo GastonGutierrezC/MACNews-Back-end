@@ -31,8 +31,13 @@ export class ChannelEntity {
   @Column({ type: 'text' })
   DescriptionChannel: string;
 
-  @Column({ type: 'enum', enum: ChannelSpecialties })
-  Specialties: ChannelSpecialties;
+
+  @Column({
+    type: 'set',
+    enum: ChannelSpecialties,
+    enumName: 'channel_specialties',
+    })
+    Specialties: ChannelSpecialties[];
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   ChannelImageURL: string;

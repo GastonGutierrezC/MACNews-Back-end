@@ -3,6 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
   Inject,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
 import { CreateNewsDto } from '../../dto/NewsDTOs/create-news.dto';
@@ -26,7 +27,7 @@ export class CreateNewsService {
     private readonly elasticsearchService: IElasticsearchService,
   ) {}
 
-  async create(createNewsDto: CreateNewsDto): Promise<NewsEntity> {
+  async create(createNewsDto: CreateNewsDto): Promise<boolean> {
     const channel = await this.channelRepository.findById(createNewsDto.ChannelID);
     if (!channel) {
       throw new NotFoundException(`Channel with ID ${createNewsDto.ChannelID} not found`);
@@ -34,25 +35,25 @@ export class CreateNewsService {
 
     const aiReview = await this.newsReviewAgent.sendNewsForReview(createNewsDto);
 
-     if ('violations' in aiReview && !aiReview.compliance) {
-      throw new BadRequestException({
+    if ('violations' in aiReview && !aiReview.compliance) {
+      throw new UnprocessableEntityException({
         message: 'La noticia no cumple con los principios éticos.',
         violations: aiReview.violations,
       });
     }
 
-   const newsDocument: NewsDocumentDto = {
-    Title: createNewsDto.Title,
-    ShortDescription: createNewsDto.ShortDescription,
-    PublicationDate: createNewsDto.PublicationDate,
-    NewsImageURL: createNewsDto.NewsImageURL,
-    Categories: createNewsDto.Categories,
-    Channel: {
-      ChannelID: channel.ChannelID,
-      ChannelName: channel.ChannelName,
-      ChannelImageURL: channel.ChannelImageURL,
-    },
-  };
+    const newsDocument: NewsDocumentDto = {
+      Title: createNewsDto.Title,
+      ShortDescription: createNewsDto.ShortDescription,
+      PublicationDate: createNewsDto.PublicationDate,
+      NewsImageURL: createNewsDto.NewsImageURL,
+      Categories: createNewsDto.Categories,
+      Channel: {
+        ChannelID: channel.ChannelID,
+        ChannelName: channel.ChannelName,
+        ChannelImageURL: channel.ChannelImageURL,
+      },
+    };
 
     const news = await this.newsRepository.create({
       ...createNewsDto,
@@ -60,14 +61,12 @@ export class CreateNewsService {
     });
 
     try {
-      
-      await this.elasticsearchService.indexDocument('news', news.NewsId, newsDocument); 
+      await this.elasticsearchService.indexDocument('news', news.NewsId, newsDocument);
       console.log('Noticia indexada en Elasticsearch');
     } catch (error) {
       console.error('Error al indexar noticia en Elasticsearch:', error);
     }
-    
 
-    return news;
+    return true;
   }
 }

@@ -13,6 +13,7 @@ import { NewsCategory, NewsEntity } from 'src/DomainLayer/Entities/news.entity';
 import { Query } from '@nestjs/common';
 import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
 import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
+import { NewsDetailDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-detail.dto';
 
 @ApiTags('News')
 @Controller('news')
@@ -30,7 +31,7 @@ export class NewsController {
   @ApiBody({
     type: CreateNewsDto,
   })   
-  async create(@Body() createNewsDto: CreateNewsDto): Promise<NewsEntity> {
+  async create(@Body() createNewsDto: CreateNewsDto): Promise<boolean> {
     return this.createNewsService.create(createNewsDto);
   }
 
@@ -42,6 +43,28 @@ export class NewsController {
   async update(@Param('id') NewsId: string, @Body() updateNewsDto: UpdateStatusNewsDto): Promise<NewsEntity> {
     return this.updateNewsService.update(NewsId, updateNewsDto);
   }
+
+  @Get('title/:title/date/:date')
+  @ApiOperation({ summary: 'Get a single news by title and publication date' })
+  async getByTitleAndDate(
+    @Param('title') title: string,
+    @Param('date') date: string, // formato esperado: YYYY-MM-DD
+  ): Promise<NewsDetailDto> {
+    return this.findNewsService.getByTitleAndDate(title, date);
+  }
+  
+
+
+
+    @Get('channel/:channelId/category/:category')
+  @ApiOperation({ summary: 'Get top 5 news by channel and category' })
+  async getTop5ByChannelAndCategory(
+    @Param('channelId') channelId: string,
+    @Param('category') category: NewsCategory,
+  ): Promise<NewsCardDto[]> {
+    return this.findNewsService.getTop5ByChannelAndCategory(channelId, category);
+  }
+  
 
   @Get('card')
   @ApiOperation({ summary: 'Get all news formatted for card view with pagination' })
@@ -101,7 +124,7 @@ export class NewsController {
 
   @Get('channel/:channel')
   @ApiOperation({ summary: 'Get the news by channel ID' })
-  async getByChannel(@Param('channel') channelId: string): Promise<NewsEntity[]> {
+  async getByChannel(@Param('channel') channelId: string): Promise<NewsCardDto[]> {
     return this.findNewsService.getByChannelId(channelId);
   }
 
@@ -128,6 +151,7 @@ export class NewsController {
   }
 
 
+  
   
 
 }

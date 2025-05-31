@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Patch, Param, Body } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateFollowChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/create-followChannel.dto';
+import { FollowedChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/followed-channel.dto';
 import { UpdateFollowChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/update-followChannel.dto';
 import { CreateFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/create.followChannel';
 import { FindFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/find.followChannel';
@@ -21,7 +22,7 @@ export class FollowChannelController {
   @ApiBody({
     type: CreateFollowChannelDto,
   })    
-  async createChannel(@Body() createFollowChannelDto: CreateFollowChannelDto): Promise<FollowChannelEntity> {
+  async createChannel(@Body() createFollowChannelDto: CreateFollowChannelDto): Promise<boolean> {
     return await this.createFollowChannelService.create(createFollowChannelDto);
   }
 
@@ -42,7 +43,14 @@ export class FollowChannelController {
 
   @Get('user/:userId')
   @ApiOperation({ summary: 'Get all followed channels by a user' })
-  async getFollowedChannelsByUser(@Param('userId') UserID: string): Promise<FollowChannelEntity[]> {
+  async getFollowedChannelsByUser(@Param('userId') UserID: string): Promise<FollowedChannelDto[]> {
     return await this.getFollowChannelService.getByUserId(UserID);
+  }
+
+  @Get('count/:channelId')
+  @ApiOperation({ summary: 'Get follower count for a channel by ChannelID' })
+  async getFollowersCountByChannel(@Param('channelId') channelId: string): Promise<{ followers: number }> {
+    const followers = await this.getFollowChannelService.getFollowersCountByChannelId(channelId);
+    return { followers };
   }
 }

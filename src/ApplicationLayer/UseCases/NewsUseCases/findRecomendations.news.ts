@@ -23,6 +23,11 @@ export class FindRecommendationsNewsService {
       const news = await this.newsRepository.findById(newsId);
       if (news) {
         const visitData = await this.findVisitsService.getVisitCountByNews(news.NewsId);
+        const user = news.Channel.Journalist?.User;
+        const creatorFullName = user
+          ? `${user.UserFirstName} ${user.UserLastName}`
+          : 'Nombre no disponible';
+        
         newsCards.push({
           NewsId: news.NewsId,
           Title: news.Title,
@@ -35,6 +40,7 @@ export class FindRecommendationsNewsService {
             ChannelImageURL: news.Channel.ChannelImageURL,
           },
           VisitCount: visitData.visitCount,
+          CreatorFullName: creatorFullName
         });
       }
     }

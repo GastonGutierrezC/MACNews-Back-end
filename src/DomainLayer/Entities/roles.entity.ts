@@ -4,7 +4,8 @@ import { UserEntity } from './user.entity';
 
 export enum RoleAssigned {
     Reader = 'Reader',
-    Administrator = 'Administrator'
+    Administrator = 'Administrator',
+    Journalist = 'Journalist'
   }
 
 @Entity({ name: 'Roles' })

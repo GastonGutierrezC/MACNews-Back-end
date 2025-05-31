@@ -1,37 +1,45 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEnum, IsOptional, IsUrl } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsUrl,
+  IsArray,
+} from 'class-validator';
 import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
 
 export class UpdateChannelDto {
-
   @ApiProperty({
-    description: 'channel name',
+    description: 'Channel name',
     example: 'channel name',
-  })    
+  })
   @IsString()
   @IsOptional()
   ChannelName?: string;
 
   @ApiProperty({
-    description: 'channel description',
+    description: 'Channel description',
     example: 'channel description',
-  })  
+  })
   @IsString()
   @IsOptional()
   DescriptionChannel?: string;
 
   @ApiProperty({
-    description: 'Channel categories',
-    example: 'Investigative',
-  })  
-  @IsEnum(ChannelSpecialties)
+    description: 'Channel specialties',
+    example: ['Opinion', 'Interpretive'],
+    isArray: true,
+    enum: ChannelSpecialties,
+  })
+  @IsArray()
+  @IsEnum(ChannelSpecialties, { each: true })
   @IsOptional()
-  Specialties?: ChannelSpecialties;
+  Specialties?: ChannelSpecialties[];
 
   @ApiProperty({
-    description: 'channel image',
+    description: 'Channel image URL',
     example: 'http://example.com/profile.jpg',
-  })  
+  })
   @IsUrl()
   @IsOptional()
   ChannelImageURL?: string;

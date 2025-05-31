@@ -12,11 +12,11 @@ export class NewsRepository implements INewsRepository{
   ) {}
 
   async findAll(): Promise<NewsEntity[]> {
-    return await this.newsRepo.find({ relations: ['Channel'] });
+    return await this.newsRepo.find({ relations: ['Channel','Channel.Journalist', 'Channel.Journalist.User'] });
   }
 
   async findById(NewsId: string): Promise<NewsEntity | undefined> {
-    return await this.newsRepo.findOne({ where: { NewsId }, relations: ['Channel'] });
+    return await this.newsRepo.findOne({ where: { NewsId }, relations: ['Channel','Channel.Journalist', 'Channel.Journalist.User'] });
   }
 
   async create(newsData: Partial<NewsEntity>): Promise<NewsEntity> {

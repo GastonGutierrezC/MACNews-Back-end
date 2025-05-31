@@ -16,8 +16,9 @@ import { RecommendationModule } from './recommendation.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([NewsEntity]),  
-    ChannelModule, 
+    
     RecommendationModule,
+    forwardRef(() => ChannelModule),
     forwardRef(() => VisitsModule), // ✅ también aquí
   ],
   controllers: [NewsController],  

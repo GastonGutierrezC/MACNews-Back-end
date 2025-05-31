@@ -18,4 +18,10 @@ export class NewsTopDto {
     example: 'NewsImageURL',
   })
   NewsImageURL: string;
+
+    @ApiProperty({
+      description: 'Publication Date news',
+      example: '2025-03-21',
+    })  
+    PublicationDate: string;
 }

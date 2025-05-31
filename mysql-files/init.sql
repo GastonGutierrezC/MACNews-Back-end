@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS Passwords (
 CREATE TABLE IF NOT EXISTS Roles (
     RolID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     UserID CHAR(36) NOT NULL UNIQUE,
-    RoleAssigned ENUM('Reader', 'Administrator') DEFAULT 'Reader',
+    RoleAssigned ENUM('Reader', 'Administrator', 'Journalist') DEFAULT 'Reader',
     DateAssigned DATE DEFAULT (NOW()),
     LastChangeDate DATE DEFAULT (NOW()),
     CONSTRAINT FK_Role_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
@@ -64,15 +64,17 @@ CREATE TABLE IF NOT EXISTS Journalist (
     CONSTRAINT FK_Journalist_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
+
 CREATE TABLE IF NOT EXISTS Channel (
     ChannelID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     JournalistID CHAR(36) NOT NULL,
     ChannelName VARCHAR(255) NOT NULL,
     DescriptionChannel TEXT NOT NULL,
-    Specialties ENUM('Investigative', 'Interview', 'Opinion', 'Interpretive', 'Data', 'Social', 'Political', 'Scientific', 'Entertainment', 'Business') NOT NULL,
+    Specialties SET('Investigative','Interview','Opinion','Interpretive','Data','Social','Political','Scientific','Entertainment','Business') NOT NULL,
     ChannelImageURL VARCHAR(255) DEFAULT NULL,
     CONSTRAINT FK_Channel_Journalist FOREIGN KEY (JournalistID) REFERENCES Journalist(JournalistID) ON DELETE CASCADE
 );
+
 
 CREATE TABLE IF NOT EXISTS News (
     NewsId CHAR(36) PRIMARY KEY DEFAULT (UUID()),

@@ -5,6 +5,6 @@ export class FindUserDto {
     UserEmail: string;
     UserImageURL: string;
     PasswordUser: string;
-//    RoleAssigned: string;
+    RoleAssigned: string;
   }
   
