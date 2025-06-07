@@ -12,10 +12,10 @@ export class PasswordEntity {
   @Column({ type: 'varchar', length: 255 })
   PasswordUser: string; 
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   DateCreated: string;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   DateLastChanged: string;
 
   @OneToOne(() => UserEntity, (user) => user.password, { onDelete: 'CASCADE' })

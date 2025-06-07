@@ -19,6 +19,6 @@ export class FollowChannelEntity {
   @Column({ type: 'boolean', default: true })
   IsFollow: boolean;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   FollowDate: Date;
 }

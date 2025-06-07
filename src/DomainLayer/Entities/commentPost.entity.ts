@@ -22,6 +22,6 @@ export class CommentPostEntity {
   @Column({ type: 'text' })
   TextComment: string;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   DateComment: Date;
 }

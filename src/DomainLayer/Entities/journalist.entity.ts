@@ -21,7 +21,7 @@ export class JournalistEntity {
   @Column({ type: 'boolean', default: true })
   IsActive: boolean;  
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   DateCreated: string; 
 
 

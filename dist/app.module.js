@@ -31,6 +31,8 @@ const visits_entity_1 = require("./DomainLayer/Entities/visits.entity");
 const visits_module_1 = require("./modules/visits.module");
 const userRecommendations_entity_1 = require("./DomainLayer/Entities/userRecommendations.entity");
 const recommendation_module_1 = require("./modules/recommendation.module");
+const channelMetrics_entity_1 = require("./DomainLayer/Entities/channelMetrics.entity");
+const channelMetrics_module_1 = require("./modules/channelMetrics.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -43,7 +45,7 @@ exports.AppModule = AppModule = __decorate([
                 username: 'gaston',
                 password: 'gaston',
                 database: 'MACNews',
-                entities: [userRecommendations_entity_1.UserRecommendationsEntity, visits_entity_1.VisitsEntity, SearchHistory_entity_1.SearchHistoryEntity, commentPost_entity_1.CommentPostEntity, followChannel_entity_1.FollowChannelEntity, journalist_entity_1.JournalistEntity, user_entity_1.UserEntity, applicationForm_entity_1.ApplicationFormEntity, channel_entity_1.ChannelEntity, news_entity_1.NewsEntity, pasword_entity_1.PasswordEntity, roles_entity_1.RolesEntity],
+                entities: [channelMetrics_entity_1.ChannelMetricsEntity, userRecommendations_entity_1.UserRecommendationsEntity, visits_entity_1.VisitsEntity, SearchHistory_entity_1.SearchHistoryEntity, commentPost_entity_1.CommentPostEntity, followChannel_entity_1.FollowChannelEntity, journalist_entity_1.JournalistEntity, user_entity_1.UserEntity, applicationForm_entity_1.ApplicationFormEntity, channel_entity_1.ChannelEntity, news_entity_1.NewsEntity, pasword_entity_1.PasswordEntity, roles_entity_1.RolesEntity],
                 synchronize: false,
             }),
             user_module_1.UserModule,
@@ -56,6 +58,7 @@ exports.AppModule = AppModule = __decorate([
             searchHistory_module_1.SearchHistoryModule,
             visits_module_1.VisitsModule,
             recommendation_module_1.RecommendationModule,
+            channelMetrics_module_1.ChannelMetricsModule,
         ],
     })
 ], AppModule);

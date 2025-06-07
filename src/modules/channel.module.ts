@@ -9,6 +9,7 @@ import { UpdateChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCa
 import { JournalistModule } from './journalist.module';
 import { FollowChannelModule } from './followChannel.module';
 import { NewsModule } from './news.module';
+import { ChannelMetricsModule } from './channelMetrics.module';
 
 
 @Module({
@@ -18,6 +19,7 @@ import { NewsModule } from './news.module';
   
     forwardRef(() => FollowChannelModule),
     forwardRef(() => NewsModule),
+    forwardRef(() => ChannelMetricsModule),
   ],
   controllers: [ChannelController],
   providers: [

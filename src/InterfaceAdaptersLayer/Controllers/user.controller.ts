@@ -11,6 +11,7 @@ import { UpdateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/upd
 import { UpdateRolesDto } from 'src/ApplicationLayer/dto/RolesDTOs/update-roles.dto';
 import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCases/update-role.user';
 import { CreateUserResponseDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user-response.dto';
+import { FindUserDto } from 'src/ApplicationLayer/dto/UserDTOs/get-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -36,20 +37,27 @@ export class UserController {
     return await this.createUser.create(createUserWithPasswordDto);
   }
 
-  @Get('findByCredentials')  
-  @ApiOperation({ summary: 'Get user by Email and Password' })
-  async findByCredentials(
-    @Query('email') email: string,
-    @Query('password') password: string,
-  ) {
-    return await this.findUserService.findUserByEmailAndPassword(email, password);
-  }
+@Get('findByCredentials')  
+@ApiOperation({ summary: 'Get user by Email and Password' })
+@ApiResponse({
+  status: 200,
+  description: 'User found with credentials',
+  type: FindUserDto,
+})
+async findByCredentials(
+  @Query('email') email: string,
+  @Query('password') password: string,
+): Promise<FindUserDto> {
+  return await this.findUserService.findUserByEmailAndPassword(email, password);
+}
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get user by ID' })
-  async findOne(@Param('id') id: string) {
-    return await this.findUserService.findUser(id);
-  }
+@Get(':id')
+@ApiOperation({ summary: 'Get user by ID, including JournalistID if applicable' })
+async findOne(@Param('id') id: string): Promise<FindUserDto> {
+  const userData = await this.findUserService.findUser(id);
+  return userData;
+}
+
 
   @Patch(':id')
   @ApiOperation({ summary: 'update user data' })

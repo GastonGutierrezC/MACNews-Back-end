@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS User (
     UserEmail VARCHAR(100) NOT NULL,
     UserImageURL VARCHAR(255) DEFAULT NULL,
     IsActive BOOLEAN DEFAULT TRUE, 
-    RegistrationDate DATE DEFAULT (NOW())
+    RegistrationDate DATETIME DEFAULT (NOW())
 );
 
 CREATE TABLE IF NOT EXISTS UserRecommendations (
@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS Passwords (
     PasswordID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     UserID CHAR(36) NOT NULL UNIQUE,
     PasswordUser VARCHAR(255) NOT NULL,
-    DateCreated DATE DEFAULT (NOW()),
-    DateLastChanged DATE DEFAULT (NOW()),
+    DateCreated DATETIME DEFAULT (NOW()),
+    DateLastChanged DATETIME DEFAULT (NOW()),
     CONSTRAINT FK_Password_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS Roles (
     RolID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     UserID CHAR(36) NOT NULL UNIQUE,
     RoleAssigned ENUM('Reader', 'Administrator', 'Journalist') DEFAULT 'Reader',
-    DateAssigned DATE DEFAULT (NOW()),
-    LastChangeDate DATE DEFAULT (NOW()),
+    DateAssigned DATETIME DEFAULT (NOW()),
+    LastChangeDate DATETIME DEFAULT (NOW()),
     CONSTRAINT FK_Role_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS ApplicationForm (
     Reason TEXT NOT NULL,
     ImageCertificateURL VARCHAR(255),
     VerificationStatus ENUM('Checking', 'Rejected', 'Approved') NOT NULL,
-    ApplicationDate DATE DEFAULT (NOW()),
+    ApplicationDate DATETIME DEFAULT (NOW()),
 
     CONSTRAINT FK_ApplicationForm_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS Journalist (
     Specialty TEXT NOT NULL,
     JournalisticExperience TEXT NOT NULL,
     IsActive BOOLEAN DEFAULT TRUE, 
-    DateCreated DATE DEFAULT (NOW()),
+    DateCreated DATETIME DEFAULT (NOW()),
     CONSTRAINT FK_Journalist_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
@@ -75,6 +75,17 @@ CREATE TABLE IF NOT EXISTS Channel (
     CONSTRAINT FK_Channel_Journalist FOREIGN KEY (JournalistID) REFERENCES Journalist(JournalistID) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS ChannelMetrics (
+    MetricID CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    ChannelID CHAR(36) NOT NULL,
+    TopInterests JSON NOT NULL,
+    Observation TEXT NOT NULL,
+    AnalysisDate DATETIME DEFAULT (NOW()),
+    CONSTRAINT FK_ChannelMetrics_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE
+);
+
+
+
 
 CREATE TABLE IF NOT EXISTS News (
     NewsId CHAR(36) PRIMARY KEY DEFAULT (UUID()),
@@ -82,7 +93,7 @@ CREATE TABLE IF NOT EXISTS News (
     Title VARCHAR(255) NOT NULL,
     ShortDescription VARCHAR(255) NOT NULL,
     Content TEXT NOT NULL,
-    PublicationDate DATE NOT NULL,
+    PublicationDate DATETIME NOT NULL,
     NewsStatus ENUM('Checking', 'Approved', 'Rejected') NOT NULL,
     NewsImageURL VARCHAR(255) DEFAULT NULL,
     Categories ENUM('Politics', 'Economy', 'Sports', 'Entertainment', 'Technology', 'Health', 'Science', 'International', 'Society', 'Security') NOT NULL,
@@ -94,7 +105,7 @@ CREATE TABLE IF NOT EXISTS FollowChannel (
     UserID CHAR(36) NOT NULL,
     ChannelID CHAR(36) NOT NULL,
     IsFollow BOOLEAN DEFAULT TRUE,
-    FollowDate DATE DEFAULT (NOW()),
+    FollowDate DATETIME DEFAULT (NOW()),
 
     CONSTRAINT FK_FollowChannel_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
     CONSTRAINT FK_FollowChannel_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE
@@ -107,7 +118,7 @@ CREATE TABLE IF NOT EXISTS CommentPost (
     ChannelID CHAR(36) NOT NULL,
     CommentParent CHAR(36) DEFAULT NULL,
     TextComment TEXT NOT NULL,
-    DateComment DATE DEFAULT (NOW()),
+    DateComment DATETIME DEFAULT (NOW()),
     CONSTRAINT FK_CommentPost_User FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
     CONSTRAINT FK_CommentPost_Channel FOREIGN KEY (ChannelID) REFERENCES Channel(ChannelID) ON DELETE CASCADE,
     CONSTRAINT FK_CommentPost_Parent FOREIGN KEY (CommentParent) REFERENCES CommentPost(CommentPostID) ON DELETE CASCADE

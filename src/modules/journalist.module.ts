@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationFormEntity } from '../DomainLayer/Entities/applicationForm.entity';
 import { ApplicationFormController } from '../InterfaceAdaptersLayer/Controllers/applicationForm.controller';
@@ -19,7 +19,8 @@ import { FindJournalistService } from 'src/ApplicationLayer/UseCases/JournalistU
   imports: [
     TypeOrmModule.forFeature([JournalistEntity]), 
     ApplicationFormModule,  
-    UserModule,
+    
+    forwardRef(() => UserModule),
 ],
   controllers: [JournalistController],
   providers: [

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../DomainLayer/Entities/user.entity';
 
@@ -13,10 +13,14 @@ import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
 import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
 import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCases/update-role.user';
 import { RecommendationModule } from './recommendation.module';
+import { JournalistModule } from './journalist.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity,RolesEntity]),
-  RecommendationModule],
+  RecommendationModule,
+  
+  forwardRef(() => JournalistModule),
+],
   providers: [
     {
       provide: 'IUserRepository',

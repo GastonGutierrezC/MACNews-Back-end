@@ -38,7 +38,7 @@ export class NewsEntity {
   @Column('text')
   Content: string;
 
-  @Column('date')
+  @Column('datetime')
   PublicationDate: string;
 
   @Column({
