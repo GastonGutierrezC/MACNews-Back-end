@@ -17,7 +17,10 @@ export class JournalistRepository implements IJournalistRepository{
     }
 
   async findById(JournalistID: string): Promise<JournalistEntity | null> {
-    return await this.journalistRepo.findOne({ where: { JournalistID } });
+    return await this.journalistRepo.findOne({ 
+      where: { JournalistID },
+      relations: ['User'],
+    });
   }
   
   async create(user: Partial<JournalistEntity>): Promise<JournalistEntity> {

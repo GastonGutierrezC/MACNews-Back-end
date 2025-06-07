@@ -33,7 +33,7 @@ export class ApplicationFormEntity {
   
   VerificationStatus:VerificationStatus;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   ApplicationDate: string; 
 
   

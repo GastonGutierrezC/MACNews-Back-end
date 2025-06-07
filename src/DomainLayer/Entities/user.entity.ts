@@ -5,6 +5,7 @@ import { RolesEntity } from './roles.entity';
 import { FollowChannelEntity } from './followChannel.entity';
 import { SearchHistoryEntity } from './SearchHistory.entity';
 import { UserRecommendationsEntity } from './userRecommendations.entity';
+import { JournalistEntity } from './journalist.entity';
 
 @Entity({ name: 'User' })
 export class UserEntity {
@@ -26,7 +27,7 @@ export class UserEntity {
   @Column({ type: 'boolean', default: true })
   IsActive: boolean;  
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   RegistrationDate: string; 
 
   @OneToOne(() => PasswordEntity, (password) => password.user)
@@ -46,4 +47,9 @@ export class UserEntity {
 
   @OneToMany(() => UserRecommendationsEntity, (recommendation) => recommendation.user)
 recommendations: UserRecommendationsEntity[];
+
+@OneToOne(() => JournalistEntity, (journalist) => journalist.User)
+journalist: JournalistEntity;
+
+
 }

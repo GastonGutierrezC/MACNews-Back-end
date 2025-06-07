@@ -22,6 +22,8 @@ import { VisitsEntity } from './DomainLayer/Entities/visits.entity';
 import { VisitsModule } from './modules/visits.module';
 import { UserRecommendationsEntity } from './DomainLayer/Entities/userRecommendations.entity';
 import { RecommendationModule } from './modules/recommendation.module';
+import { ChannelMetricsEntity } from './DomainLayer/Entities/channelMetrics.entity';
+import { ChannelMetricsModule } from './modules/channelMetrics.module';
 
 
 @Module({
@@ -33,7 +35,7 @@ import { RecommendationModule } from './modules/recommendation.module';
       username: 'gaston',
       password: 'gaston',
       database: 'MACNews',
-      entities: [UserRecommendationsEntity,VisitsEntity,SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
+      entities: [ChannelMetricsEntity,UserRecommendationsEntity,VisitsEntity,SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
       synchronize: false, 
     }),
     UserModule,
@@ -46,6 +48,7 @@ import { RecommendationModule } from './modules/recommendation.module';
     SearchHistoryModule,
     VisitsModule,
     RecommendationModule,
+    ChannelMetricsModule,
   ],
 })
 export class AppModule {}

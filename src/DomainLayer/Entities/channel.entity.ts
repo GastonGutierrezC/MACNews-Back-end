@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany
 import { NewsEntity } from './news.entity';
 import { JournalistEntity } from './journalist.entity';
 import { FollowChannelEntity } from './followChannel.entity';
+import { ChannelMetricsEntity } from './channelMetrics.entity';
 
 export enum ChannelSpecialties {
     Investigative = 'Investigative',
@@ -47,4 +48,8 @@ export class ChannelEntity {
 
   @OneToMany(() => FollowChannelEntity, (follow) => follow.Channel)
   followers: FollowChannelEntity[];
+
+  @OneToMany(() => ChannelMetricsEntity, (metric) => metric.Channel)
+Metrics: ChannelMetricsEntity[];
+
 }

@@ -19,10 +19,10 @@ export class RolesEntity {
   @Column({ type: 'enum', enum: RoleAssigned, default: RoleAssigned.Reader })  
   RoleAssigned:RoleAssigned;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   DateAssigned: string;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'datetime', default: () => 'NOW()' })
   LastChangeDate: string;
 
   @OneToOne(() => UserEntity, (user) => user.roles, { onDelete: 'CASCADE' })
