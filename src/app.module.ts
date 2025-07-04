@@ -24,6 +24,7 @@ import { UserRecommendationsEntity } from './DomainLayer/Entities/userRecommenda
 import { RecommendationModule } from './modules/recommendation.module';
 import { ChannelMetricsEntity } from './DomainLayer/Entities/channelMetrics.entity';
 import { ChannelMetricsModule } from './modules/channelMetrics.module';
+import { AuthModule } from './modules/auth.module';
 
 
 @Module({
@@ -49,6 +50,7 @@ import { ChannelMetricsModule } from './modules/channelMetrics.module';
     VisitsModule,
     RecommendationModule,
     ChannelMetricsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

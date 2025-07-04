@@ -14,7 +14,7 @@ export class UpdateUserService {
   ) {}
 
   async update(id: string, updateUserWithPasswordDto: UpdateUserWithPasswordDto) {
-    const { password, user } = updateUserWithPasswordDto;
+    const { user } = updateUserWithPasswordDto;
   
     const allUsers = await this.userRepository.findAll();
     const existingUser = allUsers.find(u => u.UserID === id);
@@ -25,16 +25,9 @@ export class UpdateUserService {
   
     const updatedUser = await this.userRepository.update(id, user);
   
-    const allPasswords = await this.passwordRepository.findAll();
-    const existingPassword = allPasswords.find(p => p.UserID === id);
+
   
-    let updatedPassword = null;
-    if (existingPassword) {
-      await this.passwordRepository.update(existingPassword.PasswordID, password);
-      updatedPassword = await this.passwordRepository.findById(existingPassword.PasswordID);
-    }
-  
-    return { user: updatedUser, password: updatedPassword };
+    return { user: updatedUser};
   }
   
   

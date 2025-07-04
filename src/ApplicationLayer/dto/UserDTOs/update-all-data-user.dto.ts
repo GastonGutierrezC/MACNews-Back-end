@@ -16,12 +16,5 @@ export class UpdateUserWithPasswordDto {
   @IsNotEmpty()
   readonly user: UpdateUserDto;
 
-  @ApiProperty({
-    type: UpdatePasswordDto,
-    description: 'User password data update',
-  })
-  @ValidateNested()
-  @Type(() => UpdatePasswordDto)
-  @IsNotEmpty()
-  readonly password: UpdatePasswordDto;
+
 }

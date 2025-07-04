@@ -6,12 +6,14 @@ import {
   Matches,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'; 
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
   @ApiProperty({
     description: 'UserFirst Name',
     example: 'John',
   })
+  @Transform(({value}) => value.trim())  
   @IsString()
   @IsNotEmpty()
   readonly UserFirstName: string;
@@ -20,6 +22,7 @@ export class CreateUserDto {
     description: 'User Last Name',
     example: 'Doe',
   })
+  @Transform(({value}) => value.trim())  
   @IsString()
   @IsNotEmpty()
   readonly UserLastName: string;

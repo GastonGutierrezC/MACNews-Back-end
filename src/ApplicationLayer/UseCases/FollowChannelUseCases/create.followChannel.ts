@@ -17,8 +17,8 @@ export class CreateFollowChannelService {
     private readonly channelRepository: IChannelRepository, 
   ) {}
 
-  async create(createFollowChannelDto: CreateFollowChannelDto): Promise<boolean> {
-    const user = await this.userRepository.findById(createFollowChannelDto.UserID);
+  async create(createFollowChannelDto: CreateFollowChannelDto, UserID: string): Promise<boolean> {
+    const user = await this.userRepository.findById(UserID);
     if (!user) {
       throw new NotFoundException('User not found.');
     }
@@ -27,11 +27,12 @@ export class CreateFollowChannelService {
     if (!channel) {
       throw new NotFoundException('Channel not found.');
     }
+    
 
     const allFollows = await this.followChannelRepository.findAll();
     const existingFollow = allFollows.find(
       (follow) =>
-        follow.User.UserID === createFollowChannelDto.UserID &&
+        follow.User.UserID === UserID &&
         follow.Channel.ChannelID === createFollowChannelDto.ChannelID,
     );
 

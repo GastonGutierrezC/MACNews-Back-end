@@ -1,13 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import {
-    IsString,
-    IsNotEmpty,
-    Matches,
-    IsOptional,
-  } from 'class-validator';
-  
-  export class CreatePasswordDto {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  Matches,
+} from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'; 
+import { Transform } from 'class-transformer';
+
+export class LoginUserDto {
+
+
+  @ApiProperty({
+    description: 'The users e-mail address ',
+    example: 'johndoe@gmail.com',
+  })
+  @IsEmail()
+  @IsNotEmpty()
+  @Matches(/^.+@gmail\.com$/, { message: 'Email must end with @gmail.com' })
+  readonly UserEmail: string;
+
     @ApiProperty({
         description: 'The users password',
         example: 'Password@123',
@@ -21,6 +33,4 @@ import {
     @Matches( /^(?=.*[@$!%*?&])/,{message: 'Password must contain at least one special character.',},)
     @Matches(/^(?=[A-Za-z\d@$!%*?&]{8,})/, { message: 'Password must be at least 8 characters long.',},)
     readonly PasswordUser: string;
-  
-  }
-  
+}

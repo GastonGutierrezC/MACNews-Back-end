@@ -4,12 +4,6 @@ import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
 
 export class CreateChannelDto {
 
-  @ApiProperty({
-    description: 'ID of the  Journalist',
-    example: 'ID of the Journalist',
-  })  
-  @IsNotEmpty()
-  JournalistID: string;
 
   @ApiProperty({
     description: 'channel name',

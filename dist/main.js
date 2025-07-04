@@ -15,6 +15,13 @@ async function bootstrap() {
         .setDescription('Documentación de la API de MacNews')
         .setVersion('1.0')
         .addTag('macnews')
+        .addBearerAuth({
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+    }, 'access-token')
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, document);

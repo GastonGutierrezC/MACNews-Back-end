@@ -7,6 +7,7 @@ import { CreateUserRecommendationDto } from 'src/ApplicationLayer/dto/UserRecomm
 import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
 import { IRolesRepository } from 'src/InfrastructureLayer/Repositories/Interface/roles.repository.interface';
 import { IPasswordRepository } from 'src/InfrastructureLayer/Repositories/Interface/password.repository.interface';
+import * as bcryptjs from "bcryptjs"
 
 @Injectable()
 export class CreateUserService {
@@ -36,7 +37,7 @@ export class CreateUserService {
 
     const passwordData = {
       UserID: createdUser.UserID,
-      PasswordUser: password.PasswordUser,
+      PasswordUser: await bcryptjs.hash(password.PasswordUser,10),
     };
     const createdPassword: PasswordEntity = await this.passwordRepository.create(passwordData);
 

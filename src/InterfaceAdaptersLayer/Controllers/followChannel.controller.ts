@@ -1,5 +1,8 @@
 import { Controller, Get, Post, Patch, Param, Body } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ActiveUser } from 'src/ApplicationLayer/decorators/active-user.decorator';
+import { ActiveUserInterface } from 'src/ApplicationLayer/decorators/active-user.interface';
+import { Auth } from 'src/ApplicationLayer/decorators/auth.decorators';
 import { CreateFollowChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/create-followChannel.dto';
 import { FollowedChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/followed-channel.dto';
 import { UpdateFollowChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/update-followChannel.dto';
@@ -7,6 +10,7 @@ import { CreateFollowChannelService } from 'src/ApplicationLayer/UseCases/Follow
 import { FindFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/find.followChannel';
 import { UpdateFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/update.followChannel';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
+import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
 
 @ApiTags('FollowChannels')
 @Controller('followChannels')
@@ -19,38 +23,23 @@ export class FollowChannelController {
 
   @Post()
   @ApiOperation({ summary: 'create follow Channel' })
+  @Auth([RoleAssigned.Reader, RoleAssigned.Journalist])
+  @ApiBearerAuth('access-token')
   @ApiBody({
     type: CreateFollowChannelDto,
   })    
-  async createChannel(@Body() createFollowChannelDto: CreateFollowChannelDto): Promise<boolean> {
-    return await this.createFollowChannelService.create(createFollowChannelDto);
+  async createChannel(@ActiveUser() user: ActiveUserInterface, @Body() createFollowChannelDto: CreateFollowChannelDto): Promise<boolean> {
+    return await this.createFollowChannelService.create(createFollowChannelDto, user.userID);
   }
 
-  @ApiOperation({ summary: 'update follow channel data' })
-  @ApiBody({
-    type: UpdateFollowChannelDto, 
-  })  
-  @Patch(':id')
-  async updateChannel(@Param('id') ChannelID: string, @Body() updateFollowChannelDto: UpdateFollowChannelDto): Promise<FollowChannelEntity> {
-    return await this.updateFollowChannelService.update(ChannelID, updateFollowChannelDto);
-  }  
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get follow channel by ID' })
-  async getFollowChannelById(@Param('id') FollowChannelID: string): Promise<FollowChannelEntity> {
-    return await this.getFollowChannelService.getById(FollowChannelID);
-  }
 
-  @Get('user/:userId')
+  @Get('user')
+  @Auth([RoleAssigned.Reader, RoleAssigned.Journalist])
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Get all followed channels by a user' })
-  async getFollowedChannelsByUser(@Param('userId') UserID: string): Promise<FollowedChannelDto[]> {
-    return await this.getFollowChannelService.getByUserId(UserID);
+  async getFollowedChannelsByUser(@ActiveUser() user: ActiveUserInterface,): Promise<FollowedChannelDto[]> {
+    return await this.getFollowChannelService.getByUserId(user.userID);
   }
 
-  @Get('count/:channelId')
-  @ApiOperation({ summary: 'Get follower count for a channel by ChannelID' })
-  async getFollowersCountByChannel(@Param('channelId') channelId: string): Promise<{ followers: number }> {
-    const followers = await this.getFollowChannelService.getFollowersCountByChannelId(channelId);
-    return { followers };
-  }
 }

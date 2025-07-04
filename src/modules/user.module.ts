@@ -14,11 +14,11 @@ import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repo
 import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCases/update-role.user';
 import { RecommendationModule } from './recommendation.module';
 import { JournalistModule } from './journalist.module';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity,RolesEntity]),
   RecommendationModule,
-  
   forwardRef(() => JournalistModule),
 ],
   providers: [

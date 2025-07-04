@@ -8,7 +8,8 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import { Auth } from 'src/ApplicationLayer/decorators/auth.decorators';
 
 import { CreateChannelMetricsDto } from 'src/ApplicationLayer/dto/ChannelMetricsDTOs/create-channel-metrics.dto';
 import { ChannelMetricsResponseDto } from 'src/ApplicationLayer/dto/ChannelMetricsDTOs/get-channel-metrics.dto';
@@ -18,6 +19,7 @@ import { CreateChannelMetricsService } from 'src/ApplicationLayer/UseCases/Chann
 import { GetChannelMetricsService } from 'src/ApplicationLayer/UseCases/ChannelMetricsUseCases/get-channel-metrics.service';
 import { UpdateChannelMetricsService } from 'src/ApplicationLayer/UseCases/ChannelMetricsUseCases/update-channel-metrics.service';
 import { ChannelMetricsEntity } from 'src/DomainLayer/Entities/channelMetrics.entity';
+import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
 
 @ApiTags('Channel Metrics')
 @Controller('channel-metrics')
@@ -30,6 +32,8 @@ export class ChannelMetricsController {
 
   @Get('channel/:channelId')
   @ApiOperation({ summary: 'Get metrics by Channel ID' })
+  @Auth(RoleAssigned.Journalist)
+  @ApiBearerAuth('access-token')
   async findByChannelId(
     @Param('channelId') ChannelID: string,
   ): Promise<ChannelMetricsResponseDto[]> {
@@ -38,6 +42,8 @@ export class ChannelMetricsController {
 
   @Post()
   @ApiOperation({ summary: 'Create channel metric' })
+  @Auth(RoleAssigned.Administrator)
+  @ApiBearerAuth('access-token')
   @ApiBody({ type: CreateChannelMetricsDto })
   async create(
     @Body() dto: CreateChannelMetricsDto,
@@ -51,6 +57,8 @@ export class ChannelMetricsController {
 
 @Patch()
 @ApiOperation({ summary: 'Update channel metrics by Channel ID' })
+  @Auth(RoleAssigned.Administrator)
+  @ApiBearerAuth('access-token')
 @ApiBody({ type: UpdateChannelMetricsDto })
 async update(
   @Body() dto: UpdateChannelMetricsDto,

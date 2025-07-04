@@ -3,6 +3,7 @@ import { CreateUserDto } from './create-user.dto';
 import { CreatePasswordDto } from '../PasswordDTOs/create-password.dto';
 import { IsNotEmpty, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Transform } from 'stream';
 
 export class CreateUserWithPasswordDto {
   @ApiProperty({
@@ -21,6 +22,7 @@ export class CreateUserWithPasswordDto {
   @ValidateNested()
   @Type(() => CreatePasswordDto)
   @IsNotEmpty()
+  
   readonly password: CreatePasswordDto;
 }
 
