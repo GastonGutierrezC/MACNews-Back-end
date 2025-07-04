@@ -17,19 +17,19 @@ export class CreateSearchHistoryService {
   ) {}
 
 
-  async create(createSearchHistoryDto: CreateSearchHistoryDto): Promise<boolean> {
-    const user = await this.userRepository.findById(createSearchHistoryDto.UserID);
+  async create(createSearchHistoryDto: CreateSearchHistoryDto, UserID : string): Promise<boolean> {
+    const user = await this.userRepository.findById(UserID);
     if (!user) {
       throw new NotFoundException('User not found.');
     }
   
     const allSearchHistory = await this.searchHistoryRepository.findAll();
     const userSearchHistory = allSearchHistory.filter(
-      (search) => search.User.UserID === createSearchHistoryDto.UserID,
+      (search) => search.User.UserID === UserID,
     );
   
     if (userSearchHistory.length >= 10) {
-      await this.searchHistoryRepository.deleteOldestSearch(createSearchHistoryDto.UserID);
+      await this.searchHistoryRepository.deleteOldestSearch(UserID);
     }
   
     await this.searchHistoryRepository.create({
@@ -39,10 +39,10 @@ export class CreateSearchHistoryService {
 
     (async () => {
       try {
-        await this.personalizedAgent.getRecommendations(createSearchHistoryDto.UserID);
+        await this.personalizedAgent.getRecommendations(UserID);
       } catch (error) {
         console.warn(
-          `⚠️ No se pudo ejecutar el agente de recomendaciones para el usuario ${createSearchHistoryDto.UserID}:`,
+          `⚠️ No se pudo ejecutar el agente de recomendaciones para el usuario ${UserID}:`,
           error.message,
         );
       }

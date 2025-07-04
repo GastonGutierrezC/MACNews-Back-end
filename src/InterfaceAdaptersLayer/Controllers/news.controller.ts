@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Param, Patch, Delete, Get, NotFoundException, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateNewsDto } from 'src/ApplicationLayer/dto/NewsDTOs/create-news.dto';
 import { NewsSummaryDto } from 'src/ApplicationLayer/dto/NewsDTOs/find-news.dto';
 import { NewsTopDto } from 'src/ApplicationLayer/dto/NewsDTOs/findTopNews.dto';
@@ -14,6 +14,10 @@ import { Query } from '@nestjs/common';
 import { NewsDocumentDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-document.dto';
 import { ChannelSpecialties } from 'src/DomainLayer/Entities/channel.entity';
 import { NewsDetailDto } from 'src/ApplicationLayer/dto/NewsDTOs/news-detail.dto';
+import { Auth } from 'src/ApplicationLayer/decorators/auth.decorators';
+import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
+import { ActiveUser } from 'src/ApplicationLayer/decorators/active-user.decorator';
+import { ActiveUserInterface } from 'src/ApplicationLayer/decorators/active-user.interface';
 
 @ApiTags('News')
 @Controller('news')
@@ -28,6 +32,8 @@ export class NewsController {
 
   @Post()
   @ApiOperation({ summary: 'Create news' })
+  @Auth(RoleAssigned.Journalist)
+  @ApiBearerAuth('access-token')
   @ApiBody({
     type: CreateNewsDto,
   })   
@@ -107,7 +113,16 @@ export class NewsController {
   
     return this.findNewsService.searchIntelligent(texto);
   }
+    @Get('recommendations')
 
+  @ApiOperation({ summary: 'Get personalized news recommendations for a user' })
+  @Auth([RoleAssigned.Reader, RoleAssigned.Journalist])
+  @ApiBearerAuth('access-token')
+  async getPersonalizedRecommendations(
+   @ActiveUser() user: ActiveUserInterface,
+  ): Promise<NewsCardDto[]> {
+      return await this.findRecommendationsNewsService.getPersonalizedNews(user.userID);
+  }
   @Get(':id')
   @ApiOperation({ summary: 'Get the news by ID' })
   async getById(@Param('id') NewsId: string): Promise<NewsEntity> {
@@ -128,27 +143,15 @@ export class NewsController {
     return this.findNewsService.getByChannelId(channelId);
   }
 
+
+
   @Get()
   @ApiOperation({ summary: 'Get all news summarized (ID, Title, Category)' })
   async getAllSummarized(): Promise<NewsTopDto[]> {
     return this.findNewsService.getAllSummarized();
   }
 
-  @Get('recommendations/:userId')
-  @ApiOperation({ summary: 'Get personalized news recommendations for a user' })
-  async getPersonalizedRecommendations(
-    @Param('userId') userId: string,
-  ): Promise<NewsCardDto[]> {
-    try {
-      return await this.findRecommendationsNewsService.getPersonalizedNews(userId);
-    } catch (error) {
-      console.error('❌ Error al obtener recomendaciones personalizadas:', error.message);
-      throw new HttpException(
-        'El servicio de recomendaciones no está disponible en este momento. Por favor, intenta más tarde.',
-        HttpStatus.SERVICE_UNAVAILABLE,
-      );
-    }
-  }
+
 
 
   

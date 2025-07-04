@@ -11,12 +11,6 @@ export class CreateSearchHistoryDto {
   @IsString()
   SearchWord: string;
 
-  @ApiProperty({
-    description: 'User ID who performed the search',
-    example: 'User ID',
-  })
-  @IsNotEmpty()
-  @IsUUID()
-  UserID: string;
+
 }
 

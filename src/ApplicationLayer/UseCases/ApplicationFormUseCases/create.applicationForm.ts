@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+import { CreateApplicationFormIADto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/create-applicationForm-IA.dto';
 import { CreateApplicationFormDto } from 'src/ApplicationLayer/dto/ApplicationFormDTOs/create-applicationForm.dto';
 import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.entity';
 import { ApplicationAgentResponse } from 'src/InfrastructureLayer/IntelligentAgentManagement/DTO.IntelligentAgent/JurnalistApplications/agent-response.dto';
@@ -34,14 +35,14 @@ export class CreateApplicationFormService {
   }
 
 
-  async evaluateWithAgent(createApplicationFormDto: CreateApplicationFormDto): Promise<ApplicationAgentResponse> {
-    const user = await this.userRepository.findById(createApplicationFormDto.UserID);
+  async evaluateWithAgent(createApplicationFormDto: CreateApplicationFormIADto, UserID:string): Promise<ApplicationAgentResponse> {
+    const user = await this.userRepository.findById(UserID);
     if (!user) {
       throw new NotFoundException('User not found.');
     }
 
     const agentPayload = {
-      UserID: createApplicationFormDto.UserID,
+      UserID: UserID,
       BirthDate: createApplicationFormDto.BirthDate,
       CardNumber: createApplicationFormDto.CardNumber,
       Reason: createApplicationFormDto.Reason,

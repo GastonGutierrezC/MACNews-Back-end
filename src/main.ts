@@ -13,11 +13,22 @@ async function bootstrap() {
   });
   
 
+  
     const config = new DocumentBuilder()
     .setTitle('MacNews API')
     .setDescription('Documentación de la API de MacNews')
     .setVersion('1.0')
     .addTag('macnews') 
+      .addBearerAuth(
+    {
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      name: 'Authorization',
+      in: 'header',
+    },
+    'access-token', // nombre del esquema
+  )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

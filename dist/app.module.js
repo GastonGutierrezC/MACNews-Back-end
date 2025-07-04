@@ -33,6 +33,7 @@ const userRecommendations_entity_1 = require("./DomainLayer/Entities/userRecomme
 const recommendation_module_1 = require("./modules/recommendation.module");
 const channelMetrics_entity_1 = require("./DomainLayer/Entities/channelMetrics.entity");
 const channelMetrics_module_1 = require("./modules/channelMetrics.module");
+const auth_module_1 = require("./modules/auth.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -59,6 +60,7 @@ exports.AppModule = AppModule = __decorate([
             visits_module_1.VisitsModule,
             recommendation_module_1.RecommendationModule,
             channelMetrics_module_1.ChannelMetricsModule,
+            auth_module_1.AuthModule,
         ],
     })
 ], AppModule);

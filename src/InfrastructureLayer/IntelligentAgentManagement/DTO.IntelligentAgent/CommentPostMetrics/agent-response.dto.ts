@@ -4,8 +4,8 @@ export class TopInterest {
 }
 
 export class InterestAnalysisResponse {
-  TopInterests: TopInterest[];  // con mayúscula T y I para que coincida exactamente con el JSON recibido
-  Observation: string;          // igual con mayúscula O
+  TopInterests: TopInterest[];  
+  Observation: string;        
 }
 
 export type AgentResponse = InterestAnalysisResponse;

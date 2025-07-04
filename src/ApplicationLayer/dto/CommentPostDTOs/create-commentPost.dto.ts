@@ -3,13 +3,7 @@ import { IsNotEmpty, IsString, IsOptional, IsUUID } from 'class-validator';
 
 export class CreateCommentPostDto {
   
-  @ApiProperty({
-    description: 'ID of the user creating the comment',
-    example: 'ID of the user',
-  })
-  @IsUUID()
-  @IsNotEmpty()
-  UserID: string;
+
 
   @ApiProperty({
     description: 'ID of the channel where the comment is posted',

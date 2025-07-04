@@ -9,7 +9,7 @@ import {
   BadRequestException,
   Query,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { ChannelInfoDto } from 'src/ApplicationLayer/dto/ChannelDTOs/channel-info.dto';
 import { ChannelWithCreatorNameDto } from 'src/ApplicationLayer/dto/ChannelDTOs/channel-with-creator-name.dto';
@@ -23,6 +23,10 @@ import { UpdateChannelService } from 'src/ApplicationLayer/UseCases/ChannelUseCa
 
 import { ChannelEntity } from 'src/DomainLayer/Entities/channel.entity';
 import { ChannelInfoJournalistDto } from 'src/ApplicationLayer/dto/ChannelDTOs/channel-info-jounalist.dto';
+import { Auth } from 'src/ApplicationLayer/decorators/auth.decorators';
+import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
+import { ActiveUser } from 'src/ApplicationLayer/decorators/active-user.decorator';
+import { ActiveJournalistInterface, ActiveUserInterface } from 'src/ApplicationLayer/decorators/active-user.interface';
 
 @ApiTags('Channels')
 @Controller('channels')
@@ -49,29 +53,28 @@ export class ChannelController {
     return await this.findChannelService.findTop5ChannelsByFollowers();
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get channel by ID' })
-  async getChannelById(@Param('id') ChannelID: string): Promise<ChannelInfoDto> {
-    const channel = await this.findChannelService.findById(ChannelID);
-    return channel;
-  }
 
-  @Get('journalist/:journalistId')
+  @Get('journalist')
   @ApiOperation({ summary: 'Get channel by Journalist ID' })
+      @Auth(RoleAssigned.Journalist)
+  @ApiBearerAuth('access-token')
   async getChannelByJournalistId(
-    @Param('journalistId') journalistId: string,
+   @ActiveUser() user: ActiveJournalistInterface,
   ): Promise<ChannelInfoDto> {
-    return await this.findChannelService.findByJournalistId(journalistId);
+    return await this.findChannelService.findByJournalistId(user.journalistID);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create Channel' })
+    @Auth(RoleAssigned.Journalist)
+  @ApiBearerAuth('access-token')
   @ApiBody({ type: CreateChannelDto })
   async createChannel(
     @Body() createChannelDto: CreateChannelDto,
+    @ActiveUser() user: ActiveJournalistInterface,
   ): Promise<ChannelEntity> {
     try {
-      return await this.createChannelService.create(createChannelDto);
+      return await this.createChannelService.create(createChannelDto, user.journalistID);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -79,6 +82,8 @@ export class ChannelController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update channel data' })
+  @Auth([RoleAssigned.Administrator, RoleAssigned.Journalist])
+  @ApiBearerAuth('access-token')
   @ApiBody({ type: UpdateChannelDto })
   async updateChannel(
     @Param('id') ChannelID: string,

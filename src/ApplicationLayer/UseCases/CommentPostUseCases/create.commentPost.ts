@@ -19,8 +19,8 @@ export class CreateCommentPostService {
     private readonly interestAnalysisAgent: IInterestAnalysisAgent,
   ) {}
 
-  async create(createCommentPostDto: CreateCommentPostDto): Promise<CommentDto> {
-    const user = await this.userRepository.findById(createCommentPostDto.UserID);
+  async create(createCommentPostDto: CreateCommentPostDto, UserID: string): Promise<CommentDto> {
+    const user = await this.userRepository.findById(UserID);
     if (!user) {
       throw new NotFoundException('User not found.');
     }

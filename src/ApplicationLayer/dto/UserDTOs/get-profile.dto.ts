@@ -1,8 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
-export class FindUserDto {
-  @ApiProperty()
-  UserID: string;
+export class FindUserProfileDto {
 
   @ApiProperty()
   UserFirstName: string;
@@ -15,9 +13,6 @@ export class FindUserDto {
 
   @ApiPropertyOptional()
   UserImageURL?: string;
-
-  @ApiProperty()
-  PasswordUser?: string;
 
   @ApiProperty()
   RoleAssigned: string;

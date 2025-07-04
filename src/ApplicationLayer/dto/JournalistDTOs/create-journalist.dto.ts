@@ -7,14 +7,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateJournalistDto {
 
 
-@ApiProperty({
- description: 'ID User',
- example: 'ID  User',
-})
-        
-@IsNotEmpty()
-@IsString() 
-readonly UserID: string;
 
   @ApiProperty({
     description: 'Specialty of the Journalist',

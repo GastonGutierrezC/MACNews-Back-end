@@ -22,15 +22,15 @@ export class CreateChannelService {
     private readonly createChannelMetricsService: CreateChannelMetricsService,  // <-- Inyectamos el servicio
   ) {}
 
-  async create(createChannelDto: CreateChannelDto): Promise<ChannelEntity> {
-    const journalist = await this.journalistRepository.findById(createChannelDto.JournalistID);
+  async create(createChannelDto: CreateChannelDto, JournalistID : string): Promise<ChannelEntity> {
+    const journalist = await this.journalistRepository.findById(JournalistID);
     if (!journalist) {
       throw new NotFoundException('Journalist not found.');
     }
 
     const allChannels = await this.channelRepository.findAll();
     const existingChannel = allChannels.find(
-      (channel) => channel.Journalist.JournalistID === createChannelDto.JournalistID,
+      (channel) => channel.Journalist.JournalistID === JournalistID,
     );
 
     if (existingChannel) {

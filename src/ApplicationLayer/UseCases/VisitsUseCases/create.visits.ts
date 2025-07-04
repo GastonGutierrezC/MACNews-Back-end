@@ -16,8 +16,8 @@ export class CreateVisitsService {
     private readonly newsRepository: INewsRepository,
   ) {}
 
-  async create(createVisitsDto: CreateVisitsDto): Promise<VisitsEntity> {
-    const user = await this.userRepository.findById(createVisitsDto.UserID);
+  async create(createVisitsDto: CreateVisitsDto, UserID: string): Promise<VisitsEntity> {
+    const user = await this.userRepository.findById(UserID);
     if (!user) {
       throw new NotFoundException('User not found.');
     }
