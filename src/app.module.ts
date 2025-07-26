@@ -25,10 +25,16 @@ import { RecommendationModule } from './modules/recommendation.module';
 import { ChannelMetricsEntity } from './DomainLayer/Entities/channelMetrics.entity';
 import { ChannelMetricsModule } from './modules/channelMetrics.module';
 import { AuthModule } from './modules/auth.module';
+import { UploadModule } from './modules/upload.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
   imports: [
+     ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -38,6 +44,7 @@ import { AuthModule } from './modules/auth.module';
       database: 'MACNews',
       entities: [ChannelMetricsEntity,UserRecommendationsEntity,VisitsEntity,SearchHistoryEntity,CommentPostEntity,FollowChannelEntity,JournalistEntity,UserEntity,ApplicationFormEntity,ChannelEntity,NewsEntity,PasswordEntity,RolesEntity],
       synchronize: false, 
+      
     }),
     UserModule,
     ApplicationFormModule,
@@ -51,6 +58,7 @@ import { AuthModule } from './modules/auth.module';
     RecommendationModule,
     ChannelMetricsModule,
     AuthModule,
+    UploadModule
   ],
 })
 export class AppModule {}

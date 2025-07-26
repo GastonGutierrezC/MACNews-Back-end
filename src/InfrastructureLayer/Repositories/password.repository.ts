@@ -18,6 +18,10 @@ export class PasswordRepository implements IPasswordRepository {
   async findById(PasswordID: string): Promise<PasswordEntity | null> {
     return await this.passwordRepo.findOne({ where: { PasswordID } });
   }
+
+  async findByUserId(UserID: string): Promise<PasswordEntity | null> {
+    return await this.passwordRepo.findOne({ where: { UserID } });
+  }
   
   async create(user: Partial<PasswordEntity>): Promise<PasswordEntity> {
     const newUser = this.passwordRepo.create(user);

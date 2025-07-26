@@ -4,7 +4,6 @@ import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/
 import { IRolesRepository } from 'src/InfrastructureLayer/Repositories/Interface/roles.repository.interface';
 import { IPasswordRepository } from 'src/InfrastructureLayer/Repositories/Interface/password.repository.interface';
 import { IJournalistRepository } from 'src/InfrastructureLayer/Repositories/Interface/journalist.repository.interface';
-import * as bcryptjs from "bcryptjs"
 import { FindUserProfileDto } from 'src/ApplicationLayer/dto/UserDTOs/get-profile.dto';
 
 @Injectable()

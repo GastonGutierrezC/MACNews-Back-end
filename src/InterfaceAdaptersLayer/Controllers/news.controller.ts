@@ -18,6 +18,8 @@ import { Auth } from 'src/ApplicationLayer/decorators/auth.decorators';
 import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
 import { ActiveUser } from 'src/ApplicationLayer/decorators/active-user.decorator';
 import { ActiveUserInterface } from 'src/ApplicationLayer/decorators/active-user.interface';
+import { UpdateNewsWithSuggestionsDto, UpdatedNewsResponseDto } from 'src/InfrastructureLayer/IntelligentAgentManagement/DTO.IntelligentAgent/NewsUpdate/UpdateNewsWithSuggestionsDto';
+import { NewsUpdateIntelligent } from 'src/ApplicationLayer/UseCases/NewsUseCases/NewsUpdateIntelligent';
 
 @ApiTags('News')
 @Controller('news')
@@ -27,7 +29,7 @@ export class NewsController {
     private readonly findNewsService: FindNewsService,
     private readonly updateNewsService: UpdateNewsService,
     private readonly findRecommendationsNewsService: FindRecommendationsNewsService,
-  
+    private readonly newsUpdateIntelligent: NewsUpdateIntelligent,
   ) {}
 
   @Post()
@@ -39,6 +41,19 @@ export class NewsController {
   })   
   async create(@Body() createNewsDto: CreateNewsDto): Promise<boolean> {
     return this.createNewsService.create(createNewsDto);
+  }
+
+  @Post('update-by-agent')
+  @ApiOperation({ summary: 'Update news content using the intelligent agent' })
+  @Auth(RoleAssigned.Journalist)
+  @ApiBearerAuth('access-token')
+  @ApiBody({
+    type: UpdateNewsWithSuggestionsDto,
+  })
+  async updateWithAgent(
+    @Body() body: UpdateNewsWithSuggestionsDto,
+  ): Promise<UpdatedNewsResponseDto> {
+    return await this.newsUpdateIntelligent.execute(body);
   }
 
   @ApiOperation({ summary: 'update the news status' })
@@ -151,6 +166,15 @@ export class NewsController {
     return this.findNewsService.getAllSummarized();
   }
 
+@Get('metrics/categories')
+@ApiOperation({ summary: 'Get total visits by category for the current journalist' })
+@Auth(RoleAssigned.Journalist)
+@ApiBearerAuth('access-token')
+async getCategoryVisitMetrics(
+  @ActiveUser() user: ActiveUserInterface,
+): Promise<{ category: string, visitCount: number }[]> {
+  return this.findNewsService.getCategoryVisitMetricsByUser(user.userID);
+}
 
 
 

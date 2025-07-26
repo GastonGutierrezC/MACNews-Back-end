@@ -34,11 +34,16 @@ const recommendation_module_1 = require("./modules/recommendation.module");
 const channelMetrics_entity_1 = require("./DomainLayer/Entities/channelMetrics.entity");
 const channelMetrics_module_1 = require("./modules/channelMetrics.module");
 const auth_module_1 = require("./modules/auth.module");
+const upload_module_1 = require("./modules/upload.module");
+const config_1 = require("@nestjs/config");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'mysql',
                 host: 'localhost',
@@ -61,6 +66,7 @@ exports.AppModule = AppModule = __decorate([
             recommendation_module_1.RecommendationModule,
             channelMetrics_module_1.ChannelMetricsModule,
             auth_module_1.AuthModule,
+            upload_module_1.UploadModule
         ],
     })
 ], AppModule);

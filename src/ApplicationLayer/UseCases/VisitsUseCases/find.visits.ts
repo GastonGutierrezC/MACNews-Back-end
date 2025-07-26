@@ -17,27 +17,35 @@ export class FindVisitsService {
     private readonly newsRepository: INewsRepository,    
   ) {}
 
-  async getVisitedNewsByUser(userId: string): Promise<VisitedNewsByUserDto[]> {
-    const user = await this.userRepository.findById(userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-  
-    const visits = await this.visitsRepository.findAll();
-    const userVisits = visits.filter((visit) => visit.User?.UserID === userId && visit.News);
-  
-    if (userVisits.length === 0) {
-      return [{
-        Title: 'not news',
-        Category:'not news',
-      }];
-    }
-  
-    return userVisits.map((visit) => ({
-      Title: visit.News.Title,
-      Category: visit.News.Categories,
-    }));
+async getVisitedNewsByUser(userId: string): Promise<VisitedNewsByUserDto[]> {
+  const user = await this.userRepository.findById(userId);
+  if (!user) {
+    throw new NotFoundException('User not found');
   }
+
+  const visits = await this.visitsRepository.findAll();
+  const userVisits = visits
+    .filter((visit) => visit.User?.UserID === userId && visit.News)
+    .sort((a, b) => {
+      const dateA = new Date(a.DateVisit).getTime();
+      const dateB = new Date(b.DateVisit).getTime();
+      return dateB - dateA; 
+    })
+    .slice(0, 10); 
+
+  if (userVisits.length === 0) {
+    return [{
+      Title: 'not news',
+      Category: 'not news',
+    }];
+  }
+
+  return userVisits.map((visit) => ({
+    Title: visit.News.Title,
+    Category: visit.News.Categories,
+  }));
+}
+
   
   
 

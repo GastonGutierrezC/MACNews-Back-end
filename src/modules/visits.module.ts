@@ -7,6 +7,7 @@ import { CreateVisitsService } from 'src/ApplicationLayer/UseCases/VisitsUseCase
 import { UserModule } from './user.module';
 import { NewsModule } from './news.module';
 import { FindVisitsService } from 'src/ApplicationLayer/UseCases/VisitsUseCases/find.visits';
+import { PersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/PersonalizedRecommendations.IntellidentsAgents';
 
 @Module({
   imports: [
@@ -22,13 +23,20 @@ import { FindVisitsService } from 'src/ApplicationLayer/UseCases/VisitsUseCases/
       provide: 'IVisitRepository',
       useClass: VisitsRepository,
     },
+    {
+      provide: 'IPersonalizedRecommendationsAgent',
+      useClass: PersonalizedRecommendationsAgent,
+    },
     CreateVisitsService,FindVisitsService],
   exports: [
     {
       provide: 'IVisitRepository',
       useClass: VisitsRepository,
     },
-    
+    {
+      provide: 'IPersonalizedRecommendationsAgent',
+      useClass: PersonalizedRecommendationsAgent,
+    },
     CreateVisitsService,FindVisitsService],
 })
 export class VisitsModule {}

@@ -423,6 +423,30 @@ export class FindNewsService {
   
     return paginatedNews;
   }
+
+async getCategoryVisitMetricsByUser(userId: string): Promise<{ category: string, visitCount: number }[]> {
+    const allNews = await this.newsRepository.findAll();
+
+    const userNews = allNews.filter(n => n.Channel?.Journalist?.User?.UserID === userId);
+
+    const categoryVisitMap: Map<string, number> = new Map();
+
+    for (const news of userNews) {
+        const visitData = await this.findVisitsService.getVisitCountByNews(news.NewsId);
+
+        const category = news.Categories;
+
+        const current = categoryVisitMap.get(category) ?? 0;
+        categoryVisitMap.set(category, current + visitData.visitCount);
+    }
+
+    return Array.from(categoryVisitMap.entries()).map(([category, visitCount]) => ({
+        category,
+        visitCount
+    }));
+}
+
+
   
   
 }

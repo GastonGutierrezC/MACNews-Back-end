@@ -55,6 +55,7 @@ export class UserController {
   @Auth(RoleAssigned.Administrator)
   @ApiBearerAuth('access-token')
 
+
   @ApiBody({
     type: UpdateRolesDto,
   })

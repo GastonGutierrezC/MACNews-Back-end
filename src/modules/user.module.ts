@@ -15,6 +15,7 @@ import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCase
 import { RecommendationModule } from './recommendation.module';
 import { JournalistModule } from './journalist.module';
 import { AuthModule } from './auth.module';
+import { CryptoService } from 'src/ApplicationLayer/Authentication_and_authorization/crypto.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity,PasswordEntity,RolesEntity]),
@@ -37,7 +38,8 @@ import { AuthModule } from './auth.module';
      CreateUserService,
      FindUserService,
      UpdateUserService,
-     UpdateUserRoleService
+     UpdateUserRoleService,
+     CryptoService
     ], 
   controllers: [UserController],
   exports: [
@@ -56,7 +58,8 @@ import { AuthModule } from './auth.module';
     CreateUserService,
     FindUserService,
     UpdateUserService,
-    UpdateUserRoleService
+    UpdateUserRoleService,
+    CryptoService
   ],   
 })
 export class UserModule {}
