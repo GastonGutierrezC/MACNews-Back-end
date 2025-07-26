@@ -5,6 +5,8 @@ import { UserModule } from './user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/constants/jwt.constants';
 import { JournalistModule } from './journalist.module';
+import { LocalStrategy } from 'src/ApplicationLayer/Authentication_and_authorization/local.strategy';
+import { BasicStrategy } from 'src/ApplicationLayer/Authentication_and_authorization/basic.strategy';
 
 @Module({
 
@@ -21,12 +23,16 @@ imports: [
   providers: [
 
      AuthService,
+     BasicStrategy,
+     LocalStrategy
 
     ], 
   controllers: [AuthController],
   exports: [
 
     AuthService,
+    BasicStrategy,
+     LocalStrategy
 
   ],   
 })

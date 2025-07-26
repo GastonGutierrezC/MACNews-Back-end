@@ -24,7 +24,7 @@ export class VisitsController {
   @ApiBody({ type: CreateVisitsDto })
   @Auth([RoleAssigned.Reader, RoleAssigned.Journalist])
   @ApiBearerAuth('access-token')
-  async createVisit(@ActiveUser() user: ActiveUserInterface, @Body() createVisitsDto: CreateVisitsDto): Promise<VisitsEntity> {
+  async createVisit(@ActiveUser() user: ActiveUserInterface, @Body() createVisitsDto: CreateVisitsDto): Promise<boolean> {
     try {
       return await this.createVisitsService.create(createVisitsDto,user.userID);
     } catch (error) {
@@ -44,5 +44,5 @@ export class VisitsController {
     }
   }
 
-
 }
+

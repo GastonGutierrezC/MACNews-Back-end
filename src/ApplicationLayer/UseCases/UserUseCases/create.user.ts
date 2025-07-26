@@ -7,7 +7,7 @@ import { CreateUserRecommendationDto } from 'src/ApplicationLayer/dto/UserRecomm
 import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
 import { IRolesRepository } from 'src/InfrastructureLayer/Repositories/Interface/roles.repository.interface';
 import { IPasswordRepository } from 'src/InfrastructureLayer/Repositories/Interface/password.repository.interface';
-import * as bcryptjs from "bcryptjs"
+import { CryptoService } from 'src/ApplicationLayer/Authentication_and_authorization/crypto.service';
 
 @Injectable()
 export class CreateUserService {
@@ -18,8 +18,8 @@ export class CreateUserService {
     private readonly passwordRepository: IPasswordRepository,
     @Inject('IRolesRepository')
     private readonly rolesReposotory: IRolesRepository,
-    private readonly createRecommendationService: CreateUserRecommendationService, // 👈 nuevo servicio inyectado
-
+    private readonly createRecommendationService: CreateUserRecommendationService,
+    private readonly cryptoService: CryptoService,
   ) {}
 
   async create(createUserWithPasswordDto: CreateUserWithPasswordDto): Promise<CreateUserResponseDto> {
@@ -35,9 +35,16 @@ export class CreateUserService {
 
     const createdUser = await this.userRepository.create(user);
 
+    const secretKey = process.env.ENCRYPTION_KEY;
+    if (!secretKey) {
+      throw new Error('ENCRYPTION_KEY environment variable is not defined');
+    }
+
+    const encryptedPassword = this.cryptoService.encrypt(password.PasswordUser, secretKey);
+
     const passwordData = {
       UserID: createdUser.UserID,
-      PasswordUser: await bcryptjs.hash(password.PasswordUser,10),
+      PasswordUser: encryptedPassword,
     };
     const createdPassword: PasswordEntity = await this.passwordRepository.create(passwordData);
 
@@ -61,3 +68,4 @@ export class CreateUserService {
     return response;
   }
 }
+

@@ -12,6 +12,8 @@ import { FindRecommendationsNewsService } from 'src/ApplicationLayer/UseCases/Ne
 import { VisitsModule } from './visits.module'; // <-- Asegurate de que este módulo exporta FindVisitsService
 import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConnection/ElasticsearchService';
 import { RecommendationModule } from './recommendation.module';
+import { NewsUpdateIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/NewsUpdate.intelligentAgent';
+import { NewsUpdateIntelligent } from 'src/ApplicationLayer/UseCases/NewsUseCases/NewsUpdateIntelligent';
 
 @Module({
   imports: [
@@ -32,6 +34,10 @@ import { RecommendationModule } from './recommendation.module';
       useClass: NewsReviewIntelligentAgent,
     },
     {
+      provide: 'INewsUpdateIntelligentAgent',
+      useClass: NewsUpdateIntelligentAgent,
+    },
+    {
       provide: 'IElasticsearchService',
       useClass: ElasticsearchService,
     },
@@ -40,6 +46,7 @@ import { RecommendationModule } from './recommendation.module';
     CreateNewsService,
     FindNewsService,
     UpdateNewsService,
+    NewsUpdateIntelligent
 
   ],  
   exports: [
@@ -55,10 +62,15 @@ import { RecommendationModule } from './recommendation.module';
       provide: 'IElasticsearchService',
       useClass: ElasticsearchService,
     },
+        {
+      provide: 'INewsUpdateIntelligentAgent',
+      useClass: NewsUpdateIntelligentAgent,
+    },
     FindRecommendationsNewsService,
     CreateNewsService,
     FindNewsService,
     UpdateNewsService,
+    NewsUpdateIntelligent
 
 
   ], 

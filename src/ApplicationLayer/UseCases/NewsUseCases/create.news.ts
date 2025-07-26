@@ -35,10 +35,10 @@ export class CreateNewsService {
 
     const aiReview = await this.newsReviewAgent.sendNewsForReview(createNewsDto);
 
-    if ('violations' in aiReview && !aiReview.compliance) {
+    if ('violated_principles' in aiReview && !aiReview.compliance) {
       throw new UnprocessableEntityException({
         message: 'La noticia no cumple con los principios éticos.',
-        violations: aiReview.violations,
+        violations: aiReview.violated_principles,
       });
     }
 

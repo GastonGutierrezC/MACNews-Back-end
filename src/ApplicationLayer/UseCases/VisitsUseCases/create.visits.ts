@@ -1,9 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { VisitsEntity } from 'src/DomainLayer/Entities/visits.entity';
 import { CreateVisitsDto } from 'src/ApplicationLayer/dto/ VisitsDTOs/create-visits.dto';
 import { IVisitRepository } from 'src/InfrastructureLayer/Repositories/Interface/visits.repository.interface';
 import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/user.repository.interface';
 import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
+import { IPersonalizedRecommendationsAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/Interfaces/personalizedRecommendations.intelligentAgent.interface';
 
 @Injectable()
 export class CreateVisitsService {
@@ -14,9 +14,12 @@ export class CreateVisitsService {
     private readonly userRepository: IUserRepository,
     @Inject('INewsRepository')
     private readonly newsRepository: INewsRepository,
+    @Inject('IPersonalizedRecommendationsAgent')
+    private readonly personalizedAgent: IPersonalizedRecommendationsAgent, 
+    
   ) {}
 
-  async create(createVisitsDto: CreateVisitsDto, UserID: string): Promise<VisitsEntity> {
+  async create(createVisitsDto: CreateVisitsDto, UserID: string): Promise<boolean> {
     const user = await this.userRepository.findById(UserID);
     if (!user) {
       throw new NotFoundException('User not found.');
@@ -27,11 +30,22 @@ export class CreateVisitsService {
       throw new NotFoundException('News not found.');
     }
 
-    const newVisit = await this.visitsRepository.create({
+    await this.visitsRepository.create({
       User: user,
       News: news,
     });
 
-    return newVisit;
+        (async () => {
+      try {
+        await this.personalizedAgent.getRecommendations(UserID);
+      } catch (error) {
+        console.warn(
+          `⚠️ No se pudo ejecutar el agente de recomendaciones para el usuario ${UserID}:`,
+          error.message,
+        );
+      }
+    })();
+
+    return true;
   }
 }
