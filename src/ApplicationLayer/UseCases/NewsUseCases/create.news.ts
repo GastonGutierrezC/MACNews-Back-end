@@ -40,6 +40,7 @@ export class CreateNewsService {
         message: 'La noticia no cumple con los principios éticos.',
         violations: aiReview.violated_principles,
       });
+      
     }
 
     const newsDocument: NewsDocumentDto = {

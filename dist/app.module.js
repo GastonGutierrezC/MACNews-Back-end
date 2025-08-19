@@ -36,6 +36,7 @@ const channelMetrics_module_1 = require("./modules/channelMetrics.module");
 const auth_module_1 = require("./modules/auth.module");
 const upload_module_1 = require("./modules/upload.module");
 const config_1 = require("@nestjs/config");
+const reports_module_1 = require("./modules/reports.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -66,7 +67,8 @@ exports.AppModule = AppModule = __decorate([
             recommendation_module_1.RecommendationModule,
             channelMetrics_module_1.ChannelMetricsModule,
             auth_module_1.AuthModule,
-            upload_module_1.UploadModule
+            upload_module_1.UploadModule,
+            reports_module_1.ReportsModule
         ],
     })
 ], AppModule);
