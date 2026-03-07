@@ -7,7 +7,7 @@ import { ISearchHistoryRepository } from 'src/InfrastructureLayer/Repositories/I
 import { UserActivityMonthlyReportDto } from 'src/ApplicationLayer/dto/ReportsDTOs/user-activity-monthly.dto';
 
 @Injectable()
-export class GetUserActivityMonthlyService {
+export class GetUserActivityRangeService {
   constructor(
     @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
@@ -21,9 +21,20 @@ export class GetUserActivityMonthlyService {
     private readonly searchHistoryRepository: ISearchHistoryRepository,
   ) {}
 
-  async execute(year: number, month: number): Promise<UserActivityMonthlyReportDto> {
-    if (month < 1 || month > 12) {
-      throw new BadRequestException('Month must be between 1 and 12.');
+  async execute(startDate: string, endDate: string): Promise<UserActivityMonthlyReportDto> {
+    if (!startDate || !endDate) {
+      throw new BadRequestException('Start date and end date are required.');
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      throw new BadRequestException('Invalid date format. Use YYYY-MM-DD.');
+    }
+
+    if (start > end) {
+      throw new BadRequestException('Start date cannot be later than end date.');
     }
 
     const users = await this.userRepository.findAll();
@@ -34,30 +45,29 @@ export class GetUserActivityMonthlyService {
 
     const activeUserIDs = new Set<string>();
 
-    // Helper para filtrar por año y mes
-    const isInMonth = (date: Date) =>
-      date.getFullYear() === year && date.getMonth() + 1 === month;
+    // Helper para verificar si la fecha está dentro del rango
+    const isInRange = (date: Date) => date >= start && date <= end;
 
     visits.forEach(v => {
-      if (v.DateVisit && isInMonth(new Date(v.DateVisit))) {
+      if (v.DateVisit && isInRange(new Date(v.DateVisit))) {
         activeUserIDs.add(v.User.UserID);
       }
     });
 
     comments.forEach(c => {
-      if (c.DateComment && isInMonth(new Date(c.DateComment))) {
+      if (c.DateComment && isInRange(new Date(c.DateComment))) {
         activeUserIDs.add(c.User.UserID);
       }
     });
 
     follows.forEach(f => {
-      if (f.FollowDate && isInMonth(new Date(f.FollowDate))) {
+      if (f.FollowDate && isInRange(new Date(f.FollowDate))) {
         activeUserIDs.add(f.User.UserID);
       }
     });
 
     searches.forEach(s => {
-      if (s.SearchDate && isInMonth(new Date(s.SearchDate))) {
+      if (s.SearchDate && isInRange(new Date(s.SearchDate))) {
         activeUserIDs.add(s.User.UserID);
       }
     });

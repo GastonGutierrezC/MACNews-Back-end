@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
+import { NewsEntity, NewsStatus } from 'src/DomainLayer/Entities/news.entity';
 import { UpdateStatusNewsDto } from '../../dto/NewsDTOs/update-news-status.dto';
 import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
 
@@ -21,6 +21,14 @@ export class UpdateNewsService {
     await this.newsRepository.update(NewsId, { NewsStatus: updateNewsDto.NewsStatus });
 
     return this.newsRepository.findById(NewsId); 
+  }
+
+  async approveAllNews(): Promise<void> {
+    const allNews: NewsEntity[] = await this.newsRepository.findAll();
+
+    for (const news of allNews) {
+      await this.newsRepository.update(news.NewsId, { NewsStatus: NewsStatus.Approved });
+    }
   }
 
 

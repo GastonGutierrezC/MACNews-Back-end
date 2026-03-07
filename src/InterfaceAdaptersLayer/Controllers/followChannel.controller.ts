@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ActiveUser } from 'src/ApplicationLayer/decorators/active-user.decorator';
 import { ActiveUserInterface } from 'src/ApplicationLayer/decorators/active-user.interface';
@@ -8,6 +8,7 @@ import { FollowedChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/f
 import { UpdateFollowChannelDto } from 'src/ApplicationLayer/dto/FollowChannelDTOs/update-followChannel.dto';
 import { CreateFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/create.followChannel';
 import { FindFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/find.followChannel';
+import { UnfollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/UnfollowChannel';
 import { UpdateFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/update.followChannel';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
 import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
@@ -19,6 +20,7 @@ export class FollowChannelController {
     private readonly createFollowChannelService: CreateFollowChannelService,
     private readonly updateFollowChannelService: UpdateFollowChannelService,
     private readonly getFollowChannelService: FindFollowChannelService,  
+    private readonly unfollowChannelService: UnfollowChannelService,
   ) {}
 
   @Post()
@@ -42,4 +44,18 @@ export class FollowChannelController {
     return await this.getFollowChannelService.getByUserId(user.userID);
   }
 
+
+  @Delete(':ChannelID')
+  @ApiOperation({ summary: 'Unfollow a channel' })
+  @Auth([RoleAssigned.Reader, RoleAssigned.Journalist])
+  @ApiBearerAuth('access-token')
+  async unfollowChannel(
+    @ActiveUser() user: ActiveUserInterface,
+    @Param('ChannelID') ChannelID: string,
+  ): Promise<boolean> {
+    return await this.unfollowChannelService.unfollow({
+      UserID: user.userID,
+      ChannelID,
+    });
+  }
 }

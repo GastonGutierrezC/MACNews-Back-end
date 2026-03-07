@@ -3,9 +3,8 @@ import { IUserRepository } from 'src/InfrastructureLayer/Repositories/Interface/
 import { IRolesRepository } from 'src/InfrastructureLayer/Repositories/Interface/roles.repository.interface';
 import { UsersByMonthReportDto } from 'src/ApplicationLayer/dto/ReportsDTOs/users-by-month-report.dto';
 
-
 @Injectable()
-export class GetUsersByMonthService {
+export class GetUsersByDateRangeService {
   constructor(
     @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
@@ -13,9 +12,20 @@ export class GetUsersByMonthService {
     private readonly rolesRepository: IRolesRepository,
   ) {}
 
-  async execute(year: number, month: number): Promise<UsersByMonthReportDto> {
-    if (month < 1 || month > 12) {
-      throw new BadRequestException('Month must be between 1 and 12.');
+  async execute(startDate: string, endDate: string): Promise<UsersByMonthReportDto> {
+    if (!startDate || !endDate) {
+      throw new BadRequestException('Start date and end date are required.');
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      throw new BadRequestException('Invalid date format. Use YYYY-MM-DD.');
+    }
+
+    if (start > end) {
+      throw new BadRequestException('Start date cannot be later than end date.');
     }
 
     const users = await this.userRepository.findAll();
@@ -27,7 +37,7 @@ export class GetUsersByMonthService {
 
     users.forEach(user => {
       const regDate = new Date(user.RegistrationDate);
-      if (regDate.getFullYear() === year && regDate.getMonth() + 1 === month) {
+      if (regDate >= start && regDate <= end) {
         total++;
 
         const userRole = roles.find(r => r.UserID === user.UserID)?.RoleAssigned;

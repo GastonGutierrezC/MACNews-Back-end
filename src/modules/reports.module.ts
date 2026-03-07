@@ -4,9 +4,9 @@ import { UserEntity } from 'src/DomainLayer/Entities/user.entity';
 import { RolesEntity } from 'src/DomainLayer/Entities/roles.entity';
 import { UserRepository } from 'src/InfrastructureLayer/Repositories/user.repository';
 import { RolesRepository } from 'src/InfrastructureLayer/Repositories/roles.repository';
-import { GetUsersByMonthService } from 'src/ApplicationLayer/UseCases/Reports/get-users-by-month-report.usecase';
+import { GetUsersByDateRangeService } from 'src/ApplicationLayer/UseCases/Reports/get-users-by-month-report.usecase';
 import { ReportsController } from 'src/InterfaceAdaptersLayer/Controllers/reports.controller';
-import { GetUserActivityMonthlyService } from 'src/ApplicationLayer/UseCases/Reports/get-user-activity-monthly.service';
+import { GetUserActivityRangeService } from 'src/ApplicationLayer/UseCases/Reports/get-user-activity-monthly.service';
 import { CommentPostEntity } from 'src/DomainLayer/Entities/commentPost.entity';
 import { FollowChannelEntity } from 'src/DomainLayer/Entities/followChannel.entity';
 import { SearchHistoryEntity } from 'src/DomainLayer/Entities/SearchHistory.entity';
@@ -21,6 +21,9 @@ import { JournalistRepository } from 'src/InfrastructureLayer/Repositories/journ
 import { GetPendingApplicationsService } from 'src/ApplicationLayer/UseCases/Reports/get-pending-applications.usecase';
 import { ApplicationFormRepository } from 'src/InfrastructureLayer/Repositories/applicationForm.repository';
 import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.entity';
+import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
+import { NewsRepository } from 'src/InfrastructureLayer/Repositories/news.repository';
+import { GetNewsReviewReportService } from 'src/ApplicationLayer/UseCases/Reports/get.news-review-report';
 
 @Module({
   imports: [
@@ -32,7 +35,8 @@ import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.
       FollowChannelEntity,
       SearchHistoryEntity,
       JournalistEntity,
-      ApplicationFormEntity
+      ApplicationFormEntity,
+      NewsEntity
     ]),
   ],
   providers: [
@@ -68,10 +72,15 @@ import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.
       provide: 'IApplicationFormRepository',
       useClass: ApplicationFormRepository,
     },
-    GetUsersByMonthService,
-    GetUserActivityMonthlyService,
+        {
+      provide: 'INewsRepository',
+      useClass: NewsRepository,
+    },
+    GetUsersByDateRangeService,
+    GetUserActivityRangeService,
     GetUsersRoleDistributionService,
-    GetPendingApplicationsService
+    GetPendingApplicationsService,
+    GetNewsReviewReportService
   ],
   controllers: [ReportsController],
   exports: [
@@ -106,11 +115,15 @@ import { ApplicationFormEntity } from 'src/DomainLayer/Entities/applicationForm.
                         {
       provide: 'IApplicationFormRepository',
       useClass: ApplicationFormRepository,
+    },        {
+      provide: 'INewsRepository',
+      useClass: NewsRepository,
     },
-    GetUsersByMonthService,
-    GetUserActivityMonthlyService,
+    GetUsersByDateRangeService,
+    GetUserActivityRangeService,
     GetUsersRoleDistributionService,
-    GetPendingApplicationsService
+    GetPendingApplicationsService,
+    GetNewsReviewReportService
   ],
 })
 export class ReportsModule {}

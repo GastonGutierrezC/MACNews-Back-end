@@ -65,7 +65,15 @@ export class NewsController {
     return this.updateNewsService.update(NewsId, updateNewsDto);
   }
 
-  @Get('title/:title/date/:date')
+@Patch('bulk/approve-all')
+@ApiOperation({ summary: 'Approve all news' })
+async approveAll(): Promise<{ message: string }> {
+  await this.updateNewsService.approveAllNews();
+  return { message: 'All news have been approved successfully' };
+}
+
+
+  @Get('title/date/:title/:date')
   @ApiOperation({ summary: 'Get a single news by title and publication date' })
   async getByTitleAndDate(
     @Param('title') title: string,
@@ -77,7 +85,7 @@ export class NewsController {
 
 
 
-    @Get('channel/:channelId/category/:category')
+    @Get('channel/category/:channelId/:category')
   @ApiOperation({ summary: 'Get top 5 news by channel and category' })
   async getTop5ByChannelAndCategory(
     @Param('channelId') channelId: string,
@@ -94,6 +102,15 @@ export class NewsController {
     @Query('limit') limit: number = 10,
   ): Promise<NewsCardDto[]> {
     return this.findNewsService.getAllAsCards(page, limit);
+  }
+
+    @Get('card/by-date')
+  @ApiOperation({ summary: 'Get all news formatted for card view ordered by publication date with pagination' })
+  async getAllNewsCardsByDate(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ): Promise<NewsCardDto[]> {
+    return this.findNewsService.getAllAsCardsByDate(page, limit);
   }
   
   @Get('category/:category')

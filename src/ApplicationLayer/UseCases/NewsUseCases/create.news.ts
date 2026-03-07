@@ -5,7 +5,7 @@ import {
   Inject,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { NewsEntity } from 'src/DomainLayer/Entities/news.entity';
+import { NewsEntity, NewsStatus } from 'src/DomainLayer/Entities/news.entity';
 import { CreateNewsDto } from '../../dto/NewsDTOs/create-news.dto';
 import { NewsDocumentDto } from '../../dto/NewsDTOs/news-document.dto';
 import { INewsRepository } from 'src/InfrastructureLayer/Repositories/Interface/news.repository.interface';
@@ -36,13 +36,28 @@ export class CreateNewsService {
     const aiReview = await this.newsReviewAgent.sendNewsForReview(createNewsDto);
 
     if ('violated_principles' in aiReview && !aiReview.compliance) {
+      // Crear la noticia en la base de datos con estado Rejected
+      await this.newsRepository.create({
+        ...createNewsDto,
+        Channel: channel,
+        NewsStatus: NewsStatus.Rejected,
+      });
+
+      // Lanzar la excepción con las violaciones
       throw new UnprocessableEntityException({
         message: 'La noticia no cumple con los principios éticos.',
         violations: aiReview.violated_principles,
       });
-      
     }
 
+    // Si pasa la revisión, crear la noticia con estado Approved
+    const news = await this.newsRepository.create({
+      ...createNewsDto,
+      Channel: channel,
+      NewsStatus: NewsStatus.Approved,
+    });
+
+    // Indexar en Elasticsearch
     const newsDocument: NewsDocumentDto = {
       Title: createNewsDto.Title,
       ShortDescription: createNewsDto.ShortDescription,
@@ -55,11 +70,6 @@ export class CreateNewsService {
         ChannelImageURL: channel.ChannelImageURL,
       },
     };
-
-    const news = await this.newsRepository.create({
-      ...createNewsDto,
-      Channel: channel,
-    });
 
     try {
       await this.elasticsearchService.indexDocument('news', news.NewsId, newsDocument);

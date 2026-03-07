@@ -27,4 +27,7 @@ export class FollowChannelRepository implements IFollowChannelRepository{
   async update(FollowChannelID: string, updateData: Partial<FollowChannelEntity>): Promise<void> {
     await this.followChannelRepo.update(FollowChannelID, updateData);
   }
+    async delete(FollowChannelID: string): Promise<void> {
+    await this.followChannelRepo.delete(FollowChannelID);
+  }
 }
