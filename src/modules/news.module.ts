@@ -14,6 +14,7 @@ import { ElasticsearchService } from 'src/InfrastructureLayer/ElasticsearchConne
 import { RecommendationModule } from './recommendation.module';
 import { NewsUpdateIntelligentAgent } from 'src/InfrastructureLayer/IntelligentAgentManagement/NewsUpdate.intelligentAgent';
 import { NewsUpdateIntelligent } from 'src/ApplicationLayer/UseCases/NewsUseCases/NewsUpdateIntelligent';
+import { SimpleNewsController } from 'src/InterfaceAdaptersLayer/Controllers/new.Controllertest';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { NewsUpdateIntelligent } from 'src/ApplicationLayer/UseCases/NewsUseCase
     forwardRef(() => ChannelModule),
     forwardRef(() => VisitsModule), // ✅ también aquí
   ],
-  controllers: [NewsController],  
+  controllers: [NewsController, SimpleNewsController],  
   providers: [
     {
       provide: 'INewsRepository',

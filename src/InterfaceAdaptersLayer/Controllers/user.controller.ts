@@ -1,22 +1,20 @@
 import { Controller, Get, Post, Body, Param, Patch, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user.dto';
-import { CreatePasswordDto } from 'src/ApplicationLayer/dto/PasswordDTOs/create-password.dto';
-import { CreateUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/create.user';
-import { FindUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/finds.user';
-import { UpdateUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/updates.user';
-import { UpdateUserDto } from 'src/ApplicationLayer/dto/UserDTOs/update-user.dto';
-import { CreateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/create-all-data-user.dto';
-import { UpdateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/update-all-data-user.dto';
-import { UpdateRolesDto } from 'src/ApplicationLayer/dto/RolesDTOs/update-roles.dto';
+
+
+
+
 import { UpdateUserRoleService } from 'src/ApplicationLayer/UseCases/UserUseCases/update-role.user';
-import { CreateUserResponseDto } from 'src/ApplicationLayer/dto/UserDTOs/create-user-response.dto';
-import { FindUserDto } from 'src/ApplicationLayer/dto/UserDTOs/get-user.dto';
+
 import { ActiveUser } from 'src/ApplicationLayer/decorators/active-user.decorator';
 import { ActiveUserInterface } from 'src/ApplicationLayer/decorators/active-user.interface';
 import { Auth } from 'src/ApplicationLayer/decorators/auth.decorators';
 import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
-import { AuthService } from 'src/ApplicationLayer/UseCases/AuthUserCases/auth.useCases';
+import { FindUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/finds.user';
+import { UpdateUserService } from 'src/ApplicationLayer/UseCases/UserUseCases/updates.user';
+import { UpdateUserWithPasswordDto } from 'src/ApplicationLayer/dto/UserDTOs/update-all-data-user.dto';
+import { UpdateRolesDto } from 'src/ApplicationLayer/dto/RolesDTOs/update-roles.dto';
+
 
 @ApiTags('Users')
 @Controller('users')

@@ -8,6 +8,7 @@ import { ChannelModule } from './channel.module';
 import { UserModule } from './user.module';
 import { UpdateFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/update.followChannel';
 import { FindFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/find.followChannel';
+import { UnfollowChannelService } from 'src/ApplicationLayer/UseCases/FollowChannelUseCases/UnfollowChannel';
 
 
 @Module({
@@ -22,12 +23,12 @@ import { FindFollowChannelService } from 'src/ApplicationLayer/UseCases/FollowCh
       provide: 'IFollowChannelRepository',
       useClass: FollowChannelRepository,
     },
-    CreateFollowChannelService,FindFollowChannelService,UpdateFollowChannelService],
+    CreateFollowChannelService,UnfollowChannelService,FindFollowChannelService,UpdateFollowChannelService],
   exports: [
     {
       provide: 'IFollowChannelRepository',
       useClass: FollowChannelRepository,
     },
-    CreateFollowChannelService,FindFollowChannelService,UpdateFollowChannelService],
+    CreateFollowChannelService,UnfollowChannelService,FindFollowChannelService,UpdateFollowChannelService],
 })
 export class FollowChannelModule {}

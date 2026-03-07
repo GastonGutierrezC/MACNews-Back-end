@@ -12,8 +12,6 @@ async function bootstrap() {
     methods: 'GET,POST,PATCH,DELETE',
   });
   
-
-  
     const config = new DocumentBuilder()
     .setTitle('MacNews API')
     .setDescription('Documentación de la API de MacNews')
@@ -27,7 +25,7 @@ async function bootstrap() {
       name: 'Authorization',
       in: 'header',
     },
-    'access-token', // nombre del esquema
+    'access-token',
   )
     .build();
 

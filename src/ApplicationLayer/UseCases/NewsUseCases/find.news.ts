@@ -38,7 +38,8 @@ export class FindNewsService {
 
     const news = allNews.find(n =>
       n.Title === title &&
-      new Date(n.PublicationDate).toISOString().split('T')[0] === new Date(publicationDate).toISOString().split('T')[0]
+      new Date(n.PublicationDate).toISOString().split('T')[0] === new Date(publicationDate).toISOString().split('T')[0] &&
+      n.NewsStatus === 'Approved' // ← Validación agregada
     );
 
     if (!news) {
@@ -78,9 +79,11 @@ export class FindNewsService {
 
   async getAllAsCards(page: number, limit: number): Promise<NewsCardDto[]> {
     const allNews = await this.newsRepository.findAll();
+
+      const approvedNews = allNews.filter(n => n.NewsStatus === 'Approved');
   
     const newsWithVisits: NewsCardDto[] = await Promise.all(
-      allNews.map(async (n) => {
+      approvedNews.map(async (n) => {
 
         const user = n.Channel.Journalist?.User;
         const creatorFullName = user
@@ -114,6 +117,52 @@ export class FindNewsService {
     return paginatedNews;
   }
   
+  async getAllAsCardsByDate(page: number, limit: number): Promise<NewsCardDto[]> {
+  // Obtener todas las noticias
+  const allNews = await this.newsRepository.findAll();
+
+  // Filtrar solo las aprobadas
+  const approvedNews = allNews.filter(n => n.NewsStatus === 'Approved');
+
+  // Mapear cada noticia a NewsCardDto, incluyendo visitas y creador
+  const newsWithVisits: NewsCardDto[] = await Promise.all(
+    approvedNews.map(async (n) => {
+      const user = n.Channel.Journalist?.User;
+      const creatorFullName = user
+        ? `${user.UserFirstName} ${user.UserLastName}`
+        : 'Nombre no disponible';
+
+      const visitData = await this.findVisitsService.getVisitCountByNews(n.NewsId);
+
+      return {
+        NewsId: n.NewsId,
+        Title: n.Title,
+        PublicationDate: n.PublicationDate,
+        NewsImageURL: n.NewsImageURL,
+        Categories: n.Categories,
+        Channel: {
+          ChannelID: n.Channel.ChannelID,
+          ChannelName: n.Channel.ChannelName,
+          ChannelImageURL: n.Channel.ChannelImageURL,
+        },
+        VisitCount: visitData.visitCount,
+        CreatorFullName: creatorFullName
+      };
+    })
+  );
+
+  // Ordenar por fecha descendente (más reciente primero)
+  const sortedNews = newsWithVisits.sort(
+    (a, b) => new Date(b.PublicationDate).getTime() - new Date(a.PublicationDate).getTime()
+  );
+
+  // Aplicar paginación
+  const startIndex = (page - 1) * limit;
+  const paginatedNews = sortedNews.slice(startIndex, startIndex + limit);
+
+  return paginatedNews;
+}
+
 
   
 
@@ -131,9 +180,12 @@ export class FindNewsService {
 
   async getTop5ByChannelAndCategory(channelId: string, category: NewsCategory): Promise<NewsCardDto[]> {
     const allNews = await this.newsRepository.findAll();
+
+    const approvedNews = allNews.filter(n => n.NewsStatus === 'Approved');
+
   
     // Noticias que son del canal y de la categoría deseada
-    const matchingNews = allNews.filter(
+    const matchingNews = approvedNews.filter(
       n =>
         n.Channel.ChannelID === channelId &&
         n.Categories.includes(category)
@@ -174,7 +226,7 @@ export class FindNewsService {
   
     // Si no hay suficientes, buscar noticias aleatorias de la misma categoría, de otros canales
     const additionalNeeded = 5 - sortedMatchingNews.length;
-    const otherNewsCandidates = allNews.filter(
+    const otherNewsCandidates = approvedNews.filter(
       n =>
         n.Channel.ChannelID !== channelId &&
         n.Categories.includes(category)
@@ -212,8 +264,10 @@ export class FindNewsService {
 
   async getByChannelId(ChannelID: string): Promise<NewsCardDto[]> {
     const allNews = await this.newsRepository.findAll();
+        const approvedNews = allNews.filter(n => n.NewsStatus === 'Approved');
+
   
-    const filteredNews = allNews.filter(n => n.Channel.ChannelID === ChannelID);
+    const filteredNews = approvedNews.filter(n => n.Channel.ChannelID === ChannelID);
   
     const newsWithVisits: NewsCardDto[] = await Promise.all(
       filteredNews.map(async (n) => {
@@ -247,10 +301,11 @@ export class FindNewsService {
 
   async getAllSummarized(): Promise<NewsTopDto[]> {
     const news = await this.newsRepository.findAll();
-  
+    const approvedNews = news.filter(n => n.NewsStatus === 'Approved');
+
   
     const newsWithVisits = await Promise.all(
-      news.map(async (n) => {
+      approvedNews.map(async (n) => {
         const visitData = await this.findVisitsService.getVisitCountByNews(n.NewsId);
         return {
           news: n,
@@ -331,9 +386,11 @@ export class FindNewsService {
   async getByCategory(category: NewsCategory, page: number, limit: number): Promise<NewsCardDto[]> {
     // Obtiene todas las noticias
     const allNews = await this.newsRepository.findAll();
+        const approvedNews = allNews.filter(n => n.NewsStatus === 'Approved');
+
   
     // Filtra las noticias por la categoría proporcionada
-    const filteredNews = allNews.filter(n => n.Categories === category);
+    const filteredNews = approvedNews.filter(n => n.Categories === category);
   
     if (filteredNews.length === 0) {
       throw new NotFoundException(`No news found for category "${category}"`);
@@ -379,9 +436,11 @@ export class FindNewsService {
   async getBySpecialty(specialty: ChannelSpecialties, page: number, limit: number): Promise<NewsCardDto[]> {
     // Obtiene todas las noticias
     const allNews = await this.newsRepository.findAll();
+            const approvedNews = allNews.filter(n => n.NewsStatus === 'Approved');
+
   
     // Filtra las noticias por la especialidad del canal
-    const filteredNews = allNews.filter(n => n.Channel.Specialties.includes(specialty));
+    const filteredNews = approvedNews.filter(n => n.Channel.Specialties.includes(specialty));
   
     if (filteredNews.length === 0) {
       throw new NotFoundException(`No news found for specialty "${specialty}"`);

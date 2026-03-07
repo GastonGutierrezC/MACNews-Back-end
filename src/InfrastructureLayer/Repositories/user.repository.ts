@@ -11,7 +11,6 @@ export class UserRepository implements IUserRepository{
     private readonly userRepo: Repository<UserEntity>,
   ) {}
 
-
   async findAll(): Promise<UserEntity[]> { 
     return await this.userRepo.find({ relations: ['journalist'] });
   }

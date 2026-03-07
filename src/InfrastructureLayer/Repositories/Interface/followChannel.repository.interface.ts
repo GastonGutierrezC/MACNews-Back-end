@@ -5,5 +5,5 @@ export interface IFollowChannelRepository{
   findById(FollowChannelID: string): Promise<FollowChannelEntity | undefined> ;
   create(followChannel: Partial<FollowChannelEntity>): Promise<FollowChannelEntity>  ;
   update(FollowChannelID: string, updateData: Partial<FollowChannelEntity>): Promise<void>;
-
+  delete(FollowChannelID: string): Promise<void>; 
 }

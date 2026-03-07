@@ -27,6 +27,7 @@ import { ChannelMetricsModule } from './modules/channelMetrics.module';
 import { AuthModule } from './modules/auth.module';
 import { UploadModule } from './modules/upload.module';
 import { ConfigModule } from '@nestjs/config';
+import { ReportsModule } from './modules/reports.module';
 
 
 @Module({
@@ -58,7 +59,8 @@ import { ConfigModule } from '@nestjs/config';
     RecommendationModule,
     ChannelMetricsModule,
     AuthModule,
-    UploadModule
+    UploadModule,
+    ReportsModule
   ],
 })
 export class AppModule {}
