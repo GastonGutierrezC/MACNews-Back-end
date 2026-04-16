@@ -35,7 +35,7 @@ export class CreateNewsService {
 
     const aiReview = await this.newsReviewAgent.sendNewsForReview(createNewsDto);
 
-    if ('violated_principles' in aiReview && !aiReview.compliance) {
+    if ('violations' in aiReview && !aiReview.compliance) {
       // Crear la noticia en la base de datos con estado Rejected
       await this.newsRepository.create({
         ...createNewsDto,
@@ -46,7 +46,7 @@ export class CreateNewsService {
       // Lanzar la excepción con las violaciones
       throw new UnprocessableEntityException({
         message: 'La noticia no cumple con los principios éticos.',
-        violations: aiReview.violated_principles,
+        violations: aiReview.violations,
       });
     }
 

@@ -12,7 +12,7 @@ import { FindCommentPostService } from 'src/ApplicationLayer/UseCases/CommentPos
 import { FindChannelMetricsService } from 'src/ApplicationLayer/UseCases/CommentPostUseCases/findMetricts.commentPost';
 import { CommentPostEntity } from 'src/DomainLayer/Entities/commentPost.entity';
 import { RoleAssigned } from 'src/DomainLayer/Entities/roles.entity';
-import { AgentResponse } from 'src/InfrastructureLayer/IntelligentAgentManagement/DTO.IntelligentAgent/NewsReview/agent-response.dto';
+import { AgentResponse } from 'src/InfrastructureLayer/IntelligentAgentManagement/DTO.IntelligentAgent/CommentPostMetrics/agent-response.dto';
 
 
 @ApiTags('CommentPost')

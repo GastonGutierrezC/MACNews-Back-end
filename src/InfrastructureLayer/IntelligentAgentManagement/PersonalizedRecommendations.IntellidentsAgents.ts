@@ -6,7 +6,7 @@ import { IPersonalizedRecommendationsAgent } from './Interfaces/personalizedReco
 @Injectable()
 export class PersonalizedRecommendationsAgent implements IPersonalizedRecommendationsAgent{
   private readonly agentUrl =
-    'https://singular-deadly-ape.ngrok-free.app/webhook/41f25aa9-6c64-4697-ac94-b9ac048b0b44';
+    'https://n8n-y7dx.onrender.com/webhook/41f25aa9-6c64-4697-ac94-b9ac048b0b44'; 
 
   async getRecommendations(userId: string): Promise<RecommendationAgentResponse> {
     try {
