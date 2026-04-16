@@ -1,99 +1,407 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# MAC News - Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+##  Description
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This project is the **backend API** of the aplication web:
 
-## Description
+**"Responsive Web Application for News Publishing and Consumption Using Artificial Intelligence Based on the UNESCO International Code of Journalistic Ethics (Case Study: El Elector)"**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The API is responsible for managing the **entire workflow of news publishing and consumption**, including user management, content creation, recommendations, and analytics.
 
-## Project setup
+### Purpose
+
+This backend addresses key challenges in digital journalism:
+
+- Lack of **personalized news delivery**
+- Inefficient **manual ethical review processes**
+- Delays in **news publication workflows**
+
+By integrating **Artificial Intelligence agents**, the system improves:
+- Content personalization
+- Automated ethical validation
+- Faster and more efficient publication processes
+
+---
+
+##  Features
+
+-  JWT Authentication & Authorization
+-  User management & roles
+-  News creation, update, approval, and filtering
+-  AI-powered:
+   - News ethical review
+   - Content improvement
+   - Personalized recommendations
+   - Comment-based metrics
+   - Journalist application evaluation
+-  Channels management
+-  Follow channels
+-  Comments system
+-  Channel metrics & visits tracking
+-  Intelligent search with Elasticsearch
+-  Search history tracking
+-  Image upload (Cloudinary)
+-  Reports & analytics
+-  Journalist application system
+
+---
+
+##  Technologies
+
+- **Node.js** v24.14.0
+- **NestJS** v11.0.16
+- **MySQL** (Docker: `mysql:8.0`)
+- **JWT (Authentication)**
+- **Docker**
+  - MySQL
+  - Elasticsearch
+  - Kibana
+  - Ngrok (to expose local endpoints)
+- **n8n (Deployed on Render)**
+  - Used to orchestrate AI agents
+  - Backend consumes n8n endpoints
+
+---
+
+##  Main Endpoints
+
+###  Auth
+- `POST /auth/register`
+- `POST /auth/login`
+
+###  Users
+- `GET /users/profile`
+- `PATCH /users`
+- `PATCH /users/changeRole/{id}`
+
+###  News
+- `POST /news`
+- `GET /news`
+- `GET /news/{id}`
+- `PATCH /news/{id}`
+- `PATCH /news/bulk/approve-all`
+- `POST /news/update-by-agent`
+- `GET /news/recommendations`
+- `GET /news/searchIntelligent`
+
+###  Channels
+- `POST /channels`
+- `GET /channels/top`
+- `GET /channels/journalist`
+
+###  Follow Channels
+- `POST /followChannels`
+- `GET /followChannels/user`
+- `DELETE /followChannels/{ChannelID}`
+
+###  AI Features
+- `POST /applicationForm/evaluate-with-agent`
+- `POST /news/update-by-agent`
+- `GET /comment-post/metrics/{channelId}`
+
+###  Metrics & Reports
+- `GET /channel-metrics/channel/{channelId}`
+- `GET /reports/users-by-month`
+- `GET /reports/news-review`
+
+---
+
+##  Installation & Setup
 
 ```bash
-$ npm install
+# Run containers
+docker-compose up
+
+# Install dependencies
+npm install
+npm update
+
+# Run project
+npm run start:dev
+
 ```
 
-## Compile and run the project
+### Troubleshooting
+
+If you encounter dependency issues:
 
 ```bash
-# development
-$ npm run start
+# Remove lock file
+rm package-lock.json
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Reinstall dependencies
+npm install
+npm update
 ```
 
-## Run tests
+### Environment Variables (.env)
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+ENCRYPTION_KEY=
 ```
 
-## Deployment
+## Docker Configuration (docker-compose.yml)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+This project uses **Docker Compose** to orchestrate all required services for local development, including the database, search engine, visualization tools, and public tunneling.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+###  Services Overview
+
+---
+
+###  MySQL Database
+
+- **Image:** `mysql:8.0`
+- Runs the main relational database
+- Initializes automatically using `init.sql`
+- Data is persisted using Docker volumes
+
+**Configuration:**
+- Port: `3307 → 3306`
+- Database: `MACNews`
+- Credentials defined via environment variables
+
+---
+
+###  Elasticsearch
+
+- **Image:** `elasticsearch:8.13.0`
+- Used for **intelligent search and indexing**
+- Enables advanced search features (e.g., full-text search, relevance scoring)
+
+**Configuration:**
+- Single-node mode
+- Security disabled (for development)
+- Memory optimized for local usage
+
+---
+
+###  Kibana
+
+- **Image:** `kibana:8.13.0`
+- Provides a **visual interface for Elasticsearch**
+- Useful for:
+  - Data exploration
+  - Index monitoring
+  - Debugging search queries
+
+**Access:**
+- http://localhost:5601
+
+---
+
+###  Ngrok
+
+- **Image:** `ngrok/ngrok`
+- Exposes the local backend to the internet
+
+**Purpose:**
+- Allows external services (like **n8n AI agents**) to access local endpoints
+- Useful for testing webhooks and integrations
+
+**Configuration:**
+- Public tunnel to: `http://localhost:3002`
+- Web interface: http://localhost:4040
+
+---
+
+###  Volumes
+
+- `mysql_data`: persists MySQL data
+- `elastic_data`: persists Elasticsearch data
+
+---
+
+###  How to Run
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+docker-compose up
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Artificial Intelligence Integration
 
-## Resources
+This backend integrates multiple AI agents, orchestrated through n8n workflows.
 
-Check out a few resources that may come in handy when working with NestJS:
+### Where AI is used
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+* Journalist application evaluation
+* News content improvement
+* Ethical validation of news
+* Comment-based metrics analysis
+* Personalized recommendations
 
-## Support
+### AI Agents
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Implemented in:
 
-## Stay in touch
+* CommentPostMetrics.intelligentAgent.ts
+* JournalistApplications.IntelligentAgent.ts
+* NewsReview.IntelligentAgent.ts
+* NewsUpdate.intelligentAgent.ts
+* PersonalizedRecommendations.IntelligentAgents.ts
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### How it works
+AI agents are exposed as endpoints via n8n (deployed on Render)
 
-## License
+The backend consumes these endpoints
+Each agent performs a specific task:
+* ✅ Evaluate journalist applications
+* ✅ Improve news content
+* ✅ Analyze comments for metrics
+* ✅ Validate ethical compliance
+* ✅ Generate personalized recommendations
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Important Notes
+* You must provide API keys for AI services (e.g., OpenAI / Gemini)
+* AI workflows are preconfigured
+* A folder with JSON files is included:
+  * These contain the configuration of each n8n workflow
+  * No need to build flows from scratch
+
+##  n8n Setup (Render Deployment)
+
+This project relies on **n8n** to orchestrate multiple **AI agents** used by the backend.
+
+n8n is deployed externally using **Render**, and the backend communicates with it via HTTP endpoints.
+
+---
+
+###  Step-by-Step Setup on Render
+
+#### 1. Create a Render Account
+- Go to: https://render.com
+- Sign up or log in
+
+---
+
+#### 2. Deploy n8n as a Web Service
+
+- Click **"New +" → Web Service**
+- Connect your GitHub repository (or use Docker)
+
+**Recommended:** Use Docker with the official n8n image
+
+---
+
+#### 3. Basic Configuration
+
+- **Environment:** Docker
+- **Image:** `n8nio/n8n`
+- **Port:** `5678`
+
+---
+
+#### 4. Set Environment Variables
+
+Add the following variables in Render:
+
+```env
+N8N_BASIC_AUTH_ACTIVE=true
+N8N_BASIC_AUTH_USER=admin
+N8N_BASIC_AUTH_PASSWORD=your_password
+N8N_HOST=your-render-url.onrender.com
+N8N_PORT=5678
+N8N_PROTOCOL=https
+WEBHOOK_URL=https://your-render-url.onrender.com
+
+```
+#### 5. Persistent Storage (IMPORTANT)
+
+Enable a disk in Render to persist workflows:
+
+* Add a Disk
+* Mount path:
+  * /home/node/.n8n
+
+This ensures workflows are not lost after redeploys.
+
+#### 6. Deploy the Service
+* Click Deploy
+* Wait until the service is live
+* Access n8n via your Render URL
+
+#### Useful Resources
+* n8n Official Docs: https://docs.n8n.io
+* Deploy n8n with Docker: https://docs.n8n.io/hosting/installation/docker/
+* Render Web Services Guide: https://render.com/docs/web-services
+* n8n Environment Variables: https://docs.n8n.io/hosting/configuration/environment-variables/
+* n8n Webhooks: https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/
+
+##  Project Structure
+
+The project follows a **layered architecture inspired by Clean Architecture**, ensuring scalability, maintainability, and separation of concerns.
+
+- src/
+ - ├── ApplicationLayer
+ - ├── constants
+ - ├── DomainLayer
+ - ├── InfrastructureLayer
+ - ├── InterfaceAdaptersLayer
+ - ├── modules
+ - └── app.module.ts
+
+### ApplicationLayer
+Contains the **application logic and use cases** of the system.
+
+- Coordinates workflows between different layers
+- Implements business use cases (e.g., creating news, evaluating applications)
+- Acts as a bridge between controllers and domain logic
+
+---
+
+### DomainLayer
+Represents the **core business logic and rules** of the application.
+
+- Entities (e.g., User, News, Channel)
+- Business rules and validations
+- Domain services
+
+---
+
+### InfrastructureLayer
+Handles **external services and technical implementations**.
+
+- Database configuration (MySQL)
+- Third-party integrations (Cloudinary, AI services, etc.)
+- External APIs communication
+
+---
+
+### InterfaceAdaptersLayer
+Responsible for **connecting the outside world with the application**.
+
+- Controllers (HTTP endpoints)
+- DTOs (Data Transfer Objects)
+- Translates external requests into internal logic
+
+---
+
+### Modules
+Organizes the application into **feature-based modules** (NestJS style).
+
+- Groups related functionality (e.g., Users, News, Channels)
+- Improves modularity and scalability
+
+---
+
+### constants
+Stores **global constants and configuration values**.
+
+- Static values
+- Shared configuration data
+
+---
+
+###  app.module.ts
+The **main entry point of the NestJS application**.
+
+- Registers all modules
+- Configures global dependencies
+- Initializes the application
+
+---
+
+## Author
+Gaston Gutierrez Condori

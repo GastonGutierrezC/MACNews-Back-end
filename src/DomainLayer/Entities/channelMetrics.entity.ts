@@ -9,7 +9,7 @@ export class ChannelMetricsEntity {
   @ManyToOne(() => ChannelEntity, (channel) => channel.Metrics, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'ChannelID' })
   Channel: ChannelEntity;
-
+ 
   @Column({ type: 'json' })
   TopInterests: { interest: string; percentage: number }[];
 

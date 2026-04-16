@@ -1,11 +1,11 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
-import { AgentResponse } from './DTO.IntelligentAgent/NewsReview/agent-response.dto';
+import { AgentResponse } from './DTO.IntelligentAgent/CommentPostMetrics/agent-response.dto';
 import { IInterestAnalysisAgent } from './Interfaces/CommentPostMetrics.intelligentAgent.interface';
 
 @Injectable()
 export class InterestAnalysisAgent implements IInterestAnalysisAgent{
-  private readonly agentUrl = 'https://singular-deadly-ape.ngrok-free.app/webhook/52e147df-d945-43f8-b5c5-eb2ee1e70e8b';
+  private readonly agentUrl = 'https://n8n-y7dx.onrender.com/webhook/52e147df-d945-43f8-b5c5-eb2ee1e70e8b';
 
   async analyzeChannelInterests(channelID: string): Promise<AgentResponse> {
     try {

@@ -6,7 +6,7 @@ import { INewsUpdateIntelligentAgent } from './Interfaces/NewsUpdate.intelligent
 
 @Injectable()
 export class NewsUpdateIntelligentAgent implements INewsUpdateIntelligentAgent{
-  private readonly updateAgentUrl = 'https://singular-deadly-ape.ngrok-free.app/webhook/057b1d6d-1d4d-4cf5-9e6e-99476150a075';
+  private readonly updateAgentUrl = 'https://n8n-y7dx.onrender.com/webhook/65e502b8-086a-493b-9d90-a6c20d9a6d8e';
 
   async updateNewsContent(
     updateDto: UpdateNewsWithSuggestionsDto,

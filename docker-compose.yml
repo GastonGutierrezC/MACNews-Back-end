@@ -1,6 +1,7 @@
-version: "3.1"
+version: "3.8"
 
 services:
+
   mysql:
     image: mysql:8.0
     container_name: mysql_db
@@ -16,5 +17,41 @@ services:
       - mysql_data:/var/lib/mysql
       - ./mysql-files/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.0
+    container_name: kibana
+    restart: always
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok_tunnel
+    restart: always
+    command: http host.docker.internal:3002
+    environment:
+      - NGROK_AUTHTOKEN=2wjPWMPFd8HfNtZxxHkfV2U1tpg_4yq5mcuS66X9P83GT2eko
+    ports:
+      - "4040:4040"
+
 volumes:
   mysql_data:
+  elastic_data:

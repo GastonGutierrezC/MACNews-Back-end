@@ -6,7 +6,7 @@ import { IJournalistApplicationsIntelligentAgent } from './Interfaces/journalist
 
 @Injectable()
 export class JournalistApplicationsIntelligentAgent implements IJournalistApplicationsIntelligentAgent{
-  private readonly agentUrl = 'https://singular-deadly-ape.ngrok-free.app/webhook/b0f4a077-634c-40ae-b736-dddb2c1d004';
+  private readonly agentUrl = 'https://n8n-y7dx.onrender.com/webhook/b0f4a077-634c-40ae-b736-dddb2c1d004d';
 
   async sendApplicationToAgent(payload: CreateApplicationFormDto): Promise<ApplicationAgentResponse> {
     try {
